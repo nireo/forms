@@ -4,6 +4,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { Question } from './Question';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -39,8 +40,25 @@ export const FormMain: React.FC = props => {
         </Typography>
         <Typography>Subtitle</Typography>
         <hr />
-        <div style={{ marginTop: '2rem' }}>
+        <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
           <Question />
+        </div>
+        <hr />
+        <div style={{ textAlign: 'center' }}>
+          <Button
+            fullWidth
+            size="large"
+            variant="contained"
+            color="primary"
+            style={{
+              marginTop: '0.6rem',
+              width: '50%',
+              height: '64px',
+              fontSize: '20px'
+            }}
+          >
+            Submit
+          </Button>
         </div>
       </Paper>
     </Container>
