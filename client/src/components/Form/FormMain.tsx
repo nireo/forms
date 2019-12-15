@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import { Question } from './Question';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -33,9 +34,14 @@ export const FormMain: React.FC = props => {
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
-        <Typography component="h1" variant="h4" align="center">
+        <Typography component="h1" variant="h4">
           Form title
         </Typography>
+        <Typography>Subtitle</Typography>
+        <hr />
+        <div style={{ marginTop: '2rem' }}>
+          <Question />
+        </div>
       </Paper>
     </Container>
   );
