@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { FormInput } from './FormInput';
+import { NewQuestion } from './NewQuestion';
+import { Question } from '../../interfaces/Question';
+import { SliderForm } from './SliderForm';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -29,11 +32,29 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const CreateMain: React.FC = props => {
   const classes = useStyles(props);
+  const [title, setTitle] = useState<string>('Untitled Form');
+  const [description, setDescription] = useState<string>('');
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
-        <FormInput placeholder="Form title" fontSize={36} />
+        <FormInput
+          placeholder="Form title"
+          fontSize={36}
+          value={title}
+          setValue={setTitle}
+        />
+        <FormInput
+          placeholder="Form description"
+          fontSize={24}
+          value={description}
+          setValue={setDescription}
+        />
+        <SliderForm max={10} min={0} step={1} title={'How good is this'} />
+        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+          <NewQuestion />
+        </div>
       </Paper>
     </Container>
   );
