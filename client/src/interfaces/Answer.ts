@@ -1,3 +1,4 @@
+import { QuestionType } from './Question';
 export interface AnswerFull {
   // the form id the answer goes to
   toForm: string;
@@ -13,4 +14,5 @@ export interface Answer {
   // this is because there are multi answers questions.
   // so it is easier just to get the answer from index 0
   answer: string[];
+  answerType: QuestionType;
 }

@@ -16,7 +16,7 @@ export interface Question {
   answers: string[];
 }
 
-enum QuestionType {
+export enum QuestionType {
   Multiple = 1,
   Written = 2,
   ManyAnswers = 3

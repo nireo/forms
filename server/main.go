@@ -1,9 +1,21 @@
 package main
 
 import (
-	"fmt"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	fmt.Println("forms server")
+	// load environment variables
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 }

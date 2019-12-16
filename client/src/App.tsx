@@ -2,16 +2,20 @@ import React from 'react';
 import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Navbar } from './components/Layout/Navbar';
+import { CreateMain } from './components/Create/CreateMain';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { FormMain } from './components/Form/FormMain';
-import { Footer } from './components/Layout/Footer';
 
 const App: React.FC = () => {
   return (
-    <div>
+    <Router>
       <CssBaseline />
       <Navbar />
-      <FormMain />
-    </div>
+      <Switch>
+        <Route exact path="/create" render={() => <CreateMain />} />
+        <Route exact path="/view" render={() => <FormMain />} />
+      </Switch>
+    </Router>
   );
 };
 

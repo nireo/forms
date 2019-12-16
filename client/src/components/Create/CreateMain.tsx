@@ -1,9 +1,8 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Question } from './Question';
+import { FormInput } from './FormInput';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -28,19 +27,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const FormMain: React.FC = props => {
+export const CreateMain: React.FC = props => {
   const classes = useStyles(props);
 
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
-        <Typography component="h1" variant="h3">
-          Form title
-        </Typography>
-        <Typography style={{ marginTop: '1.25rem' }}>description</Typography>
-        <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
-          <Question />
-        </div>
+        <FormInput placeholder="Form title" fontSize={36} />
       </Paper>
     </Container>
   );
