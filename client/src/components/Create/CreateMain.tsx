@@ -5,8 +5,8 @@ import Container from '@material-ui/core/Container';
 import { FormInput } from './FormInput';
 import { NewQuestion } from './NewQuestion';
 import { Question } from '../../interfaces/Question';
-import { SliderForm } from './SliderForm';
 import { MultipleAnswer } from './MultipleAnswer';
+import { MultipleChoice } from './MultipleChoice';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -53,6 +53,12 @@ export const CreateMain: React.FC = props => {
           setValue={setDescription}
         />
         <MultipleAnswer answers={['this', 'or this', 'or maybe even this']} />
+        <div>
+          <MultipleChoice
+            answers={['this', 'or this', 'or maybe even this']}
+            label="this is the label"
+          />
+        </div>
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
           <NewQuestion />
         </div>
