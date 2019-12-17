@@ -6,6 +6,7 @@ import { FormInput } from './FormInput';
 import { NewQuestion } from './NewQuestion';
 import { Question } from '../../interfaces/Question';
 import { SliderForm } from './SliderForm';
+import { MultipleAnswer } from './MultipleAnswer';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -51,7 +52,7 @@ export const CreateMain: React.FC = props => {
           value={description}
           setValue={setDescription}
         />
-        <SliderForm max={10} min={0} step={1} title={'How good is this'} />
+        <MultipleAnswer answers={['this', 'or this', 'or maybe even this']} />
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
           <NewQuestion />
         </div>
