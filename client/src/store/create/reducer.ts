@@ -1,0 +1,29 @@
+const reducer = (state: any = [], action: any) => {
+  switch (action.type) {
+    case 'ADD_QUESTION':
+      return [...state, action.data];
+    case 'REMOVE_QUESTION':
+      return state.filter((q: any) => q.id !== action.id);
+    case 'CLEAR':
+      return [];
+    default:
+      return state;
+  }
+};
+
+export const clearQuestions = () => {
+  return { type: 'CLEAR' };
+};
+
+export const removeQuestion = (id: string) => {
+  return { type: 'REMOVE_QUESTION', id: id };
+};
+
+export const addQuestion = (question: any) => {
+  return {
+    type: 'ADD_QUESTION',
+    data: question
+  };
+};
+
+export default reducer;

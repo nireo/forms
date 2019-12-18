@@ -2,9 +2,11 @@
 // but it is the cleanest way to do it, in my opinion.
 import { createStore, combineReducers } from 'redux';
 import questionReducer from './question/reducer';
+import createReducer from './create/reducer';
 
 const rootReducer = combineReducers({
-  form: questionReducer
+  form: questionReducer,
+  create: createReducer
 });
 const store = createStore(rootReducer);
 

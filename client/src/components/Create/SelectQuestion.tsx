@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const SelectQuestion: React.FC = props => {
   const [questionType, setQuestionType] = useState<string>('');
-  const inputLabel = React.useRef<HTMLLabelElement>(null);
   const [labelWidth, setLabelWidth] = useState<number>(0);
   const classes = useStyles(props);
 
