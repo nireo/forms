@@ -33,8 +33,6 @@ export const MultipleAnswer: React.FC<Props> = ({ answers }) => {
   // and is much cleaner than storing both checked states, which won't mean anything
   // in the future.
 
-  console.log(answersWithState);
-
   return (
     <div>
       {answersWithState.map((answer: MAQuestion) => (

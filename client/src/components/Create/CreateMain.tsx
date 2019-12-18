@@ -7,6 +7,7 @@ import { NewQuestion } from './NewQuestion';
 import { Question } from '../../interfaces/Question';
 import { MultipleAnswer } from './MultipleAnswer';
 import { MultipleChoice } from './MultipleChoice';
+import { SelectQuestion } from './SelectQuestion';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -58,6 +59,9 @@ export const CreateMain: React.FC = props => {
             answers={['this', 'or this', 'or maybe even this']}
             label="this is the label"
           />
+        </div>
+        <div>
+          <SelectQuestion />
         </div>
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
           <NewQuestion />
