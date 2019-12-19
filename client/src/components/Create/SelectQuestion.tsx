@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -12,13 +12,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const SelectQuestion: React.FC = props => {
-  const [questionType, setQuestionType] = useState<string>('');
+type Props = {
+  questionType: string;
+  setQuestionType: Dispatch<SetStateAction<string>>;
+};
+
+export const SelectQuestion: React.FC<Props> = props => {
   const [labelWidth, setLabelWidth] = useState<number>(0);
   const classes = useStyles(props);
 
   const handleChange = (event: ChangeEvent<{ value: unknown }>) => {
-    setQuestionType(event.target.value as string);
+    props.setQuestionType(event.target.value as string);
   };
 
   return (
@@ -28,7 +32,7 @@ export const SelectQuestion: React.FC = props => {
         <Select
           labelId="question-select-label"
           id="question-select"
-          value={questionType}
+          value={props.questionType}
           onChange={handleChange}
         >
           <MenuItem value="multiple-choice">Multiple choice</MenuItem>

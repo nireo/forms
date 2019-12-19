@@ -18,5 +18,7 @@ export interface Question {
 export enum QuestionType {
   Multiple = 1,
   Written = 2,
-  ManyAnswers = 3
+  ManyAnswers = 3,
+  Paragraph = 4,
+  TrueOrFalse = 5
 }

@@ -5,9 +5,6 @@ import Container from '@material-ui/core/Container';
 import { FormInput } from './FormInput';
 import { NewQuestion } from './NewQuestion';
 import { Question } from '../../interfaces/Question';
-import { MultipleAnswer } from './MultipleAnswer';
-import { MultipleChoice } from './MultipleChoice';
-import { SelectQuestion } from './SelectQuestion';
 import {
   addQuestion,
   removeQuestion,
@@ -15,6 +12,7 @@ import {
 } from '../../store/create/reducer';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
+import { AddQuestion } from './AddQuestion';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -79,16 +77,7 @@ const CreateMain: React.FC<Props> = props => {
           value={description}
           setValue={setDescription}
         />
-        <MultipleAnswer answers={['this', 'or this', 'or maybe even this']} />
-        <div>
-          <MultipleChoice
-            answers={['this', 'or this', 'or maybe even this']}
-            label="this is the label"
-          />
-        </div>
-        <div>
-          <SelectQuestion />
-        </div>
+        <AddQuestion />
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
           <NewQuestion addQuestionToForm={addQuestionToForm} />
         </div>

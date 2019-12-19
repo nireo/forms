@@ -23,7 +23,7 @@ export const NewQuestion: React.FC<Props> = props => {
       <Fab
         color="primary"
         aria-label="add"
-        onClick={() => props.addQuestionToForm}
+        onClick={() => props.addQuestionToForm()}
       >
         <AddIcon />
       </Fab>
