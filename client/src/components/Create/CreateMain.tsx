@@ -8,6 +8,13 @@ import { Question } from '../../interfaces/Question';
 import { MultipleAnswer } from './MultipleAnswer';
 import { MultipleChoice } from './MultipleChoice';
 import { SelectQuestion } from './SelectQuestion';
+import {
+  addQuestion,
+  removeQuestion,
+  clearQuestions
+} from '../../store/create/reducer';
+import { connect } from 'react-redux';
+import { AppState } from '../../store';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -32,11 +39,30 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const CreateMain: React.FC = props => {
+type Props = {
+  create: Question[];
+  addQuestion: (question: Question) => void;
+  removeQuestion: (id: string) => void;
+  clearQuestions: () => void;
+};
+
+const CreateMain: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [title, setTitle] = useState<string>('Untitled Form');
   const [description, setDescription] = useState<string>('');
   const [questions, setQuestions] = useState<Question[]>([]);
+
+  const addQuestionToForm = () => {
+    const templateQuestion: Question = {
+      title: 'Untitled question',
+      answerType: 2,
+      required: false,
+      answers: [],
+      question: 'More about the question.'
+    };
+
+    props.addQuestion(templateQuestion);
+  };
 
   return (
     <Container maxWidth="md">
@@ -64,9 +90,19 @@ export const CreateMain: React.FC = props => {
           <SelectQuestion />
         </div>
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <NewQuestion />
+          <NewQuestion addQuestionToForm={addQuestionToForm} />
         </div>
       </Paper>
     </Container>
   );
 };
+
+const mapStateToProps = (state: AppState) => ({
+  create: state.create
+});
+
+export default connect(mapStateToProps, {
+  addQuestion,
+  removeQuestion,
+  clearQuestions
+})(CreateMain);

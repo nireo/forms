@@ -6,7 +6,6 @@ export interface Form {
 }
 
 export interface Question {
-  type: string;
   required: boolean;
   title: string;
   question: string;

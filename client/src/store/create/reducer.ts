@@ -1,4 +1,6 @@
-const reducer = (state: any = [], action: any) => {
+import { Question } from './../../interfaces/Question';
+
+const reducer = (state: Question[] = [], action: any) => {
   switch (action.type) {
     case 'ADD_QUESTION':
       return [...state, action.data];
@@ -19,7 +21,7 @@ export const removeQuestion = (id: string) => {
   return { type: 'REMOVE_QUESTION', id: id };
 };
 
-export const addQuestion = (question: any) => {
+export const addQuestion = (question: Question) => {
   return {
     type: 'ADD_QUESTION',
     data: question
