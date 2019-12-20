@@ -6,7 +6,8 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// Migrate the models to the database.
 func Migrate(db *gorm.DB) {
-	db.AutoMigrate(&Answer{})
+	db.AutoMigrate(&Answer{}, &User{})
 	fmt.Println("Auto migration has been completed")
 }

@@ -61,3 +61,43 @@ func register(c *gin.Context) {
 		"token": token,
 	})
 }
+
+func login(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+
+	type RequestBody struct {
+		Username string `json:"username" binding:"required"`
+		Password string `json:"password" binding:"required"`
+	}
+
+	var body RequestBody
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	var user User
+	if err := db.Where("username = ?", body.Username).First(&user).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	if !checkHash(body.Password, user.Password) {
+		c.AbortWithStatus(401)
+		return
+	}
+
+	serialized := user.Serialize()
+	token, err := generateToken(serialized)
+
+	if err != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
+	c.SetCookie("token", token, 60*60*26*7, "/", "", false, true)
+	c.JSON(200, common.JSON{
+		"user":  user.Serialize(),
+		"token": token,
+	})
+}

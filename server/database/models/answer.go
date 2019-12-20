@@ -12,9 +12,9 @@ type Answer struct {
 	toForm string
 }
 
-// Change ID to an unique id.
+// BeforeCreate change ID to an unique id.
 func (answer *Answer) BeforeCreate(scope *gorm.Scope) error {
-	uuid, err := uuid.NewV4().String()
+	uuid, err := uuid.NewV4()
 	if err != nil {
 		return err
 	}
@@ -23,8 +23,8 @@ func (answer *Answer) BeforeCreate(scope *gorm.Scope) error {
 }
 
 // Serialize data
-func (a Answer) Serialize() common.JSON {
+func (answer *Answer) Serialize() common.JSON {
 	return common.JSON{
-		"toForm": a.toForm,
+		"toForm": answer.toForm,
 	}
 }
