@@ -18,7 +18,6 @@ type Props = {
 };
 
 export const SelectQuestion: React.FC<Props> = props => {
-  const [labelWidth, setLabelWidth] = useState<number>(0);
   const classes = useStyles(props);
 
   const handleChange = (event: ChangeEvent<{ value: unknown }>) => {

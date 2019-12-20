@@ -17,10 +17,14 @@ export const AddQuestion: React.FC = () => {
   ]);
   const [required, setRequired] = useState<boolean>(false);
 
+  const [step, setStep] = useState<number>(1);
+  const [min, setMin] = useState<number>(1);
+  const [max, setMax] = useState<number>(10);
+
   return (
     <div style={{ marginTop: '2rem' }}>
       <Grid container spacing={1}>
-        <Grid item xs={9}>
+        <Grid item xs={10}>
           {questionType === 'multiple-choice' && (
             <MultipleChoice label={title} answers={answers} />
           )}
@@ -28,10 +32,18 @@ export const AddQuestion: React.FC = () => {
             <MultipleAnswer answers={answers} />
           )}
           {questionType === 'slide-form' && (
-            <SliderForm min={1} max={10} step={1} title={title} />
+            <SliderForm
+              min={1}
+              max={10}
+              step={1}
+              title={title}
+              setMin={setMin}
+              setMax={setMax}
+              setStep={setStep}
+            />
           )}
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <div>
             <SelectQuestion
               questionType={questionType}
