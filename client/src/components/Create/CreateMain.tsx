@@ -48,7 +48,6 @@ const CreateMain: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [title, setTitle] = useState<string>('Untitled Form');
   const [description, setDescription] = useState<string>('');
-  const [questions, setQuestions] = useState<Question[]>([]);
 
   const addQuestionToForm = () => {
     const templateQuestion: Question = {
