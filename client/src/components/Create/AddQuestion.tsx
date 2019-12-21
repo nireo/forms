@@ -22,6 +22,8 @@ type Props = {
 const AddQuestion: React.FC<Props> = props => {
   const [questionType, setQuestionType] = useState<string>('');
   const [title, setTitle] = useState<string>('Untitled Question');
+
+  // Answer templates
   const [answers, setAnswers] = useState<string[]>([
     'Answer 1.',
     'Answer 2.',
@@ -53,7 +55,7 @@ const AddQuestion: React.FC<Props> = props => {
             <MultipleChoice label={title} answers={answers} />
           )}
           {questionType === 'multiple-answer' && (
-            <MultipleAnswer answers={answers} />
+            <MultipleAnswer answers={answers} setAnswers={setAnswers} />
           )}
           {questionType === 'slide-form' && (
             <SliderForm
