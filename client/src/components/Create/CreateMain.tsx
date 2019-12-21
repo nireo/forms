@@ -12,7 +12,7 @@ import {
 } from '../../store/create/reducer';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
-import { AddQuestion } from './AddQuestion';
+import AddQuestion from './AddQuestion';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {

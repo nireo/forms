@@ -1,6 +1,11 @@
 package auth
 
 import (
+	"io/ioutil"
+	"os"
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/nireo/forms/server/database/models"
@@ -12,13 +17,31 @@ import (
 type User = models.User
 
 func hash(password string) (string, error) {
-	bytes, err := bcypt.GenerateFromPassword([]byte(password), 12)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 	return string(bytes), err
 }
 
 func checkHash(password string, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+func generateToken(data common.JSON) (string, error) {
+	date := time.Now().Add(time.Hour * 24 * 7)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"user": data,
+		"exp":  date.Unix(),
+	})
+
+	pwd, _ := os.Getwd()
+	keyPath := pwd + "/jwtsecret.key.pub"
+
+	key, readErr := ioutil.ReadFile(keyPath)
+	if readErr != nil {
+		return "", readErr
+	}
+	tokenString, err := token.SignedString(key)
+	return tokenString, err
 }
 
 func register(c *gin.Context) {
@@ -56,6 +79,13 @@ func register(c *gin.Context) {
 	db.Create(&user)
 
 	serialized := user.Serialize()
+	token, err := generateToken(serialized)
+
+	if err != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
 	c.JSON(200, common.JSON{
 		"user":  user.Serialize(),
 		"token": token,

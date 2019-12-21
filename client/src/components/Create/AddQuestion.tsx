@@ -6,8 +6,20 @@ import { MultipleAnswer } from './MultipleAnswer';
 import { SliderForm } from './SliderForm';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import { connect } from 'react-redux';
+import { AppState } from '../../store';
+import { removeQuestion, addQuestion } from '../../store/create/reducer';
+import { Question } from '../../interfaces/Question';
 
-export const AddQuestion: React.FC = () => {
+type Props = {
+  removeQuestion: (id: string) => void;
+  addQuestion: (question: Question) => void;
+  create: Question[];
+};
+
+const AddQuestion: React.FC<Props> = props => {
   const [questionType, setQuestionType] = useState<string>('');
   const [title, setTitle] = useState<string>('Untitled Question');
   const [answers, setAnswers] = useState<string[]>([
@@ -20,6 +32,18 @@ export const AddQuestion: React.FC = () => {
   const [step, setStep] = useState<number>(1);
   const [min, setMin] = useState<number>(1);
   const [max, setMax] = useState<number>(10);
+
+  const addQuestionToForm = () => {
+    const templateQuestion: Question = {
+      title: 'Untitled question',
+      answerType: 2,
+      required: false,
+      answers: [],
+      question: 'More about the question.'
+    };
+
+    props.addQuestion(templateQuestion);
+  };
 
   return (
     <div style={{ marginTop: '2rem' }}>
@@ -62,8 +86,21 @@ export const AddQuestion: React.FC = () => {
               }
             />
           </div>
+          <div>
+            <IconButton aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+          </div>
         </Grid>
       </Grid>
     </div>
   );
 };
+
+const mapStateToProps = (state: AppState) => ({
+  create: state.create
+});
+
+export default connect(mapStateToProps, { removeQuestion, addQuestion })(
+  AddQuestion
+);
