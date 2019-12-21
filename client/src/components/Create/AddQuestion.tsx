@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import { removeQuestion, addQuestion } from '../../store/create/reducer';
 import { Question } from '../../interfaces/Question';
+import { FormInput } from './FormInput';
 
 type Props = {
   removeQuestion: (id: string) => void;
@@ -59,14 +60,29 @@ const AddQuestion: React.FC<Props> = props => {
           )}
           {questionType === 'slide-form' && (
             <SliderForm
-              min={1}
-              max={10}
-              step={1}
+              min={min}
+              max={max}
+              step={step}
               title={title}
               setMin={setMin}
               setMax={setMax}
               setStep={setStep}
+              setTitle={setTitle}
             />
+          )}
+          {questionType === 'true-or-false' && (
+            <div>
+              <FormInput
+                fontSize={24}
+                placeholder="Question..."
+                value={title}
+                setValue={setTitle}
+              />
+              <p>
+                In the actual form there will be 2 buttons for selecting true or
+                false.
+              </p>
+            </div>
           )}
         </Grid>
         <Grid item xs={2}>

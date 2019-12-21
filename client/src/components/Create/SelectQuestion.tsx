@@ -39,7 +39,7 @@ export const SelectQuestion: React.FC<Props> = props => {
           <MenuItem value="small-written">Small written</MenuItem>
           <MenuItem value="paragraph-written">Paragraph written</MenuItem>
           <MenuItem value="slide-form">Slider</MenuItem>
-          <MenuItem value="true-of-false">True or false</MenuItem>
+          <MenuItem value="true-or-false">True or false</MenuItem>
         </Select>
       </FormControl>
     </div>

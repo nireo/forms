@@ -12,6 +12,7 @@ type Props = {
   setStep: Dispatch<SetStateAction<number>>;
   setMin: Dispatch<SetStateAction<number>>;
   setMax: Dispatch<SetStateAction<number>>;
+  setTitle: Dispatch<SetStateAction<string>>;
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -29,41 +30,49 @@ export const SliderForm: React.FC<Props> = props => {
   return (
     <div>
       <div className={classes.margin}>
-        <Typography>{props.title}</Typography>
-        <Slider
-          defaultValue={props.min}
-          aria-labelledby="discrete-slider"
-          valueLabelDisplay="auto"
-          step={props.step}
-          marks
-          min={props.min}
-          max={props.max}
+        <TextField
+          placeholder="Question..."
+          value={props.title}
+          onChange={({ target }) => props.setTitle(target.value)}
+          style={{ width: '100%' }}
         />
-        <div>
-          <TextField
-            id="standard-basic"
-            label="Min"
-            value={props.min}
-            type="number"
-            onChange={({ target }) => props.setMin(+target.value)}
-            className={classes.margin_2}
+        <div style={{ marginTop: '1rem' }}>
+          Preview of the slider
+          <Slider
+            defaultValue={props.min}
+            aria-labelledby="discrete-slider"
+            valueLabelDisplay="auto"
+            step={props.step}
+            marks
+            min={props.min}
+            max={props.max}
           />
-          <TextField
-            id="standard-basic"
-            label="Step"
-            value={props.step}
-            type="number"
-            onChange={({ target }) => props.setStep(+target.value)}
-            className={classes.margin_2}
-          />
-          <TextField
-            id="standard-basic"
-            label="Min"
-            value={props.min}
-            type="number"
-            onChange={({ target }) => props.setMin(+target.value)}
-            className={classes.margin_2}
-          />
+          <div>
+            <TextField
+              id="standard-basic"
+              label="Min"
+              value={props.min}
+              type="number"
+              onChange={({ target }) => props.setMin(+target.value)}
+              className={classes.margin_2}
+            />
+            <TextField
+              id="standard-basic"
+              label="Step"
+              value={props.step}
+              type="number"
+              onChange={({ target }) => props.setStep(+target.value)}
+              className={classes.margin_2}
+            />
+            <TextField
+              id="standard-basic"
+              label="Min"
+              value={props.min}
+              type="number"
+              onChange={({ target }) => props.setMin(+target.value)}
+              className={classes.margin_2}
+            />
+          </div>
         </div>
       </div>
     </div>
