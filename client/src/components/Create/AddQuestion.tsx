@@ -18,6 +18,8 @@ type Props = {
   removeQuestion: (id: string) => void;
   addQuestion: (question: Question) => void;
   create: Question[];
+  removeQuestionPreview: (id: number) => void;
+  questionId: number;
 };
 
 const AddQuestion: React.FC<Props> = props => {
@@ -125,7 +127,10 @@ const AddQuestion: React.FC<Props> = props => {
             />
           </div>
           <div>
-            <IconButton aria-label="delete">
+            <IconButton
+              aria-label="delete"
+              onClick={() => props.removeQuestionPreview(props.questionId)}
+            >
               <DeleteIcon />
             </IconButton>
           </div>

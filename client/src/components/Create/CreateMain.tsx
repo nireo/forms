@@ -44,14 +44,32 @@ type Props = {
   clearQuestions: () => void;
 };
 
+interface FormQuestion {
+  component: any;
+  id: number;
+}
+
 const CreateMain: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [title, setTitle] = useState<string>('Untitled Form');
   const [description, setDescription] = useState<string>('');
-  const [questions, setQuestions] = useState<any>([]);
+  const [questions, setQuestions] = useState<FormQuestion[]>([]);
 
   const newQuestion = () => {
-    setQuestions(questions.concat(<AddQuestion />));
+    const id = Math.floor(Math.random() * 1000);
+    console.log(id);
+    setQuestions(
+      questions.concat({
+        component: (
+          <AddQuestion questionId={id} removeQuestionPreview={removeQuestion} />
+        ),
+        id
+      })
+    );
+  };
+
+  const removeQuestion = (id: number) => {
+    setQuestions(questions.filter(q => q.id !== id));
   };
 
   return (
@@ -76,7 +94,7 @@ const CreateMain: React.FC<Props> = props => {
           setValue={setDescription}
         />
         {questions.map((q: any) => {
-          return q;
+          return q.component;
         })}
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
           <NewQuestion newQuestion={newQuestion} />
