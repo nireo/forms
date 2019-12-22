@@ -23,7 +23,7 @@ type Props = {
 };
 
 const AddQuestion: React.FC<Props> = props => {
-  const [questionType, setQuestionType] = useState<string>('');
+  const [questionType, setQuestionType] = useState<string>('small-written');
   const [title, setTitle] = useState<string>('Untitled Question');
 
   // Answer templates
