@@ -49,18 +49,6 @@ const CreateMain: React.FC<Props> = props => {
   const [title, setTitle] = useState<string>('Untitled Form');
   const [description, setDescription] = useState<string>('');
 
-  const addQuestionToForm = () => {
-    const templateQuestion: Question = {
-      title: 'Untitled question',
-      answerType: 2,
-      required: false,
-      answers: [],
-      question: 'More about the question.'
-    };
-
-    props.addQuestion(templateQuestion);
-  };
-
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
@@ -78,7 +66,7 @@ const CreateMain: React.FC<Props> = props => {
         />
         <AddQuestion />
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <NewQuestion addQuestionToForm={addQuestionToForm} />
+          <NewQuestion />
         </div>
       </Paper>
     </Container>

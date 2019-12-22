@@ -11,20 +11,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-type Props = {
-  addQuestionToForm: () => void;
-};
-
-export const NewQuestion: React.FC<Props> = props => {
+export const NewQuestion: React.FC = props => {
   const classes = useStyles(props);
 
   return (
     <div className={classes.root}>
-      <Fab
-        color="primary"
-        aria-label="add"
-        onClick={() => props.addQuestionToForm()}
-      >
+      <Fab color="primary" aria-label="add">
         <AddIcon />
       </Fab>
     </div>

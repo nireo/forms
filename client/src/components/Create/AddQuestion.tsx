@@ -37,12 +37,32 @@ const AddQuestion: React.FC<Props> = props => {
   const [max, setMax] = useState<number>(10);
 
   const addQuestionToForm = () => {
+    const numberType = () => {
+      switch (questionType) {
+        case 'multiple-choice':
+          return 1;
+        case 'small-written':
+          return 2;
+        case 'multiple-answer':
+          return 3;
+        case 'paragraph-written':
+          return 4;
+        case 'true-or-false':
+          return 5;
+        default:
+          return 0;
+      }
+    };
+
     const templateQuestion: Question = {
-      title: 'Untitled question',
-      answerType: 2,
-      required: false,
-      answers: [],
-      question: 'More about the question.'
+      question: title,
+      required,
+      answerType: numberType(),
+      step,
+      min,
+      max,
+      answers,
+      temp_uuid: Math.floor(Math.random() * 1000)
     };
 
     props.addQuestion(templateQuestion);
