@@ -48,15 +48,26 @@ const CreateMain: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [title, setTitle] = useState<string>('Untitled Form');
   const [description, setDescription] = useState<string>('');
+  const [questions, setQuestions] = useState<any>([]);
+
+  const newQuestion = () => {
+    setQuestions(questions.concat(<AddQuestion />));
+  };
 
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
-        <FormInput
-          placeholder="Form title"
-          fontSize={36}
+        <input
           value={title}
-          setValue={setTitle}
+          onChange={({ target }) => setTitle(target.value)}
+          style={{
+            border: 'none',
+            fontSize: '36px',
+            fontFamily: 'Roboto',
+            width: '100%'
+          }}
+          placeholder="Title..."
+          maxLength={50}
         />
         <FormInput
           placeholder="Form description"
@@ -64,9 +75,11 @@ const CreateMain: React.FC<Props> = props => {
           value={description}
           setValue={setDescription}
         />
-        <AddQuestion />
+        {questions.map((q: any) => {
+          return q;
+        })}
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <NewQuestion />
+          <NewQuestion newQuestion={newQuestion} />
         </div>
       </Paper>
     </Container>

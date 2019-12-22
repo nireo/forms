@@ -8,6 +8,8 @@ const reducer = (state: Question[] = [], action: any) => {
       return state.filter((q: any) => q.id !== action.id);
     case 'CLEAR':
       return [];
+    case 'SET_FULL':
+      return action.data;
     default:
       return state;
   }
@@ -25,6 +27,13 @@ export const addQuestion = (question: Question) => {
   return {
     type: 'ADD_QUESTION',
     data: question
+  };
+};
+
+export const setQuestionFully = (questions: Question[]) => {
+  return {
+    type: 'SET_FULL',
+    data: questions
   };
 };
 
