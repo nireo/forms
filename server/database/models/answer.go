@@ -26,5 +26,6 @@ func (answer *Answer) BeforeCreate(scope *gorm.Scope) error {
 func (answer *Answer) Serialize() common.JSON {
 	return common.JSON{
 		"toForm": answer.toForm,
+		"id":     answer.ID,
 	}
 }

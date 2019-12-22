@@ -33,3 +33,16 @@ func create(c *gin.Context) {
 	db.Create(&form)
 	c.JSON(200, form.Serialize())
 }
+
+func formFromID(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Param("id")
+	var form Form
+
+	if err := db.Set("gorm:auto_preload", true).Where("id = ?", id).First(&form); err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	c.JSON(200, form.Serialize())
+}

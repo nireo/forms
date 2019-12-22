@@ -28,5 +28,6 @@ func (form *Form) Serialize() common.JSON {
 	return common.JSON{
 		"title":       form.Title,
 		"description": form.Description,
+		"id":          form.ID,
 	}
 }
