@@ -73,7 +73,7 @@ const CreateMain: React.FC<Props> = props => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" style={{ marginTop: '0' }}>
       <Paper className={classes.paper}>
         <input
           value={title}
