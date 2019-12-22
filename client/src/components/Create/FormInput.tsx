@@ -3,8 +3,8 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
 type Props = {
-  fontSize: number;
-  placeholder: string;
+  fontSize?: number;
+  placeholder?: string;
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
 };

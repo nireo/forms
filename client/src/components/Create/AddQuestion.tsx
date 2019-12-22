@@ -92,6 +92,16 @@ const AddQuestion: React.FC<Props> = props => {
               setTitle={setTitle}
             />
           )}
+          {questionType === 'small-written' && (
+            <div>
+              <FormInput value={title} setValue={setTitle} />
+            </div>
+          )}
+          {questionType === 'paragraph-written' && (
+            <div>
+              <FormInput value={title} setValue={setTitle} />
+            </div>
+          )}
           {questionType === 'true-or-false' && (
             <div>
               <FormInput

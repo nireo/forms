@@ -1,6 +1,6 @@
 export interface Form {
   title: string;
-  subtitle: string;
+  description: string;
   questions: Question[];
   id: string;
 }

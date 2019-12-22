@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Navbar } from './components/Layout/Navbar';
+import Navbar from './components/Layout/Navbar';
 import CreateMain from './components/Create/CreateMain';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { FormMain } from './components/Form/FormMain';
