@@ -13,6 +13,8 @@ import { AppState } from '../../store';
 import { removeQuestion, addQuestion } from '../../store/create/reducer';
 import { Question } from '../../interfaces/Question';
 import { FormInput } from './FormInput';
+import TextField from '@material-ui/core/TextField';
+import { RadioGroup, Radio } from '@material-ui/core';
 
 type Props = {
   removeQuestion: (id: string) => void;
@@ -95,11 +97,27 @@ const AddQuestion: React.FC<Props> = props => {
           {questionType === 'small-written' && (
             <div>
               <FormInput value={title} setValue={setTitle} />
+              <TextField
+                id="standard-required"
+                label="Preview"
+                defaultValue="This is the preview"
+                disabled
+                style={{ width: '100%' }}
+              />
             </div>
           )}
           {questionType === 'paragraph-written' && (
             <div>
               <FormInput value={title} setValue={setTitle} />
+              <TextField
+                id="standard-multiline-static"
+                label="Preview"
+                multiline
+                rows={4}
+                disabled
+                defaultValue="This is the preview"
+                style={{ width: '100%' }}
+              />
             </div>
           )}
           {questionType === 'true-or-false' && (
@@ -110,10 +128,24 @@ const AddQuestion: React.FC<Props> = props => {
                 value={title}
                 setValue={setTitle}
               />
-              <p>
-                In the actual form there will be 2 buttons for selecting true or
-                false.
-              </p>
+              <RadioGroup
+                aria-label="true-or-false-preview"
+                name="Preview"
+                value={true}
+              >
+                <FormControlLabel
+                  value={true}
+                  control={<Radio />}
+                  label="True"
+                  disabled
+                />
+                <FormControlLabel
+                  value={false}
+                  control={<Radio />}
+                  label="False"
+                  disabled
+                />
+              </RadioGroup>
             </div>
           )}
         </Grid>
