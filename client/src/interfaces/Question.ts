@@ -2,7 +2,7 @@ export interface Form {
   title: string;
   description: string;
   questions: Question[];
-  id: string;
+  id?: string;
 }
 
 export interface Question {
@@ -14,7 +14,7 @@ export interface Question {
   answers: string[];
 
   // temporary uuid for editing and deleting questions properly.
-  temp_uuid: number;
+  temp_uuid?: number;
 
   // since it is needed for backend to specify types, all the properties
   // of every question will be added here.
