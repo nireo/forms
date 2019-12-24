@@ -16,6 +16,7 @@ type Question struct {
 	Step       uint
 	Min        uint
 	Max        uint
+	FormID     uint
 }
 
 // BeforeCreate change Id to an unique id.

@@ -46,3 +46,17 @@ func formFromID(c *gin.Context) {
 
 	c.JSON(200, form.Serialize())
 }
+
+func removeForm(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Param("id")
+
+	var form Form
+	if err := db.Where("id = ?", id).First(&form).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	db.Delete(&form)
+	c.Status(204)
+}
