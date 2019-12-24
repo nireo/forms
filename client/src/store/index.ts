@@ -3,10 +3,12 @@
 import { createStore, combineReducers } from 'redux';
 import questionReducer from './question/reducer';
 import createReducer from './create/reducer';
+import formReducer from './forms/reducer';
 
 const rootReducer = combineReducers({
   form: questionReducer,
-  create: createReducer
+  create: createReducer,
+  forms: formReducer
 });
 const store = createStore(rootReducer);
 
