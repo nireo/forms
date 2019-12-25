@@ -7,7 +7,7 @@ type Props = {
   children: ReactNode;
 };
 
-const Modal: React.FC<Props> = ({ handleClose, show, children }) => {
+export const Modal: React.FC<Props> = ({ handleClose, show, children }) => {
   const showHideClassName = show ? 'modal display-block' : 'modal display-none';
 
   return (
@@ -15,7 +15,7 @@ const Modal: React.FC<Props> = ({ handleClose, show, children }) => {
       <div className="modal-main">
         <div style={{ padding: '2rem' }}>{children}</div>
         <div>
-          <Button variant="contained" color="primary">
+          <Button variant="text" color="primary">
             Close
           </Button>
         </div>

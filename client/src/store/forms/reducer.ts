@@ -4,7 +4,7 @@ const reducer = (state: Form[] = [], action: any) => {
   switch (action.type) {
     case 'CREATE':
       if (state.length === 0) {
-        return action.data;
+        return [action.data];
       }
       return [...state, action.data];
     case 'DELETE':
