@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   paper: {
     position: 'absolute',
-    width: 400,
+    width: 500,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -85,7 +85,10 @@ const ManageMain: React.FC<Props> = ({ forms, createForm }) => {
         open={open}
         onClose={handleClose}
       >
-        <div className={classes.paper}>
+        <div
+          style={{ position: 'fixed', left: '50%' }}
+          className={classes.paper}
+        >
           <Typography variant="h6">Create form</Typography>
         </div>
       </Modal>
