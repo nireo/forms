@@ -8,9 +8,10 @@ import (
 
 // Form data model
 type Form struct {
-	gorm.Model
 	Title       string
 	Description string
+	ID          uuid.UUID  `gorm:"type:uuid;primary_key;"`
+	Questions   []Question `gorm:"foreignkey:FormID"`
 }
 
 // BeforeCreate change Id to an unique id.

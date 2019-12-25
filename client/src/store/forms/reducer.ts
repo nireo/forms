@@ -14,7 +14,7 @@ const reducer = (state: Form[] = [], action: any) => {
   }
 };
 
-export const createForm = (info: object) => {
+export const createForm = (info: Form) => {
   return { type: 'CREATE', data: info };
 };
 

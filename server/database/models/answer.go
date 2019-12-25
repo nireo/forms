@@ -10,6 +10,7 @@ import (
 type Answer struct {
 	gorm.Model
 	toForm string
+	ID     uuid.UUID `gorm:"type:uuid;primary_key;"`
 }
 
 // BeforeCreate change ID to an unique id.

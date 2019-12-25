@@ -9,6 +9,7 @@ import (
 // User data model
 type User struct {
 	gorm.Model
+	ID       uuid.UUID `gorm:"type:uuid;primary_key;"`
 	Username string
 	Password string
 }
