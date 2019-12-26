@@ -10,5 +10,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	{
 		form.POST("/create", create)
 		form.GET("/:id", formFromID)
+		form.PATCH("/:id", update)
 	}
 }

@@ -81,3 +81,31 @@ func getAllForms(c *gin.Context) {
 	}
 	c.JSON(200, serialized)
 }
+
+func update(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Param("id")
+
+	type RequestBody struct {
+		Title       string `json:"text" binding:"required"`
+		Description string `json:"description" binding:"required"`
+	}
+
+	var requestBody RequestBody
+	if err := c.BindJSON(&requestBody); err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	var form Form
+	if err := db.Where("id = ?", id).First(&form).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	form.Title = requestBody.Title
+	form.Description = requestBody.Description
+
+	db.Save(&form)
+	c.JSON(200, form.Serialize())
+}
