@@ -10,7 +10,7 @@ import (
 type Form struct {
 	Title       string
 	Description string
-	ID          uuid.UUID  `gorm:"type:uuid;primary_key;"`
+	ID          string     `sql:"type:uuid;primary_key;"`
 	Questions   []Question `gorm:"foreignkey:FormID"`
 }
 
@@ -21,7 +21,7 @@ func (form *Form) BeforeCreate(scope *gorm.Scope) error {
 		return err
 	}
 
-	return scope.SetColumn("ID", uuid)
+	return scope.SetColumn("ID", uuid.String())
 }
 
 // Serialize form data

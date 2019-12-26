@@ -8,9 +8,8 @@ import (
 
 // Answer Data Model
 type Answer struct {
-	gorm.Model
 	toForm string
-	ID     uuid.UUID `gorm:"type:uuid;primary_key;"`
+	ID     string `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
 }
 
 // BeforeCreate change ID to an unique id.

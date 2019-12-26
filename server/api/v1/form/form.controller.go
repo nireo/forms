@@ -4,10 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/nireo/forms/server/database/models"
+	"github.com/nireo/forms/server/lib/common"
 )
 
 // Form type alias
 type Form = models.Form
+
+// Question type alias
+type Question = models.Question
 
 // create form
 func create(c *gin.Context) {
@@ -27,6 +31,7 @@ func create(c *gin.Context) {
 	form := Form{
 		Title:       requestBody.Title,
 		Description: requestBody.Description,
+		Questions:   []Question{},
 	}
 
 	db.NewRecord(form)
@@ -59,4 +64,20 @@ func removeForm(c *gin.Context) {
 
 	db.Delete(&form)
 	c.Status(204)
+}
+
+func getAllForms(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	var forms []Form
+
+	if err := db.Preload("User").Limit(10).Order("id desc").Find(&forms).Error; err != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
+	serialized := make([]common.JSON, len(forms), len(forms))
+	for index := range forms {
+		serialized[index] = forms[index].Serialize()
+	}
+	c.JSON(200, serialized)
 }

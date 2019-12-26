@@ -8,8 +8,7 @@ import (
 
 // User data model
 type User struct {
-	gorm.Model
-	ID       uuid.UUID `gorm:"type:uuid;primary_key;"`
+	ID       string `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	Username string
 	Password string
 }
