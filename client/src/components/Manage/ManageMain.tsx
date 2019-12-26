@@ -16,6 +16,7 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
+import CardActionArea from '@material-ui/core/CardActionArea';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -73,33 +74,33 @@ const ManageMain: React.FC<Props> = ({ forms, createForm }) => {
     setOpen(false);
   };
 
-  console.log(forms);
-
   return (
     <Container maxWidth="md" style={{ marginTop: '2rem' }}>
       <Typography variant="h3">Your forms</Typography>
       <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
         {forms.map(form => (
-          <Card className={classes.card}>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={11}>
-                  <Typography className={classes.title} gutterBottom>
-                    {form.title}
-                  </Typography>
-                  <Typography>{form.description.slice(0, 50)}</Typography>
+          <Card className={classes.card} style={{ marginBottom: '0.5rem' }}>
+            <CardActionArea>
+              <CardContent>
+                <Grid container>
+                  <Grid item xs={11}>
+                    <Typography className={classes.title} gutterBottom>
+                      {form.title}
+                    </Typography>
+                    <Typography>{form.description.slice(0, 50)}</Typography>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <IconButton
+                      color="primary"
+                      aria-label="edit-form"
+                      component="span"
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </Grid>
                 </Grid>
-                <Grid item xs={1}>
-                  <IconButton
-                    color="primary"
-                    aria-label="edit-form"
-                    component="span"
-                  >
-                    <EditIcon />
-                  </IconButton>
-                </Grid>
-              </Grid>
-            </CardContent>
+              </CardContent>
+            </CardActionArea>
           </Card>
         ))}
       </div>

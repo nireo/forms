@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
 type Props = {

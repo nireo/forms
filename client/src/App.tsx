@@ -13,7 +13,11 @@ const App: React.FC = () => {
       <CssBaseline />
       <Navbar />
       <Switch>
-        <Route exact path="/create" render={() => <MainView />} />
+        <Route
+          exact
+          path="/:id/edit"
+          render={({ match }) => <MainView id={+match.params.id} />}
+        />
         <Route exact path="/view" render={() => <FormMain />} />
         <Route exact path="/" render={() => <ManageMain />} />
       </Switch>

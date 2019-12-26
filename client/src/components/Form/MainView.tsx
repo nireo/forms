@@ -13,7 +13,11 @@ const useStyles = makeStyles({
   }
 });
 
-export const MainView: React.FC = props => {
+type Props = {
+  id: number;
+};
+
+export const MainView: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [page, setPage] = useState<number>(0);
 
