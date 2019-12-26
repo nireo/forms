@@ -131,3 +131,51 @@ func login(c *gin.Context) {
 		"token": token,
 	})
 }
+
+func remove(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	userRaw, ok := c.Get("user")
+
+	if !ok {
+		c.AbortWithStatus(401)
+		return
+	}
+
+	user := userRaw.(User)
+
+	db.Delete(&user)
+	c.Status(204)
+}
+
+func changePassword(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	userRaw, _ := c.MustGet("user").(User)
+
+	type RequestBody struct {
+		Password string `json:"password" binding:"required"`
+	}
+
+	var body RequestBody
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	var user User
+	if err := db.Preload("User").Where("id = ?", userRaw.ID).First(&user).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	hash, hashErr := hash(body.Password)
+	if hashErr != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
+	user.Password = hash
+	db.Save(&user)
+	c.JSON(200, common.JSON{
+		"success": "Password has been updated",
+	})
+}

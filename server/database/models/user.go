@@ -23,6 +23,11 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 	return scope.SetColumn("ID", uuid)
 }
 
+func (u *User) Read(m common.JSON) {
+	u.ID = m["id"].(string)
+	u.Username = m["username"].(string)
+}
+
 // Serialize user data
 func (user *User) Serialize() common.JSON {
 	return common.JSON{
