@@ -3,29 +3,18 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/nireo/forms/server/lib/common"
-	uuid "github.com/satori/go.uuid"
 )
 
 // User data model
 type User struct {
-	ID       string `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	gorm.Model
 	Username string
 	Password string
 }
 
-// BeforeCreate change the ID from 1, 2, 3 to an unique id
-func (user *User) BeforeCreate(scope *gorm.Scope) error {
-	uuid, err := uuid.NewV4()
-	if err != nil {
-		return err
-	}
-
-	return scope.SetColumn("ID", uuid)
-}
-
-func (u *User) Read(m common.JSON) {
-	u.ID = m["id"].(string)
-	u.Username = m["username"].(string)
+func (user *User) Read(m common.JSON) {
+	user.ID = uint(m["id"].(float64))
+	user.Username = m["username"].(string)
 }
 
 // Serialize user data

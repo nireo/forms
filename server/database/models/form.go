@@ -3,25 +3,14 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/nireo/forms/server/lib/common"
-	uuid "github.com/satori/go.uuid"
 )
 
 // Form data model
 type Form struct {
+	gorm.Model
 	Title       string
 	Description string
-	ID          string     `sql:"type:uuid;primary_key;"`
 	Questions   []Question `gorm:"foreignkey:FormID"`
-}
-
-// BeforeCreate change Id to an unique id.
-func (form *Form) BeforeCreate(scope *gorm.Scope) error {
-	uuid, err := uuid.NewV4()
-	if err != nil {
-		return err
-	}
-
-	return scope.SetColumn("ID", uuid.String())
 }
 
 // Serialize form data

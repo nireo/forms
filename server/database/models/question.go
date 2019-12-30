@@ -3,12 +3,11 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/nireo/forms/server/lib/common"
-	uuid "github.com/satori/go.uuid"
 )
 
 // Question data
 type Question struct {
-	ID         string `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	gorm.Model
 	Required   bool
 	Question   string
 	AnswerType uint
@@ -17,16 +16,6 @@ type Question struct {
 	Min        uint
 	Max        uint
 	FormID     uint
-}
-
-// BeforeCreate change Id to an unique id.
-func (question *Question) BeforeCreate(scope *gorm.Scope) error {
-	uuid, err := uuid.NewV4()
-	if err != nil {
-		return err
-	}
-
-	return scope.SetColumn("ID", uuid)
 }
 
 // Serialize question data
