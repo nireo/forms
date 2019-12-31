@@ -179,3 +179,36 @@ func changePassword(c *gin.Context) {
 		"success": "Password has been updated",
 	})
 }
+
+func updateUser(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	userRaw, _ := c.MustGet("user").(User)
+
+	type RequestBody struct {
+		// maybe more properties in the future
+		Username string `json:"username" binding:"required"`
+	}
+
+	var body RequestBody
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	var user User
+	if err := db.Preload("User").Where("id = ?", userRaw.ID).First(&user).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	// check if that username already exists
+	var userCheck User
+	if err := db.Preload("User").Where("username = ?", body.Username).First(&userCheck).Error; err == nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	user.Username = body.Username
+	db.Save(&user)
+	c.JSON(200, user.Serialize())
+}
