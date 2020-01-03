@@ -28,10 +28,13 @@ func create(c *gin.Context) {
 		return
 	}
 
+	uniqueID := common.GenerateUUID()
+
 	form := Form{
 		Title:       requestBody.Title,
 		Description: requestBody.Description,
 		Questions:   []Question{},
+		UniqueID:    uniqueID,
 	}
 
 	db.NewRecord(form)
@@ -44,7 +47,7 @@ func formFromID(c *gin.Context) {
 	id := c.Param("id")
 	var form Form
 
-	if err := db.Set("gorm:auto_preload", true).Where("id = ?", id).First(&form).Error; err != nil {
+	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
@@ -66,6 +69,7 @@ func removeForm(c *gin.Context) {
 	c.Status(204)
 }
 
+// just as a test function
 func getAllForms(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var forms []Form

@@ -11,6 +11,9 @@ type Form struct {
 	Title       string
 	Description string
 	Questions   []Question `gorm:"foreignkey:FormID"`
+	// gorm doesn't want to work when i put the ID as a uuid, so this will
+	// have to do for now.
+	UniqueID string
 }
 
 // Serialize form data
