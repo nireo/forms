@@ -1,17 +1,26 @@
 import { Form } from './../interfaces/Question';
-import BaseHttpService from './base.service';
+import axios from 'axios';
 
-const http = new BaseHttpService();
 const baseUrl: string = '/api/forms';
 
+let token: string | null = null;
+
+const setToken = (newToken: string) => {
+  token = `bearer ${newToken}`;
+};
+
+const getConfig = () => ({
+  headers: { Authorization: token }
+});
+
 export const getForm = (id: string) => {
-  return http.get(`${baseUrl}/${id}`);
+  return axios.get(`${baseUrl}/${id}`);
 };
 
 export const updateForm = (form: Form, id: string) => {
-  return http.patch(`${baseUrl}/${id}`, form);
+  return axios.patch(`${baseUrl}/${id}`, form, getConfig());
 };
 
 export const createForm = (form: Form) => {
-  return http.post(`${baseUrl}/create`, form);
+  return axios.post(`${baseUrl}/create`, form, getConfig());
 };
