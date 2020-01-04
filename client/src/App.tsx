@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { FormMain } from './components/Form/FormMain';
 import { MainView } from './components/Form/MainView';
 import ManageMain from './components/Manage/ManageMain';
+import { Welcome } from './components/Welcome/Welcome';
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         />
         <Route exact path="/view" render={() => <FormMain />} />
         <Route exact path="/" render={() => <ManageMain />} />
+        <Route exact path="/welcome" render={() => <Welcome />} />
       </Switch>
     </Router>
   );
