@@ -5,6 +5,6 @@ export interface User {
 }
 
 export interface UserAction {
-  Username: string;
-  Password: string;
+  username: string;
+  password: string;
 }

@@ -2,14 +2,15 @@ import React, { useState, ChangeEvent } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { connect } from 'react-redux';
+import { register } from '../../store/user/reducer';
+import { UserAction } from '../../interfaces/User';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -33,17 +34,35 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type Props = {
   showLoginPage: () => void;
+  register: (credentials: UserAction) => void;
 };
 
-export const Register: React.FC<Props> = props => {
+const Register: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [startedPassword, setStartedPassword] = useState<boolean>(false);
 
   const register = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (username === '' || password === '') {
+      return;
+    }
 
-    const credentials = { username, password };
+    const credentials: UserAction = { username, password };
+    try {
+      props.register(credentials);
+    } catch {
+      console.log('something went wrong with registering');
+    }
+  };
+
+  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setPassword(event.target.value);
+    if (startedPassword === false) {
+      setStartedPassword(true);
+    }
   };
 
   return (
@@ -70,7 +89,7 @@ export const Register: React.FC<Props> = props => {
           />
           <TextField
             value={password}
-            onChange={({ target }) => setPassword(target.value)}
+            onChange={handlePasswordChange}
             variant="outlined"
             margin="normal"
             required
@@ -80,6 +99,20 @@ export const Register: React.FC<Props> = props => {
             type="password"
             id="password"
             autoComplete="current-password"
+            error={
+              startedPassword &&
+              !/^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$/.test(
+                password
+              )
+            }
+            helperText={
+              startedPassword &&
+              !/^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$/.test(
+                password
+              )
+                ? 'Minimum eight characters, at least one letter, one number and one special character'
+                : ''
+            }
           />
           <Button
             type="submit"
@@ -107,3 +140,5 @@ export const Register: React.FC<Props> = props => {
     </Container>
   );
 };
+
+export default connect(null, { register })(Register);

@@ -10,6 +10,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { connect } from 'react-redux';
+import { login } from '../../store/user/reducer';
+import { UserAction } from '../../interfaces/User';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -33,9 +36,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type Props = {
   setShowRegister: () => void;
+  login: (credentials: UserAction) => void;
 };
 
-export const Login: React.FC<Props> = props => {
+const Login: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -43,8 +47,16 @@ export const Login: React.FC<Props> = props => {
 
   const login = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (username === '' || password === '') {
+      return;
+    }
 
-    const credentials = { username, password };
+    const credentials: UserAction = { username, password };
+    try {
+      props.login(credentials);
+    } catch {
+      console.log('something went wrong logging you in.');
+    }
   };
 
   return (
@@ -118,3 +130,5 @@ export const Login: React.FC<Props> = props => {
     </Container>
   );
 };
+
+export default connect(null, { login })(Login);
