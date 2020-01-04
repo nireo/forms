@@ -17,6 +17,8 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import { User } from '../../interfaces/User';
+import { UserMain } from '../User/UserMain';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -38,9 +40,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 type Props = {
   forms?: Form[];
   createForm: (info: Form) => void;
+  user: User | null;
 };
 
-const ManageMain: React.FC<Props> = ({ forms, createForm }) => {
+const ManageMain: React.FC<Props> = ({ forms, createForm, user }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('Untitled form');
   const classes = useStyles();
@@ -52,6 +55,10 @@ const ManageMain: React.FC<Props> = ({ forms, createForm }) => {
   const handleClose = (): void => {
     setOpen(false);
   };
+
+  if (user === null) {
+    return <UserMain />;
+  }
 
   if (forms === null || forms === undefined) {
     return (
@@ -131,7 +138,8 @@ const ManageMain: React.FC<Props> = ({ forms, createForm }) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  forms: state.forms
+  forms: state.forms,
+  user: state.user
 });
 
 export default connect(mapStateToProps, { createForm })(ManageMain);
