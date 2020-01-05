@@ -7,6 +7,8 @@ import { FormMain } from './components/Form/FormMain';
 import { MainView } from './components/Form/MainView';
 import ManageMain from './components/Manage/ManageMain';
 import { Welcome } from './components/Welcome/Welcome';
+import CreateMain from './components/Create/CreateMain';
+import TestView from './components/Create/TestView';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +24,8 @@ const App: React.FC = () => {
         <Route exact path="/view" render={() => <FormMain />} />
         <Route exact path="/" render={() => <ManageMain />} />
         <Route exact path="/welcome" render={() => <Welcome />} />
+        <Route exact path="/create" render={() => <CreateMain />} />
+        <Route exact path="/test" render={() => <TestView />} />
       </Switch>
     </Router>
   );

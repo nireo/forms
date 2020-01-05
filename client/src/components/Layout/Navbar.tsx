@@ -23,10 +23,10 @@ const Navbar: React.FC<Props> = () => {
               noWrap
               style={{ marginRight: '3rem' }}
             >
-              Untitled document
+              Benevol forms
             </Typography>
             <Button color="inherit" style={{ color: 'white' }}>
-              Send
+              Save
             </Button>
           </Toolbar>
         </AppBar>
