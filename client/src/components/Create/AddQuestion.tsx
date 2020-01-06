@@ -20,8 +20,8 @@ type Props = {
   removeQuestion: (id: string) => void;
   addQuestion: (question: Question) => void;
   create: Question[];
-  removeQuestionPreview: (id: number) => void;
-  questionId: number;
+  removeQuestionPreview: (id: string) => void;
+  questionId: string;
 };
 
 const AddQuestion: React.FC<Props> = props => {
@@ -58,18 +58,18 @@ const AddQuestion: React.FC<Props> = props => {
       }
     };
 
-    const templateQuestion: Question = {
-      question: title,
-      required,
-      answerType: numberType(),
-      step,
-      min,
-      max,
-      answers,
-      temp_uuid: Math.floor(Math.random() * 1000)
-    };
+    // const templateQuestion: Question = {
+    //  question: title,
+    //  required,
+    //  answerType: numberType(),
+    //  step,
+    //  min,
+    //  max,
+    //  answers,
+    //  temp_uuid: Math.floor(Math.random() * 1000)
+    //};
 
-    props.addQuestion(templateQuestion);
+    //props.addQuestion(templateQuestion);
   };
 
   return (

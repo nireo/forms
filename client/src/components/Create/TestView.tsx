@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -13,6 +13,7 @@ import {
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import AddQuestion from './AddQuestion';
+import uuidv4 from 'uuid/v4';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -46,7 +47,7 @@ type Props = {
 
 interface FormQuestion {
   component: any;
-  id: number;
+  id: string;
 }
 
 const TestView: React.FC<Props> = props => {
@@ -56,18 +57,57 @@ const TestView: React.FC<Props> = props => {
   const [questions, setQuestions] = useState<FormQuestion[]>([]);
 
   const newQuestion = () => {
-    const id = Math.floor(Math.random() * 1000);
-    setQuestions(
-      questions.concat({
-        component: (
-          <AddQuestion questionId={id} removeQuestionPreview={removeQuestion} />
-        ),
-        id
-      })
-    );
+    // setQuestions(
+    //  questions.concat({
+    //    component: (
+    //      <AddQuestion questionId={id} removeQuestionPreview={removeQuestion} />
+    //    ),
+    //    id
+    //  })
+    //);
+    const uuid: string = uuidv4();
+
+    const templateQuestion: Question = {
+      required: false,
+      question: 'untitled question',
+      answerType: 2,
+      answers: [],
+      temp_uuid: uuid,
+      step: 1,
+      min: 0,
+      max: 0
+    };
+
+    props.addQuestion(templateQuestion);
   };
 
-  const removeQuestion = (id: number) => {
+  useEffect(() => {
+    if (props.create.length !== questions.length) {
+      // take the latest question
+      const last: Question = props.create[props.create.length - 1];
+      const id: string = last.temp_uuid;
+
+      setQuestions(
+        questions.concat({
+          component: (
+            <AddQuestion
+              questionId={id}
+              removeQuestionPreview={removeQuestion}
+            />
+          ),
+          id
+        })
+      );
+    }
+
+    if (props.create === [] && questions !== []) {
+      setQuestions([]);
+    }
+  }, [props.create, questions, setQuestions]);
+
+  console.log(props.create);
+
+  const removeQuestion = (id: string) => {
     setQuestions(questions.filter(q => q.id !== id));
   };
 

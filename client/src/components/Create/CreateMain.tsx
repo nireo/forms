@@ -13,6 +13,7 @@ import {
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import AddQuestion from './AddQuestion';
+import uuidv4 from 'uuid/v4';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -46,7 +47,7 @@ type Props = {
 
 interface FormQuestion {
   component: any;
-  id: number;
+  id: string;
 }
 
 const CreateMain: React.FC<Props> = props => {
@@ -56,8 +57,7 @@ const CreateMain: React.FC<Props> = props => {
   const [questions, setQuestions] = useState<FormQuestion[]>([]);
 
   const newQuestion = () => {
-    const id = Math.floor(Math.random() * 1000);
-    console.log(id);
+    const id: string = uuidv4();
     setQuestions(
       questions.concat({
         component: (
@@ -68,7 +68,7 @@ const CreateMain: React.FC<Props> = props => {
     );
   };
 
-  const removeQuestion = (id: number) => {
+  const removeQuestion = (id: string) => {
     setQuestions(questions.filter(q => q.id !== id));
   };
 
