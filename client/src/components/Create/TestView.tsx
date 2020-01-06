@@ -15,7 +15,6 @@ import { AppState } from '../../store';
 import AddQuestion from './AddQuestion';
 import uuidv4 from 'uuid/v4';
 import Grid from '@material-ui/core/Grid';
-import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -86,6 +85,11 @@ const TestView: React.FC<Props> = props => {
     props.addQuestion(templateQuestion);
   };
 
+  const removeQuestion = (id: string) => {
+    setQuestions(questions.filter(q => q.id !== id));
+    props.removeQuestion(id);
+  };
+
   useEffect(() => {
     if (props.create.length !== questions.length) {
       // take the latest question
@@ -108,7 +112,7 @@ const TestView: React.FC<Props> = props => {
     if (props.create === [] && questions !== []) {
       setQuestions([]);
     }
-  }, [props.create, questions, setQuestions]);
+  }, [props.create, questions, setQuestions, removeQuestion]);
 
   console.log(props.create);
 
@@ -121,11 +125,6 @@ const TestView: React.FC<Props> = props => {
       return;
     }
     setSelected(question);
-  };
-
-  const removeQuestion = (id: string) => {
-    setQuestions(questions.filter(q => q.id !== id));
-    props.removeQuestion(id);
   };
 
   return (

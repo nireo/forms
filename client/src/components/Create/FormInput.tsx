@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const FormInput: React.FC<Props> = props => {
   const classes = useStyles(props);
-  const height = props.fontSize;
 
   return (
     <div className={classes.root}>

@@ -1,4 +1,4 @@
-import axios, { AxiosPromise } from 'axios';
+import axios from 'axios';
 
 export default class BaseHttpService {
   public token: null | string = null;

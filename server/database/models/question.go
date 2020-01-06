@@ -16,6 +16,7 @@ type Question struct {
 	Min        uint
 	Max        uint
 	FormID     uint
+	UUID       string
 }
 
 // Serialize question data
@@ -28,5 +29,6 @@ func (question *Question) Serialize() common.JSON {
 		"step":       question.Step,
 		"min":        question.Min,
 		"max":        question.Max,
+		"temp_uuid":  question.UUID,
 	}
 }

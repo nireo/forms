@@ -7,7 +7,7 @@ const baseUrl: string = '/api/auth';
 
 let token: string | null = null;
 
-const setToken = (newToken: string) => {
+export const setToken = (newToken: string) => {
   token = `bearer ${newToken}`;
 };
 
@@ -39,4 +39,5 @@ export const updatePassword = async (password: string) => {
     { password },
     getConfig()
   );
+  return response.data;
 };

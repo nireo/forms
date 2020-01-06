@@ -91,8 +91,9 @@ func update(c *gin.Context) {
 	id := c.Param("id")
 
 	type RequestBody struct {
-		Title       string `json:"text" binding:"required"`
-		Description string `json:"description" binding:"required"`
+		Title       string     `json:"text" binding:"required"`
+		Description string     `json:"description" binding:"required"`
+		Questions   []Question `json:"questions" binding:"required"`
 	}
 
 	var requestBody RequestBody
@@ -109,6 +110,7 @@ func update(c *gin.Context) {
 
 	form.Title = requestBody.Title
 	form.Description = requestBody.Description
+	form.Questions = requestBody.Questions
 
 	db.Save(&form)
 	c.JSON(200, form.Serialize())
