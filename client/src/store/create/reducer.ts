@@ -5,7 +5,7 @@ const reducer = (state: Question[] = [], action: any) => {
     case 'ADD_QUESTION':
       return [...state, action.data];
     case 'REMOVE_QUESTION':
-      return state.filter((q: any) => q.id !== action.id);
+      return state.filter((q: Question) => q.temp_uuid !== action.id);
     case 'CLEAR':
       return [];
     case 'SET_FULL':

@@ -14,6 +14,10 @@ import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import AddQuestion from './AddQuestion';
 import uuidv4 from 'uuid/v4';
+import Grid from '@material-ui/core/Grid';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -55,6 +59,7 @@ const TestView: React.FC<Props> = props => {
   const [title, setTitle] = useState<string>('Untitled Form');
   const [description, setDescription] = useState<string>('');
   const [questions, setQuestions] = useState<FormQuestion[]>([]);
+  const [selected, setSelected] = useState<Question | null>(null);
 
   const newQuestion = () => {
     // setQuestions(
@@ -107,8 +112,20 @@ const TestView: React.FC<Props> = props => {
 
   console.log(props.create);
 
+  const findAndSetSelected = (id: string) => {
+    const question: Question | undefined = props.create.find(
+      q => q.temp_uuid === id
+    );
+
+    if (!question) {
+      return;
+    }
+    setSelected(question);
+  };
+
   const removeQuestion = (id: string) => {
     setQuestions(questions.filter(q => q.id !== id));
+    props.removeQuestion(id);
   };
 
   return (
@@ -132,9 +149,25 @@ const TestView: React.FC<Props> = props => {
           value={description}
           setValue={setDescription}
         />
-        {questions.map((q: any) => {
-          return q.component;
-        })}
+        {questions.map((q: FormQuestion) => (
+          <Grid container spacing={1}>
+            <Grid item xs={1}>
+              <IconButton
+                color="primary"
+                aria-label="edit"
+                component="span"
+                style={{ marginTop: '2rem' }}
+                onClick={() => findAndSetSelected(q.id)}
+              >
+                <EditIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={11}>
+              {selected && selected.temp_uuid === q.id && <div>selected</div>}
+              {q.component}
+            </Grid>
+          </Grid>
+        ))}
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
           <NewQuestion newQuestion={newQuestion} />
         </div>
