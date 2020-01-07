@@ -28,5 +28,6 @@ export enum QuestionType {
   Written = 2,
   ManyAnswers = 3,
   Paragraph = 4,
-  TrueOrFalse = 5
+  TrueOrFalse = 5,
+  Slider = 6
 }

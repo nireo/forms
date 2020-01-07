@@ -151,10 +151,15 @@ const AddQuestion: React.FC<Props> = props => {
         </Grid>
         <Grid item xs={2}>
           <div>
+            {/*
+
+
             <SelectQuestion
+            
               questionType={questionType}
               setQuestionType={setQuestionType}
             />
+              */}
           </div>
           <div>
             <FormControlLabel

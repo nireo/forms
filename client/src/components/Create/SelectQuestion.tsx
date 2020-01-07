@@ -13,15 +13,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 type Props = {
-  questionType: string;
-  setQuestionType: Dispatch<SetStateAction<string>>;
+  questionType: number;
+  setQuestionType: Dispatch<SetStateAction<number>>;
 };
 
 export const SelectQuestion: React.FC<Props> = props => {
   const classes = useStyles(props);
 
   const handleChange = (event: ChangeEvent<{ value: unknown }>) => {
-    props.setQuestionType(event.target.value as string);
+    props.setQuestionType(event.target.value as number);
   };
 
   return (
@@ -34,12 +34,12 @@ export const SelectQuestion: React.FC<Props> = props => {
           value={props.questionType}
           onChange={handleChange}
         >
-          <MenuItem value="multiple-choice">Multiple choice</MenuItem>
-          <MenuItem value="multiple-answer">Multiple answer</MenuItem>
-          <MenuItem value="small-written">Small written</MenuItem>
-          <MenuItem value="paragraph-written">Paragraph written</MenuItem>
-          <MenuItem value="slide-form">Slider</MenuItem>
-          <MenuItem value="true-or-false">True or false</MenuItem>
+          <MenuItem value={1}>Multiple choice</MenuItem>
+          <MenuItem value={3}>Multiple answer</MenuItem>
+          <MenuItem value={2}>Small written</MenuItem>
+          <MenuItem value={4}>Paragraph written</MenuItem>
+          <MenuItem value={5}>True or false</MenuItem>
+          <MenuItem value={6}>Slider</MenuItem>
         </Select>
       </FormControl>
     </div>
