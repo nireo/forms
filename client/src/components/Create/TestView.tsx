@@ -8,7 +8,8 @@ import { Question } from '../../interfaces/Question';
 import {
   addQuestion,
   removeQuestion,
-  clearQuestions
+  clearQuestions,
+  updateQuestion
 } from '../../store/create/reducer';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
@@ -46,6 +47,7 @@ type Props = {
   addQuestion: (question: Question) => void;
   removeQuestion: (id: string) => void;
   clearQuestions: () => void;
+  updateQuestion: (question: Question) => void;
 };
 
 interface FormQuestion {
@@ -114,9 +116,7 @@ const TestView: React.FC<Props> = props => {
     }
   }, [props.create, questions, setQuestions, removeQuestion]);
 
-  console.log(props.create);
-
-  const findAndSetSelected = (id: string) => {
+  const findAndSetSelected = (id: string): void => {
     const question: Question | undefined = props.create.find(
       q => q.temp_uuid === id
     );
@@ -125,6 +125,10 @@ const TestView: React.FC<Props> = props => {
       return;
     }
     setSelected(question);
+  };
+
+  const updateWithNewInfo = (question: Question): void => {
+    props.updateQuestion(question);
   };
 
   return (
@@ -182,5 +186,6 @@ const mapStateToProps = (state: AppState) => ({
 export default connect(mapStateToProps, {
   addQuestion,
   removeQuestion,
-  clearQuestions
+  clearQuestions,
+  updateQuestion
 })(TestView);

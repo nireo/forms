@@ -10,6 +10,11 @@ const reducer = (state: Question[] = [], action: any) => {
       return [];
     case 'SET_FULL':
       return action.data;
+    case 'UPDATE':
+      const question: Question = action.data;
+      return state.map(q =>
+        q.temp_uuid === question.temp_uuid ? question : q
+      );
     default:
       return state;
   }
@@ -34,6 +39,13 @@ export const setQuestionFully = (questions: Question[]) => {
   return {
     type: 'SET_FULL',
     data: questions
+  };
+};
+
+export const updateQuestion = (question: Question) => {
+  return {
+    type: 'UPDATE',
+    data: question
   };
 };
 

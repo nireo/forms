@@ -19,11 +19,13 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import { MultipleAnswer } from './MultipleAnswer';
 import { SliderForm } from './SliderForm';
+import Button from '@material-ui/core/Button';
 
 type Props = {
   question: Question;
   removeQuestion: (id: string) => void;
   removeQuestionPreview: (id: string) => void;
+  updateWithNewInfo: (question: Question) => void;
 };
 
 const EditQuestion: React.FC<Props> = props => {
@@ -50,6 +52,21 @@ const EditQuestion: React.FC<Props> = props => {
       setLoaded(true);
     }
   }, []);
+
+  const updateQuestion = () => {
+    const questionObject: Question = {
+      step,
+      min,
+      max,
+      required,
+      question: title,
+      answers: answers,
+      answerType: answerType,
+      temp_uuid: question.temp_uuid
+    };
+
+    props.updateWithNewInfo(questionObject);
+  };
 
   return (
     <div style={{ marginTop: '2rem' }}>
@@ -147,6 +164,15 @@ const EditQuestion: React.FC<Props> = props => {
             >
               <DeleteIcon />
             </IconButton>
+          </div>
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={updateQuestion}
+            >
+              Save
+            </Button>
           </div>
         </Grid>
       </Grid>
