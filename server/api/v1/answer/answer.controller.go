@@ -21,3 +21,27 @@ func getAnswer(c *gin.Context) {
 
 	c.JSON(200, answer.Serialize())
 }
+
+func createAnswer(c *gin.Context) {
+	db := c.MustGet("id").(*gorm.DB)
+	id := c.Param("id")
+
+	type RequestBody struct {
+		Answer string `json:"title" binding:"required"`
+	}
+
+	var requestBody RequestBody
+	if err := c.BindJSON(&requestBody); err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	answer := Answer{
+		Answer: requestBody.Answer,
+		toForm: id,
+	}
+
+	db.NewRecord(answer)
+	db.Create(&answer)
+	c.JSON(200, answer.Serialize())
+}

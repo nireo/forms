@@ -9,5 +9,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	auth := r.Group("/answer")
 	{
 		auth.GET("/:id", getAnswer)
+		auth.POST("/:id", createAnswer)
 	}
 }

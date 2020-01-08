@@ -9,6 +9,7 @@ import (
 type Answer struct {
 	gorm.Model
 	toForm string
+	Answer string
 }
 
 // Serialize data
