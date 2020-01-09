@@ -74,74 +74,76 @@ const EditQuestion: React.FC<Props> = props => {
   return (
     <div style={{ marginTop: '2rem' }}>
       <Grid container spacing={1}>
-        <Grid item xs={10}></Grid>
-        {answerType === 1 && <MultipleChoice label={title} answers={answers} />}
-        {answerType === 2 && (
-          <div>
-            <FormInput value={title} setValue={setTitle} />
-            <TextField
-              id="standard-required"
-              label="Preview"
-              defaultValue="This is the preview"
-              disabled
-              style={{ width: '100%' }}
-            />
-          </div>
-        )}
-        {answerType === 3 && (
-          <MultipleAnswer answers={answers} setAnswers={setAnswers} />
-        )}
-        {answerType === 4 && (
-          <div>
-            <FormInput value={title} setValue={setTitle} />
-            <TextField
-              id="standard-multiline-static"
-              label="Preview"
-              multiline
-              rows={4}
-              disabled
-              defaultValue="This is the preview"
-              style={{ width: '100%' }}
-            />
-          </div>
-        )}
-        {answerType === 5 && (
-          <div>
-            <FormInput value={title} setValue={setTitle} />
-            <RadioGroup
-              aria-label="true-or-false-preview"
-              name="Preview"
-              value={true}
-            >
-              <FormControlLabel
+        <Grid item xs={10}>
+          {answerType === 1 && (
+            <MultipleChoice label={title} answers={answers} />
+          )}
+          {answerType === 2 && (
+            <div>
+              <FormInput value={title} setValue={setTitle} />
+              <TextField
+                id="standard-required"
+                label="Preview"
+                defaultValue="This is the preview"
+                disabled
+                style={{ width: '100%' }}
+              />
+            </div>
+          )}
+          {answerType === 3 && (
+            <MultipleAnswer answers={answers} setAnswers={setAnswers} />
+          )}
+          {answerType === 4 && (
+            <div>
+              <FormInput value={title} setValue={setTitle} />
+              <TextField
+                id="standard-multiline-static"
+                label="Preview"
+                multiline
+                rows={4}
+                disabled
+                defaultValue="This is the preview"
+                style={{ width: '100%' }}
+              />
+            </div>
+          )}
+          {answerType === 5 && (
+            <div>
+              <FormInput value={title} setValue={setTitle} />
+              <RadioGroup
+                aria-label="true-or-false-preview"
+                name="Preview"
                 value={true}
-                control={<Radio />}
-                label="True"
-                disabled
-              />
-              <FormControlLabel
-                value={false}
-                control={<Radio />}
-                label="False"
-                disabled
-              />
-            </RadioGroup>
-          </div>
-        )}
-        {answerType === 6 && (
-          <SliderForm
-            min={min}
-            max={max}
-            step={step}
-            title={title}
-            setMin={setMin}
-            setMax={setMax}
-            setStep={setStep}
-            setTitle={setTitle}
-          />
-        )}
+              >
+                <FormControlLabel
+                  value={true}
+                  control={<Radio />}
+                  label="True"
+                  disabled
+                />
+                <FormControlLabel
+                  value={false}
+                  control={<Radio />}
+                  label="False"
+                  disabled
+                />
+              </RadioGroup>
+            </div>
+          )}
+          {answerType === 6 && (
+            <SliderForm
+              min={min}
+              max={max}
+              step={step}
+              title={title}
+              setMin={setMin}
+              setMax={setMax}
+              setStep={setStep}
+              setTitle={setTitle}
+            />
+          )}
+        </Grid>
         <Grid item xs={2}>
-          n
           <div>
             <SelectQuestion
               questionType={answerType}

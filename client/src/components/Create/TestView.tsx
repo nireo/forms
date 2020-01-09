@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -13,13 +13,14 @@ import {
 } from '../../store/create/reducer';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
-import AddQuestion from './AddQuestion';
 import uuidv4 from 'uuid/v4';
 import Grid from '@material-ui/core/Grid';
 import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import EditQuestion from './EditQuestion';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -57,29 +58,14 @@ interface FormQuestion {
   id: string;
 }
 
-interface FormQuestionv2 {
-  question: Question;
-  disabled: boolean;
-}
-
 const TestView: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [title, setTitle] = useState<string>('Untitled Form');
   const [description, setDescription] = useState<string>('');
-  const [questions, setQuestions] = useState<FormQuestion[]>([]);
   const [selected, setSelected] = useState<Question | null>(null);
 
   const newQuestion = () => {
-    // setQuestions(
-    //  questions.concat({
-    //    component: (
-    //      <AddQuestion questionId={id} removeQuestionPreview={removeQuestion} />
-    //    ),
-    //    id
-    //  })
-    //);
     const uuid: string = uuidv4();
-
     const templateQuestion: Question = {
       required: false,
       question: 'untitled question',
@@ -92,36 +78,14 @@ const TestView: React.FC<Props> = props => {
     };
 
     props.addQuestion(templateQuestion);
+
+    // automatically start editing new question
+    setSelected(templateQuestion);
   };
 
   const removeQuestion = (id: string) => {
-    setQuestions(questions.filter(q => q.id !== id));
     props.removeQuestion(id);
   };
-
-  useEffect(() => {
-    if (props.create.length !== questions.length) {
-      // take the latest question
-      const last: Question = props.create[props.create.length - 1];
-      const id: string = last.temp_uuid;
-
-      setQuestions(
-        questions.concat({
-          component: (
-            <AddQuestion
-              questionId={id}
-              removeQuestionPreview={removeQuestion}
-            />
-          ),
-          id
-        })
-      );
-    }
-
-    if (props.create === [] && questions !== []) {
-      setQuestions([]);
-    }
-  }, [props.create, questions, setQuestions, removeQuestion]);
 
   const findAndSetSelected = (id: string): void => {
     const question: Question | undefined = props.create.find(
@@ -159,27 +123,8 @@ const TestView: React.FC<Props> = props => {
           value={description}
           setValue={setDescription}
         />
-        {/*questions.map((q: FormQuestion) => (
-          <Grid container spacing={1}>
-            <Grid item xs={1}>
-              <IconButton
-                color="primary"
-                aria-label="edit"
-                component="span"
-                style={{ marginTop: '2rem' }}
-                onClick={() => findAndSetSelected(q.id)}
-              >
-                <EditIcon />
-              </IconButton>
-            </Grid>
-            <Grid item xs={11}>
-              {selected && selected.temp_uuid === q.id && <div>selected</div>}
-              {q.component}
-            </Grid>
-          </Grid>
-        )) */}
         {props.create.map((q: Question) => (
-          <Grid>
+          <Grid container spacing={1}>
             <Grid item xs={1}>
               {q === selected && (
                 <IconButton
@@ -210,7 +155,25 @@ const TestView: React.FC<Props> = props => {
                   <EditQuestion question={selected} />
                 </div>
               )}
-              {selected !== q && <div>disabled</div>}
+              {selected !== q && (
+                <div style={{ marginTop: '2rem' }}>
+                  <TextField
+                    disabled
+                    id="standard-disabled"
+                    label="Question"
+                    defaultValue={q.question}
+                    style={{ width: '100%' }}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => removeQuestion(q.temp_uuid)}
+                    style={{ marginTop: '1rem' }}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              )}
             </Grid>
           </Grid>
         ))}
