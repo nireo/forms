@@ -23,9 +23,9 @@ import Button from '@material-ui/core/Button';
 
 type Props = {
   question: Question;
-  removeQuestion: (id: string) => void;
-  removeQuestionPreview: (id: string) => void;
-  updateWithNewInfo: (question: Question) => void;
+  removeQuestion?: (id: string) => void;
+  removeQuestionPreview?: (id: string) => void;
+  updateWithNewInfo?: (question: Question) => void;
 };
 
 const EditQuestion: React.FC<Props> = props => {
@@ -65,6 +65,9 @@ const EditQuestion: React.FC<Props> = props => {
       temp_uuid: question.temp_uuid
     };
 
+    if (typeof props.updateWithNewInfo === 'undefined') {
+      return;
+    }
     props.updateWithNewInfo(questionObject);
   };
 
@@ -160,7 +163,11 @@ const EditQuestion: React.FC<Props> = props => {
           <div>
             <IconButton
               aria-label="delete"
-              onClick={() => props.removeQuestionPreview(question.temp_uuid)}
+              onClick={() => {
+                if (props.removeQuestionPreview !== undefined) {
+                  props.removeQuestionPreview(question.temp_uuid);
+                }
+              }}
             >
               <DeleteIcon />
             </IconButton>

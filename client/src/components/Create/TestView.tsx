@@ -17,7 +17,9 @@ import AddQuestion from './AddQuestion';
 import uuidv4 from 'uuid/v4';
 import Grid from '@material-ui/core/Grid';
 import EditIcon from '@material-ui/icons/Edit';
+import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
+import EditQuestion from './EditQuestion';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -53,6 +55,11 @@ type Props = {
 interface FormQuestion {
   component: any;
   id: string;
+}
+
+interface FormQuestionv2 {
+  question: Question;
+  disabled: boolean;
 }
 
 const TestView: React.FC<Props> = props => {
@@ -152,7 +159,7 @@ const TestView: React.FC<Props> = props => {
           value={description}
           setValue={setDescription}
         />
-        {questions.map((q: FormQuestion) => (
+        {/*questions.map((q: FormQuestion) => (
           <Grid container spacing={1}>
             <Grid item xs={1}>
               <IconButton
@@ -168,6 +175,42 @@ const TestView: React.FC<Props> = props => {
             <Grid item xs={11}>
               {selected && selected.temp_uuid === q.id && <div>selected</div>}
               {q.component}
+            </Grid>
+          </Grid>
+        )) */}
+        {props.create.map((q: Question) => (
+          <Grid>
+            <Grid item xs={1}>
+              {q === selected && (
+                <IconButton
+                  color="primary"
+                  aria-label="close"
+                  component="span"
+                  style={{ marginTop: '2rem' }}
+                  onClick={() => setSelected(null)}
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
+              {q !== selected && (
+                <IconButton
+                  color="primary"
+                  aria-label="edit"
+                  component="span"
+                  style={{ marginTop: '2rem' }}
+                  onClick={() => findAndSetSelected(q.temp_uuid)}
+                >
+                  <EditIcon />
+                </IconButton>
+              )}
+            </Grid>
+            <Grid item xs={11}>
+              {selected !== null && q === selected && (
+                <div>
+                  <EditQuestion question={selected} />
+                </div>
+              )}
+              {selected !== q && <div>disabled</div>}
             </Grid>
           </Grid>
         ))}
