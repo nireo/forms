@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent } from 'react';
-import { Question } from '../../interfaces/Question';
+import React, { useState, ChangeEvent, useEffect } from 'react';
+import { Question, QuestionType } from '../../interfaces/Question';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -30,6 +30,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   }
 }));
+
+interface AnswerItem {
+  type: QuestionType;
+  answer: string[];
+  required: boolean;
+}
 
 export const AnswerMain: React.FC = props => {
   const classes = useStyles(props);
@@ -67,6 +73,22 @@ export const AnswerMain: React.FC = props => {
       temp_uuid: '8c495d25-bce4-4e4c-8e74-e28769af1302'
     }
   ]);
+  const [answerItems, setAnswerItem] = useState<AnswerItem[]>([]);
+
+  useEffect(() => {
+    if (mockData.length !== answerItems.length) {
+      setAnswerItem(
+        mockData.map((q: Question) => {
+          const answer: AnswerItem = {
+            answer: [],
+            required: q.required,
+            type: q.answerType
+          };
+          return answer;
+        })
+      );
+    }
+  }, []);
 
   const submitQuestion = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
