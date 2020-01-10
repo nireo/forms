@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { Question } from '../../interfaces/Question';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import SendIcon from '@material-ui/icons/Send';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -65,12 +68,47 @@ export const AnswerMain: React.FC = props => {
     }
   ]);
 
+  const submitQuestion = (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
   return (
     <Container maxWidth="md">
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} style={{ marginBottom: '0' }}>
         <Typography variant="h4">The form name</Typography>
         <Typography>The form description</Typography>
+        <hr style={{ marginBottom: '1rem' }} />
+        <form onSubmit={submitQuestion}>
+          {mockData.map((question: Question) => (
+            <div>
+              {question.answerType === 1 && <div>multiple choice</div>}
+              {question.answerType === 2 && <div>written small</div>}
+              {question.answerType === 3 && <div>many answers</div>}
+              {question.answerType === 4 && <div>paragraph</div>}
+              {question.answerType === 5 && <div>true or false</div>}
+              {question.answerType === 6 && <div>slider</div>}
+            </div>
+          ))}
+        </form>
+        <Grid container spacing={3}>
+          <Grid item xs={10}></Grid>
+          <Grid item xs={2}>
+            <Button
+              variant="contained"
+              style={{ marginTop: '3rem' }}
+              color="primary"
+              endIcon={<SendIcon />}
+            >
+              Send
+            </Button>
+          </Grid>
+        </Grid>
       </Paper>
+      <div style={{ textAlign: 'center', color: '#586069' }}>
+        <Typography style={{ marginTop: '0', paddingTop: '0' }}>
+          Forms does not approve of this content.
+        </Typography>
+      </div>
     </Container>
   );
 };

@@ -11,6 +11,7 @@ import CreateMain from './components/Create/CreateMain';
 import TestView from './components/Create/TestView';
 import { NotFound } from './components/Layout/NotFound';
 import { Notification } from './components/Layout/Notification';
+import { AnswerMain } from './components/Answer/AnswerMain';
 
 const App: React.FC = () => {
   return (
@@ -28,6 +29,7 @@ const App: React.FC = () => {
         <Route exact path="/welcome" render={() => <Welcome />} />
         <Route exact path="/create" render={() => <CreateMain />} />
         <Route exact path="/test" render={() => <TestView />} />
+        <Route exact path="/answer-test" render={() => <AnswerMain />} />
         <Route render={() => <NotFound />} />
       </Switch>
       <Notification />
