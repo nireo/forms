@@ -10,6 +10,7 @@ import { Welcome } from './components/Welcome/Welcome';
 import CreateMain from './components/Create/CreateMain';
 import TestView from './components/Create/TestView';
 import { NotFound } from './components/Layout/NotFound';
+import { Notification } from './components/Layout/Notification';
 
 const App: React.FC = () => {
   return (
@@ -29,6 +30,7 @@ const App: React.FC = () => {
         <Route exact path="/test" render={() => <TestView />} />
         <Route render={() => <NotFound />} />
       </Switch>
+      <Notification />
     </Router>
   );
 };

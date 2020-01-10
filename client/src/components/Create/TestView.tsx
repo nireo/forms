@@ -21,6 +21,8 @@ import IconButton from '@material-ui/core/IconButton';
 import EditQuestion from './EditQuestion';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { setNotification } from '../../store/notification/reducer';
+import { Notification } from '../../interfaces/Notification';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -51,12 +53,8 @@ type Props = {
   removeQuestion: (id: string) => void;
   clearQuestions: () => void;
   updateQuestion: (question: Question) => void;
+  setNotification: (notification: Notification) => void;
 };
-
-interface FormQuestion {
-  component: any;
-  id: string;
-}
 
 const TestView: React.FC<Props> = props => {
   const classes = useStyles(props);
@@ -100,7 +98,20 @@ const TestView: React.FC<Props> = props => {
 
   const updateWithNewInfo = (question: Question): void => {
     props.updateQuestion(question);
+    setSelected(question);
+
+    const notification: Notification = {
+      message: 'Saved successfully',
+      actionName: 'Undo',
+      actionFunction: () => {
+        return;
+      },
+      autoHideTime: 3000
+    };
+    props.setNotification(notification);
   };
+
+  console.log(props.create);
 
   return (
     <Container maxWidth="md" style={{ marginTop: '0' }}>
@@ -152,7 +163,10 @@ const TestView: React.FC<Props> = props => {
             <Grid item xs={11}>
               {selected !== null && q === selected && (
                 <div>
-                  <EditQuestion question={selected} />
+                  <EditQuestion
+                    updateWithNewInfo={updateWithNewInfo}
+                    question={selected}
+                  />
                 </div>
               )}
               {selected !== q && (
@@ -193,5 +207,6 @@ export default connect(mapStateToProps, {
   addQuestion,
   removeQuestion,
   clearQuestions,
-  updateQuestion
+  updateQuestion,
+  setNotification
 })(TestView);

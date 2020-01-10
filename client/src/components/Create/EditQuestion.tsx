@@ -25,7 +25,7 @@ type Props = {
   question: Question;
   removeQuestion?: (id: string) => void;
   removeQuestionPreview?: (id: string) => void;
-  updateWithNewInfo?: (question: Question) => void;
+  updateWithNewInfo: (question: Question) => void;
 };
 
 const EditQuestion: React.FC<Props> = props => {
