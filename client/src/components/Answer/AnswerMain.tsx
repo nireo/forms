@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import { Ending } from './Ending';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -42,6 +43,7 @@ interface AnswerItem {
 
 export const AnswerMain: React.FC = props => {
   const classes = useStyles(props);
+  const [finished, setFinished] = useState<boolean>(false);
 
   // use mock data to properly test answers
   const [mockData] = useState<Question[]>([
@@ -116,6 +118,7 @@ export const AnswerMain: React.FC = props => {
     }
 
     // send answers
+    setFinished(true);
   };
 
   const changeValue = (
@@ -136,65 +139,73 @@ export const AnswerMain: React.FC = props => {
 
   return (
     <Container maxWidth="md">
-      <Paper className={classes.paper} style={{ marginBottom: '0' }}>
-        <Typography variant="h4">The form name</Typography>
-        <Typography>The form description</Typography>
-        <hr style={{ marginBottom: '1rem' }} />
-        <form onSubmit={submitQuestion}>
-          {answerItems.map((answer: AnswerItem, index: number) => (
-            <div key={answer.temp_uuid} style={{ marginTop: '3rem' }}>
-              {answer.type === 1 && <div>multiple choice</div>}
-              {answer.type === 2 && (
-                <div>
-                  <Typography variant="h5">{answer.question}</Typography>
-                  <TextField
-                    id={`standard-${answer.required ? 'required' : 'basic'}`}
-                    value={answer.answer[0]}
-                    onChange={event => changeValue(event, index)}
-                    style={{ width: '100%', marginTop: '1rem' }}
-                    required={answer.required}
-                    label="Answer"
-                  />
+      {finished ? (
+        <Ending />
+      ) : (
+        <div>
+          <Paper className={classes.paper} style={{ marginBottom: '0' }}>
+            <Typography variant="h4">The form name</Typography>
+            <Typography>The form description</Typography>
+            <hr style={{ marginBottom: '1rem' }} />
+            <form onSubmit={submitQuestion}>
+              {answerItems.map((answer: AnswerItem, index: number) => (
+                <div key={answer.temp_uuid} style={{ marginTop: '3rem' }}>
+                  {answer.type === 1 && <div>multiple choice</div>}
+                  {answer.type === 2 && (
+                    <div>
+                      <Typography variant="h5">{answer.question}</Typography>
+                      <TextField
+                        id={`standard-${
+                          answer.required ? 'required' : 'basic'
+                        }`}
+                        value={answer.answer[0]}
+                        onChange={event => changeValue(event, index)}
+                        style={{ width: '100%', marginTop: '1rem' }}
+                        required={answer.required}
+                        label="Answer"
+                      />
+                    </div>
+                  )}
+                  {answer.type === 3 && <div>many answers</div>}
+                  {answer.type === 4 && (
+                    <div>
+                      <Typography variant="h5">{answer.question}</Typography>
+                      <TextField
+                        id="standard-multiline-flexible"
+                        label="Answer"
+                        multiline
+                        value={answer.answer[0]}
+                        onChange={event => changeValue(event, index)}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                  )}
+                  {answer.type === 5 && <div>true or false</div>}
+                  {answer.type === 6 && <div>slider</div>}
                 </div>
-              )}
-              {answer.type === 3 && <div>many answers</div>}
-              {answer.type === 4 && (
-                <div>
-                  <Typography variant="h5">{answer.question}</Typography>
-                  <TextField
-                    id="standard-multiline-flexible"
-                    label="Answer"
-                    multiline
-                    value={answer.answer[0]}
-                    onChange={event => changeValue(event, index)}
-                    style={{ width: '100%' }}
-                  />
-                </div>
-              )}
-              {answer.type === 5 && <div>true or false</div>}
-              {answer.type === 6 && <div>slider</div>}
-            </div>
-          ))}
-        </form>
-        <Grid container spacing={3}>
-          <Grid item xs={10}></Grid>
-          <Grid item xs={2}>
-            <Button
-              variant="contained"
-              style={{ marginTop: '3rem' }}
-              color="primary"
-              endIcon={<SendIcon />}
-            >
-              Send
-            </Button>
-          </Grid>
-        </Grid>
-      </Paper>
-      <div style={{ textAlign: 'center', color: '#586069' }}>
-        <Typography style={{ marginTop: '0', paddingTop: '0' }}>
-          Forms does not approve of this content.
-        </Typography>
-      </div>
+              ))}
+            </form>
+            <Grid container spacing={3}>
+              <Grid item xs={10}></Grid>
+              <Grid item xs={2}>
+                <Button
+                  variant="contained"
+                  style={{ marginTop: '3rem' }}
+                  color="primary"
+                  endIcon={<SendIcon />}
+                >
+                  Send
+                </Button>
+              </Grid>
+            </Grid>
+          </Paper>
+          <div style={{ textAlign: 'center', color: '#586069' }}>
+            <Typography style={{ marginTop: '0', paddingTop: '0' }}>
+              Forms does not approve of this content.
+            </Typography>
+          </div>
+        </div>
+      )}
     </Container>
   );
 };
