@@ -10,7 +10,7 @@ type Question struct {
 	gorm.Model
 	Required   bool
 	Question   string
-	AnswerType uint
+	AnswerType uint8
 	Answers    []string
 	Step       uint
 	Min        uint

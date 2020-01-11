@@ -8,8 +8,9 @@ import (
 // Answer Data Model
 type Answer struct {
 	gorm.Model
-	toForm string
-	Answer string
+	toForm     string
+	Answer     []string
+	answerType uint8
 }
 
 // Serialize data

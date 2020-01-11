@@ -7,6 +7,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -35,6 +36,8 @@ interface AnswerItem {
   type: QuestionType;
   answer: string[];
   required: boolean;
+  question: string;
+  temp_uuid: string;
 }
 
 export const AnswerMain: React.FC = props => {
@@ -82,7 +85,9 @@ export const AnswerMain: React.FC = props => {
           const answer: AnswerItem = {
             answer: [],
             required: q.required,
-            type: q.answerType
+            type: q.answerType,
+            question: q.question,
+            temp_uuid: q.temp_uuid
           };
           return answer;
         })
@@ -94,6 +99,22 @@ export const AnswerMain: React.FC = props => {
     event.preventDefault();
   };
 
+  const changeValue = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number
+  ) => {
+    let answer = answerItems[index];
+    if (!answer) {
+      return;
+    }
+    if (answer.type === 2 || answer.type === 4) {
+      answer.answer[0] = event.target.value;
+    }
+    setAnswerItem(
+      answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
+    );
+  };
+
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper} style={{ marginBottom: '0' }}>
@@ -101,14 +122,38 @@ export const AnswerMain: React.FC = props => {
         <Typography>The form description</Typography>
         <hr style={{ marginBottom: '1rem' }} />
         <form onSubmit={submitQuestion}>
-          {mockData.map((question: Question) => (
-            <div>
-              {question.answerType === 1 && <div>multiple choice</div>}
-              {question.answerType === 2 && <div>written small</div>}
-              {question.answerType === 3 && <div>many answers</div>}
-              {question.answerType === 4 && <div>paragraph</div>}
-              {question.answerType === 5 && <div>true or false</div>}
-              {question.answerType === 6 && <div>slider</div>}
+          {answerItems.map((answer: AnswerItem, index: number) => (
+            <div key={answer.temp_uuid} style={{ marginTop: '3rem' }}>
+              {answer.type === 1 && <div>multiple choice</div>}
+              {answer.type === 2 && (
+                <div>
+                  <Typography variant="h5">{answer.question}</Typography>
+                  <TextField
+                    id={`standard-${answer.required ? 'required' : 'basic'}`}
+                    value={answer.answer[0]}
+                    onChange={event => changeValue(event, index)}
+                    style={{ width: '100%', marginTop: '1rem' }}
+                    required={answer.required}
+                    label="Answer"
+                  />
+                </div>
+              )}
+              {answer.type === 3 && <div>many answers</div>}
+              {answer.type === 4 && (
+                <div>
+                  <Typography variant="h5">{answer.question}</Typography>
+                  <TextField
+                    id="standard-multiline-flexible"
+                    label="Answer"
+                    multiline
+                    value={answer.answer[0]}
+                    onChange={event => changeValue(event, index)}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+              )}
+              {answer.type === 5 && <div>true or false</div>}
+              {answer.type === 6 && <div>slider</div>}
             </div>
           ))}
         </form>
