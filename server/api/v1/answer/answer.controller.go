@@ -28,6 +28,7 @@ func createAnswer(c *gin.Context) {
 
 	type RequestBody struct {
 		Answer string `json:"title" binding:"required"`
+		
 	}
 
 	var requestBody RequestBody

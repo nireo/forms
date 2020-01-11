@@ -11,6 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import { Ending } from './Ending';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -42,6 +44,7 @@ interface AnswerItem {
   question: string;
   temp_uuid: string;
   questionAnswers: string[];
+  trueOrFalse: boolean;
 }
 
 export const AnswerMain: React.FC = props => {
@@ -65,16 +68,6 @@ export const AnswerMain: React.FC = props => {
       min: 0,
       max: 0,
       required: true,
-      question: 'This is a true or false question',
-      answers: [],
-      answerType: 2,
-      temp_uuid: '2fa85dd9-b775-4394-8fed-2d1c5853942c'
-    },
-    {
-      step: 1,
-      min: 0,
-      max: 0,
-      required: true,
       question: 'This is a paragraph question',
       answers: [],
       answerType: 4,
@@ -89,6 +82,16 @@ export const AnswerMain: React.FC = props => {
       answers: ['Answer 1', 'Answer 2', 'Answer 3'],
       answerType: 3,
       temp_uuid: '8c495d25-bce4-4e4c-8e74-e28769'
+    },
+    {
+      step: 1,
+      min: 0,
+      max: 0,
+      required: true,
+      question: 'This is a true or false question',
+      answers: [],
+      answerType: 5,
+      temp_uuid: '8c495d25-bce4-4e4c-8e74'
     }
   ]);
   const [answerItems, setAnswerItem] = useState<AnswerItem[]>([]);
@@ -103,7 +106,8 @@ export const AnswerMain: React.FC = props => {
             type: q.answerType,
             question: q.question,
             temp_uuid: q.temp_uuid,
-            questionAnswers: q.answers
+            questionAnswers: q.answers,
+            trueOrFalse: false
           };
           return answer;
         })
@@ -173,6 +177,22 @@ export const AnswerMain: React.FC = props => {
     return;
   };
 
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const value = (event.target as HTMLInputElement).value;
+    const answer = answerItems[index];
+    if (value === 'true') {
+      answer.trueOrFalse = true;
+    } else {
+      answer.trueOrFalse = false;
+    }
+    setAnswerItem(
+      answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
+    );
+  };
+
   return (
     <Container maxWidth="md">
       {finished ? (
@@ -234,7 +254,27 @@ export const AnswerMain: React.FC = props => {
                       />
                     </div>
                   )}
-                  {answer.type === 5 && <div>true or false</div>}
+                  {answer.type === 5 && (
+                    <div>
+                      <Typography variant="h5">{answer.question}</Typography>
+                      <RadioGroup
+                        name={answer.question}
+                        value={answer.trueOrFalse}
+                        onChange={event => handleChange(event, index)}
+                      >
+                        <FormControlLabel
+                          value={true}
+                          control={<Radio />}
+                          label="True"
+                        />
+                        <FormControlLabel
+                          value={false}
+                          control={<Radio />}
+                          label="False"
+                        />
+                      </RadioGroup>
+                    </div>
+                  )}
                   {answer.type === 6 && <div>slider</div>}
                 </div>
               ))}
