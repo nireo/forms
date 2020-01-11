@@ -97,6 +97,25 @@ export const AnswerMain: React.FC = props => {
 
   const submitQuestion = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    // validate that every required answer has been answered
+    let passes: boolean = false;
+    answerItems.forEach((item: AnswerItem) => {
+      if (!item.required) {
+        return;
+      }
+
+      if (item.answer !== []) {
+        passes = true;
+        return;
+      }
+    });
+
+    if (!passes) {
+      return;
+    }
+
+    // send answers
   };
 
   const changeValue = (
