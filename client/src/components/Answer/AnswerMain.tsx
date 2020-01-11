@@ -9,6 +9,8 @@ import SendIcon from '@material-ui/icons/Send';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Ending } from './Ending';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -39,6 +41,7 @@ interface AnswerItem {
   required: boolean;
   question: string;
   temp_uuid: string;
+  questionAnswers: string[];
 }
 
 export const AnswerMain: React.FC = props => {
@@ -76,6 +79,16 @@ export const AnswerMain: React.FC = props => {
       answers: [],
       answerType: 4,
       temp_uuid: '8c495d25-bce4-4e4c-8e74-e28769af1302'
+    },
+    {
+      step: 1,
+      min: 0,
+      max: 0,
+      required: true,
+      question: 'This is a multiple answer question',
+      answers: ['Answer 1', 'Answer 2', 'Answer 3'],
+      answerType: 3,
+      temp_uuid: '8c495d25-bce4-4e4c-8e74-e28769'
     }
   ]);
   const [answerItems, setAnswerItem] = useState<AnswerItem[]>([]);
@@ -89,7 +102,8 @@ export const AnswerMain: React.FC = props => {
             required: q.required,
             type: q.answerType,
             question: q.question,
-            temp_uuid: q.temp_uuid
+            temp_uuid: q.temp_uuid,
+            questionAnswers: q.answers
           };
           return answer;
         })
@@ -124,7 +138,7 @@ export const AnswerMain: React.FC = props => {
   const changeValue = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
-  ) => {
+  ): void => {
     let answer = answerItems[index];
     if (!answer) {
       return;
@@ -135,6 +149,28 @@ export const AnswerMain: React.FC = props => {
     setAnswerItem(
       answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
     );
+  };
+
+  const checkKey = (question: string, index: number): void => {
+    const answer = answerItems[index];
+    if (!answer) {
+      return;
+    }
+
+    if (answer.answer.includes(question)) {
+      // remove item
+      answer.answer = answer.answer.filter((a: string) => a !== question);
+      setAnswerItem(
+        answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
+      );
+      return;
+    }
+    // add item
+    answer.answer = answer.answer.concat(question);
+    setAnswerItem(
+      answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
+    );
+    return;
   };
 
   return (
@@ -166,7 +202,25 @@ export const AnswerMain: React.FC = props => {
                       />
                     </div>
                   )}
-                  {answer.type === 3 && <div>many answers</div>}
+                  {answer.type === 3 && (
+                    <div>
+                      <Typography variant="h5">{answer.question}</Typography>
+                      {answer.questionAnswers.map((question: string) => (
+                        <div>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                value={question}
+                                onClick={() => checkKey(question, index)}
+                                color="primary"
+                              />
+                            }
+                            label={question}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   {answer.type === 4 && (
                     <div>
                       <Typography variant="h5">{answer.question}</Typography>
