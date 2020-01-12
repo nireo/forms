@@ -1,7 +1,7 @@
 import { Form } from './../interfaces/Question';
 import axios from 'axios';
 
-const baseUrl: string = '/api/forms';
+const baseUrl: string = '/api/form';
 
 let token: string | null = null;
 

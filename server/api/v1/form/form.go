@@ -9,9 +9,10 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	form := r.Group("/form")
 	{
-		form.POST("/create", create)
+		form.POST("/create", middlewares.Authorized, create)
 		form.GET("/:id", formFromID)
 		form.PATCH("/:id", update)
 		form.DELETE("/:id", middlewares.Authorized, removeForm)
+		form.GET("/", middlewares.Authorized, getUserForms)
 	}
 }

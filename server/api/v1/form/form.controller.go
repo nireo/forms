@@ -13,13 +13,16 @@ type Form = models.Form
 // Question type alias
 type Question = models.Question
 
+// User type alias
+type User = models.User
+
 // create form
 func create(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
 
 	type RequestBody struct {
-		Title       string `json:"title" binding:"required"`
-		Description string `json:"description" binding:"required"`
+		Title string `json:"title" binding:"required"`
 	}
 
 	var requestBody RequestBody
@@ -32,9 +35,11 @@ func create(c *gin.Context) {
 
 	form := Form{
 		Title:       requestBody.Title,
-		Description: requestBody.Description,
+		Description: "",
 		Questions:   []Question{},
 		UniqueID:    uniqueID,
+		User:        user,
+		UserID:      user.ID,
 	}
 
 	db.NewRecord(form)
@@ -75,6 +80,23 @@ func getAllForms(c *gin.Context) {
 	var forms []Form
 
 	if err := db.Preload("User").Limit(10).Order("id desc").Find(&forms).Error; err != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
+	serialized := make([]common.JSON, len(forms), len(forms))
+	for index := range forms {
+		serialized[index] = forms[index].Serialize()
+	}
+	c.JSON(200, serialized)
+}
+
+func getUserForms(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
+	var forms []Form
+
+	if err := db.Model(&user).Related(&forms).Error; err != nil {
 		c.AbortWithStatus(500)
 		return
 	}

@@ -15,7 +15,7 @@ export const Modal: React.FC<Props> = ({ handleClose, show, children }) => {
       <div className="modal-main">
         <div style={{ padding: '2rem' }}>{children}</div>
         <div>
-          <Button variant="text" color="primary">
+          <Button onClick={() => handleClose()} variant="text" color="primary">
             Close
           </Button>
         </div>
