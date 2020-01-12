@@ -23,6 +23,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { setNotification } from '../../store/notification/reducer';
 import { Notification } from '../../interfaces/Notification';
+import { AnswerMain } from '../Answer/AnswerMain';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -61,6 +62,7 @@ const TestView: React.FC<Props> = props => {
   const [title, setTitle] = useState<string>('Untitled Form');
   const [description, setDescription] = useState<string>('');
   const [selected, setSelected] = useState<Question | null>(null);
+  const [preview, setPreview] = useState<boolean>(false);
 
   const newQuestion = () => {
     const uuid: string = uuidv4();
@@ -111,91 +113,101 @@ const TestView: React.FC<Props> = props => {
     props.setNotification(notification);
   };
 
-  console.log(props.create);
-
   return (
-    <Container maxWidth="md" style={{ marginTop: '0' }}>
-      <Paper className={classes.paper}>
-        <input
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
-          style={{
-            border: 'none',
-            fontSize: '36px',
-            fontFamily: 'Roboto',
-            width: '100%'
-          }}
-          placeholder="Title..."
-          maxLength={50}
-        />
-        <FormInput
-          placeholder="Form description"
-          fontSize={24}
-          value={description}
-          setValue={setDescription}
-        />
-        {props.create.map((q: Question) => (
-          <Grid container spacing={1}>
-            <Grid item xs={1}>
-              {q === selected && (
-                <IconButton
-                  color="primary"
-                  aria-label="close"
-                  component="span"
-                  style={{ marginTop: '2rem' }}
-                  onClick={() => setSelected(null)}
-                >
-                  <CloseIcon />
-                </IconButton>
-              )}
-              {q !== selected && (
-                <IconButton
-                  color="primary"
-                  aria-label="edit"
-                  component="span"
-                  style={{ marginTop: '2rem' }}
-                  onClick={() => findAndSetSelected(q.temp_uuid)}
-                >
-                  <EditIcon />
-                </IconButton>
-              )}
-            </Grid>
-            <Grid item xs={11}>
-              {selected !== null && q === selected && (
-                <div>
-                  <EditQuestion
-                    updateWithNewInfo={updateWithNewInfo}
-                    question={selected}
-                  />
-                </div>
-              )}
-              {selected !== q && (
-                <div style={{ marginTop: '2rem' }}>
-                  <TextField
-                    disabled
-                    id="standard-disabled"
-                    label="Question"
-                    defaultValue={q.question}
-                    style={{ width: '100%' }}
-                  />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => removeQuestion(q.temp_uuid)}
-                    style={{ marginTop: '1rem' }}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              )}
-            </Grid>
-          </Grid>
-        ))}
-        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <NewQuestion newQuestion={newQuestion} />
-        </div>
-      </Paper>
-    </Container>
+    <div>
+      {!preview && (
+        <Container maxWidth="md" style={{ marginTop: '0' }}>
+          <Paper className={classes.paper}>
+            <input
+              value={title}
+              onChange={({ target }) => setTitle(target.value)}
+              style={{
+                border: 'none',
+                fontSize: '36px',
+                fontFamily: 'Roboto',
+                width: '100%'
+              }}
+              placeholder="Title..."
+              maxLength={50}
+            />
+            <FormInput
+              placeholder="Form description"
+              fontSize={24}
+              value={description}
+              setValue={setDescription}
+            />
+            <Button
+              onClick={() => setPreview(true)}
+              variant="contained"
+              color="primary"
+            >
+              Preview
+            </Button>
+            {props.create.map((q: Question) => (
+              <Grid container spacing={1}>
+                <Grid item xs={1}>
+                  {q === selected && (
+                    <IconButton
+                      color="primary"
+                      aria-label="close"
+                      component="span"
+                      style={{ marginTop: '2rem' }}
+                      onClick={() => setSelected(null)}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  )}
+                  {q !== selected && (
+                    <IconButton
+                      color="primary"
+                      aria-label="edit"
+                      component="span"
+                      style={{ marginTop: '2rem' }}
+                      onClick={() => findAndSetSelected(q.temp_uuid)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  )}
+                </Grid>
+                <Grid item xs={11}>
+                  {selected !== null && q === selected && (
+                    <div>
+                      <EditQuestion
+                        updateWithNewInfo={updateWithNewInfo}
+                        question={selected}
+                      />
+                    </div>
+                  )}
+                  {selected !== q && (
+                    <div style={{ marginTop: '2rem' }}>
+                      <TextField
+                        disabled
+                        id="standard-disabled"
+                        label="Question"
+                        defaultValue={q.question}
+                        style={{ width: '100%' }}
+                      />
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => removeQuestion(q.temp_uuid)}
+                        style={{ marginTop: '1rem' }}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  )}
+                </Grid>
+              </Grid>
+            ))}
+            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+              <NewQuestion newQuestion={newQuestion} />
+            </div>
+          </Paper>
+        </Container>
+      )}
+      {preview && <AnswerMain previewData={props.create} />}
+    </div>
   );
 };
 

@@ -47,7 +47,11 @@ interface AnswerItem {
   trueOrFalse: boolean;
 }
 
-export const AnswerMain: React.FC = props => {
+type Props = {
+  previewData?: Question[];
+};
+
+export const AnswerMain: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [finished, setFinished] = useState<boolean>(false);
 
@@ -98,20 +102,37 @@ export const AnswerMain: React.FC = props => {
 
   useEffect(() => {
     if (mockData.length !== answerItems.length) {
-      setAnswerItem(
-        mockData.map((q: Question) => {
-          const answer: AnswerItem = {
-            answer: [],
-            required: q.required,
-            type: q.answerType,
-            question: q.question,
-            temp_uuid: q.temp_uuid,
-            questionAnswers: q.answers,
-            trueOrFalse: false
-          };
-          return answer;
-        })
-      );
+      if (props.previewData === undefined) {
+        setAnswerItem(
+          mockData.map((q: Question) => {
+            const answer: AnswerItem = {
+              answer: [],
+              required: q.required,
+              type: q.answerType,
+              question: q.question,
+              temp_uuid: q.temp_uuid,
+              questionAnswers: q.answers,
+              trueOrFalse: false
+            };
+            return answer;
+          })
+        );
+      } else {
+        setAnswerItem(
+          props.previewData.map((q: Question) => {
+            const answer: AnswerItem = {
+              answer: [],
+              required: q.required,
+              type: q.answerType,
+              question: q.question,
+              temp_uuid: q.temp_uuid,
+              questionAnswers: q.answers,
+              trueOrFalse: false
+            };
+            return answer;
+          })
+        );
+      }
     }
   }, []);
 
@@ -287,6 +308,7 @@ export const AnswerMain: React.FC = props => {
                   style={{ marginTop: '3rem' }}
                   color="primary"
                   endIcon={<SendIcon />}
+                  disabled={props.previewData === undefined ? false : true}
                 >
                   Send
                 </Button>
