@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Navbar from './components/Layout/Navbar';
@@ -12,8 +12,23 @@ import TestView from './components/Create/TestView';
 import { NotFound } from './components/Layout/NotFound';
 import { Notification } from './components/Layout/Notification';
 import { AnswerMain } from './components/Answer/AnswerMain';
+import { connect } from 'react-redux';
+import { AppState } from './store';
+import { User } from './interfaces/User';
+import { checkLocalStorage } from './store/user/reducer';
 
-const App: React.FC = () => {
+type Props = {
+  user: User;
+  checkLocalStorage: () => void;
+};
+
+const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
+  useEffect(() => {
+    if (!user) {
+      checkLocalStorage();
+    }
+  }, [user]);
+
   return (
     <Router>
       <CssBaseline />
@@ -37,4 +52,8 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+const mapStateToProps = (state: AppState) => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, { checkLocalStorage })(App);

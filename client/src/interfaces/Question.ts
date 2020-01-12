@@ -2,7 +2,7 @@ export interface Form {
   title: string;
   description: string;
   questions: Question[];
-  id?: string;
+  id?: number;
 }
 
 export interface Question {

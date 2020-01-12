@@ -13,14 +13,22 @@ const getConfig = () => ({
   headers: { Authorization: token }
 });
 
-export const getForm = (id: string) => {
-  return axios.get(`${baseUrl}/${id}`);
+export const getForm = async (id: string) => {
+  const response = await axios.get(`${baseUrl}/${id}`);
+  return response.data;
 };
 
-export const updateForm = (form: Form, id: string) => {
-  return axios.patch(`${baseUrl}/${id}`, form, getConfig());
+export const updateForm = async (form: Form, id: string) => {
+  const response = await axios.patch(`${baseUrl}/${id}`, form, getConfig());
+  return response.data;
 };
 
-export const createForm = (form: Form) => {
-  return axios.post(`${baseUrl}/create`, form, getConfig());
+export const createForm = async (form: Form) => {
+  const response = await axios.post(`${baseUrl}/create`, form, getConfig());
+  return response.data;
+};
+
+export const deleteForm = async (id: string) => {
+  const response = await axios.delete(`${baseUrl}/${id}`, getConfig());
+  return response.data;
 };
