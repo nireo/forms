@@ -2,11 +2,14 @@ import { Form } from './../../interfaces/Question';
 import { Dispatch } from 'redux';
 import {
   createForm as serviceCreateForm,
-  deleteForm as serviceDeleteForm
+  deleteForm as serviceDeleteForm,
+  getUserForms as serviceGetUserForms
 } from '../../services/form.service';
 
 const reducer = (state: Form[] = [], action: any) => {
   switch (action.type) {
+    case 'INIT':
+      return action.data;
     case 'CREATE':
       if (state.length === 0) {
         return [action.data];
@@ -20,6 +23,16 @@ const reducer = (state: Form[] = [], action: any) => {
     default:
       return state;
   }
+};
+
+export const getUserForms = () => {
+  return async (dispatch: Dispatch) => {
+    const forms: Form[] = await serviceGetUserForms();
+    dispatch({
+      type: 'INIT',
+      data: forms
+    });
+  };
 };
 
 export const createForm = (info: Form) => {

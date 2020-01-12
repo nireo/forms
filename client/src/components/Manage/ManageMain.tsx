@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../store/index';
 import Container from '@material-ui/core/Container';
@@ -8,7 +8,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Form } from '../../interfaces/Question';
 import CardContent from '@material-ui/core/CardContent';
 import { NewQuestion } from '../Create/NewQuestion';
-import { createForm } from '../../store/forms/reducer';
+import { createForm, getUserForms } from '../../store/forms/reducer';
 import { Modal } from '../Layout/Modal';
 import { TextField } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
@@ -41,12 +41,26 @@ type Props = {
   forms?: Form[];
   createForm: (info: Form) => void;
   user: User | null;
+  getUserForms: () => void;
 };
 
-const ManageMain: React.FC<Props> = ({ forms, createForm, user }) => {
+const ManageMain: React.FC<Props> = ({
+  forms,
+  createForm,
+  user,
+  getUserForms
+}) => {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('Untitled form');
+  const [loaded, setLoaded] = useState<boolean>(false);
   const classes = useStyles();
+
+  useEffect(() => {
+    if (loaded === false && user !== null) {
+      getUserForms();
+      setLoaded(true);
+    }
+  }, [getUserForms, loaded, user]);
 
   const handleOpen = (): void => {
     setOpen(true);
@@ -142,4 +156,6 @@ const mapStateToProps = (state: AppState) => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, { createForm })(ManageMain);
+export default connect(mapStateToProps, { createForm, getUserForms })(
+  ManageMain
+);

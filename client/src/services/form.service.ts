@@ -32,3 +32,8 @@ export const deleteForm = async (id: string) => {
   const response = await axios.delete(`${baseUrl}/${id}`, getConfig());
   return response.data;
 };
+
+export const getUserForms = async () => {
+  const response = await axios.get(baseUrl, getConfig());
+  return response.data;
+};
