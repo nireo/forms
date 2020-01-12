@@ -1,9 +1,10 @@
 import { Dispatch } from 'redux';
-import { User, UserAction } from './../../interfaces/User';
+import { User, UserAction, UserWithToken } from './../../interfaces/User';
 import {
   login as log_in,
   register as registerUser
 } from '../../services/user.service';
+import setToken from '../../utils/setToken';
 
 const reducer = (state: null | User = null, action: any) => {
   switch (action.type) {
@@ -20,33 +21,40 @@ export const logout = () => {
   return { type: 'LOG_OUT' };
 };
 
-export const login = (credentials: UserAction) => {
+export const login = (credentials: UserAction, remember: boolean) => {
   return async (dispatch: Dispatch) => {
-    const user = await log_in(credentials);
+    const user: UserWithToken = await log_in(credentials);
+    if (remember) {
+      window.localStorage.setItem('user', JSON.stringify(user));
+    }
+    setToken(user.token);
     dispatch({
       type: 'LOG_IN',
-      data: user
+      data: user.user
     });
   };
 };
 
 export const register = (credentials: UserAction) => {
   return async (dispatch: Dispatch) => {
-    const user = await registerUser(credentials);
+    const user: UserWithToken = await registerUser(credentials);
+    window.localStorage.setItem('user', JSON.stringify(user));
+    setToken(user.token);
     dispatch({
       type: 'LOG_IN',
-      data: user
+      data: user.user
     });
   };
 };
 
 export const checkLocalStorage = () => {
-  const userInfo = localStorage.getItem('user');
+  const userInfo: string | null = localStorage.getItem('user');
   if (userInfo) {
-    const userInfoJSON = JSON.parse(userInfo);
+    const userInfoJSON: UserWithToken = JSON.parse(userInfo);
+    setToken(userInfoJSON.token);
     return {
       type: 'LOG_IN',
-      data: userInfoJSON
+      data: userInfoJSON.user
     };
   }
 };

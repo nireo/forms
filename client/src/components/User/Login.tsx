@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type Props = {
   setShowRegister: () => void;
-  login: (credentials: UserAction) => void;
+  login: (credentials: UserAction, remember: boolean) => void;
 };
 
 const Login: React.FC<Props> = props => {
@@ -53,7 +53,7 @@ const Login: React.FC<Props> = props => {
 
     const credentials: UserAction = { username, password };
     try {
-      props.login(credentials);
+      props.login(credentials, remember);
     } catch {
       console.log('something went wrong logging you in.');
     }

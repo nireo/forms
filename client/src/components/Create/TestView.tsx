@@ -87,6 +87,10 @@ const TestView: React.FC<Props> = props => {
     props.removeQuestion(id);
   };
 
+  const hidePreview = () => {
+    setPreview(false);
+  };
+
   const findAndSetSelected = (id: string): void => {
     const question: Question | undefined = props.create.find(
       q => q.temp_uuid === id
@@ -206,7 +210,9 @@ const TestView: React.FC<Props> = props => {
           </Paper>
         </Container>
       )}
-      {preview && <AnswerMain previewData={props.create} />}
+      {preview && (
+        <AnswerMain hidePreview={hidePreview} previewData={props.create} />
+      )}
     </div>
   );
 };

@@ -49,6 +49,7 @@ interface AnswerItem {
 
 type Props = {
   previewData?: Question[];
+  hidePreview?: () => void;
 };
 
 export const AnswerMain: React.FC<Props> = props => {
@@ -223,6 +224,19 @@ export const AnswerMain: React.FC<Props> = props => {
           <Paper className={classes.paper} style={{ marginBottom: '0' }}>
             <Typography variant="h4">The form name</Typography>
             <Typography>The form description</Typography>
+            {props.hidePreview !== undefined && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  if (props.hidePreview !== undefined) {
+                    props.hidePreview();
+                  }
+                }}
+              >
+                Hide preview
+              </Button>
+            )}
             <hr style={{ marginBottom: '1rem' }} />
             <form onSubmit={submitQuestion}>
               {answerItems.map((answer: AnswerItem, index: number) => (

@@ -9,7 +9,6 @@ import (
 type Answer struct {
 	gorm.Model
 	toForm      string
-	Answer      []string
 	Type        uint8
 	SliderValue uint
 	SliderMax   uint

@@ -5,7 +5,7 @@ const baseUrl: string = '/api/forms';
 
 let token: string | null = null;
 
-const setToken = (newToken: string) => {
+export const setToken = (newToken: string) => {
   token = `bearer ${newToken}`;
 };
 
