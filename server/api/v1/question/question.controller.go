@@ -64,3 +64,30 @@ func createQuestion(c *gin.Context) {
 	db.Create(&question)
 	c.JSON(200, question.Serialize())
 }
+
+func deleteQuestion(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Param("id")
+	user := c.MustGet("user").(User)
+
+	var question Question
+	if err := db.Where("id = ? ", id).First(&question).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	// check ownership
+	var form Form
+	if err := db.Where("id = ?", question.FormID).First(&form).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	if !(form.UserID == user.ID) {
+		c.AbortWithStatus(403)
+		return
+	}
+
+	db.Delete(&question)
+	c.Status(204)
+}
