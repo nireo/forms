@@ -91,3 +91,43 @@ func deleteQuestion(c *gin.Context) {
 	db.Delete(&question)
 	c.Status(204)
 }
+
+func updateQuestion(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Param("id")
+
+	type RequestBody struct {
+		Required   bool     `json:"required" binding:"required"`
+		Question   string   `json:"question" binding:"required"`
+		AnswerType uint8    `json:"answerType" binding:"required"`
+		Answers    []string `json:"answers" binding:"required"`
+		Step       uint     `json:"step" binding:"required"`
+		Min        uint     `json:"min" binding:"required"`
+		Max        uint     `json:"max" binding:"required"`
+		UUID       string   `json:"temp_uuid" binding:"required"`
+	}
+
+	var requestBody RequestBody
+	if err := c.BindJSON(&requestBody); err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	var question Question
+	if err := db.Where("id = ?", id).First(&question).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	question.Required = requestBody.Required
+	question.Question = requestBody.Question
+	question.AnswerType = requestBody.AnswerType
+	question.Answers = requestBody.Answers
+	question.Step = requestBody.Step
+	question.Min = requestBody.Min
+	question.Max = requestBody.Max
+	question.UUID = requestBody.UUID
+
+	db.Save(&question)
+	c.JSON(200, question.Serialize())
+}

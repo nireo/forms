@@ -11,5 +11,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	{
 		question.POST("/:id", middlewares.Authorized, createQuestion)
 		question.DELETE("/:id", middlewares.Authorized, deleteQuestion)
+		question.PATCH("/:id", middlewares.Authorized, updateQuestion)
 	}
 }
