@@ -78,6 +78,7 @@ func formFromID(c *gin.Context) {
 func removeForm(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	id := c.Param("id")
+	user := c.MustGet("user").(User)
 
 	var form Form
 	if err := db.Where("id = ?", id).First(&form).Error; err != nil {
@@ -85,25 +86,13 @@ func removeForm(c *gin.Context) {
 		return
 	}
 
-	db.Delete(&form)
-	c.Status(204)
-}
-
-// just as a test function
-func getAllForms(c *gin.Context) {
-	db := c.MustGet("db").(*gorm.DB)
-	var forms []Form
-
-	if err := db.Preload("User").Limit(10).Order("id desc").Find(&forms).Error; err != nil {
-		c.AbortWithStatus(500)
+	if !(user.ID == form.UserID) {
+		c.AbortWithStatus(404)
 		return
 	}
 
-	serialized := make([]common.JSON, len(forms), len(forms))
-	for index := range forms {
-		serialized[index] = forms[index].Serialize()
-	}
-	c.JSON(200, serialized)
+	db.Delete(&form)
+	c.Status(204)
 }
 
 func getUserForms(c *gin.Context) {
