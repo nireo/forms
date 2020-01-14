@@ -16,6 +16,12 @@ type Form struct {
 	UserID      uint
 }
 
+// FormQuestion is used when returning an array with questions and the form
+type FormQuestion struct {
+	Form      common.JSON   `json:"form"`
+	Questions []common.JSON `json:"questions"`
+}
+
 // Serialize form data
 func (form *Form) Serialize() common.JSON {
 	return common.JSON{
@@ -23,5 +29,14 @@ func (form *Form) Serialize() common.JSON {
 		"description": form.Description,
 		"id":          form.ID,
 		"created_at":  form.CreatedAt,
+		"questions":   form.Questions,
+	}
+}
+
+// Serialize form question data
+func (fq *FormQuestion) Serialize() common.JSON {
+	return common.JSON{
+		"form":      fq.Form,
+		"questions": fq.Questions,
 	}
 }

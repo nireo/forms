@@ -50,14 +50,29 @@ func create(c *gin.Context) {
 func formFromID(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	id := c.Param("id")
-	var form Form
 
-	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
+	var form Form
+	if err := db.Set("gorm:auto_preload", true).Where("id = ?", id).First(&form).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
 
-	c.JSON(200, form.Serialize())
+	var questions []Question
+	if err := db.Model(&form).Related(&questions).Error; err != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
+	formSerialized := form.Serialize()
+	questionsSerialized := make([]common.JSON, len(questions), len(questions))
+	for index := range questions {
+		questionsSerialized[index] = questions[index].Serialize()
+	}
+
+	c.JSON(200, gin.H{
+		"form":      formSerialized,
+		"questions": questionsSerialized,
+	})
 }
 
 func removeForm(c *gin.Context) {
