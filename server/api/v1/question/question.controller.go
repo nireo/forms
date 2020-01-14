@@ -1,6 +1,7 @@
 package question
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -101,8 +102,8 @@ func updateQuestion(c *gin.Context) {
 	id := c.Param("id")
 
 	type RequestBody struct {
-		Required   bool     `json:"required" binding:"required"`
 		Question   string   `json:"question" binding:"required"`
+		Required   string   `json:"required" binding:"required"`
 		AnswerType uint8    `json:"answerType" binding:"required"`
 		Answers    []string `json:"answers" binding:"required"`
 		Step       uint     `json:"step" binding:"required"`
@@ -114,6 +115,7 @@ func updateQuestion(c *gin.Context) {
 	var requestBody RequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
 		c.AbortWithStatus(400)
+		fmt.Println(err)
 		return
 	}
 
@@ -123,9 +125,16 @@ func updateQuestion(c *gin.Context) {
 		return
 	}
 
+	// convery required to from string to boolean since binding
+	// the request body struct fails if required == false
+	isRequired := false
+	if requestBody.Required == "true" {
+		isRequired = true
+	}
+
 	answersString := strings.Join(requestBody.Answers[:], "|")
 
-	question.Required = requestBody.Required
+	question.Required = isRequired
 	question.Question = requestBody.Question
 	question.AnswerType = requestBody.AnswerType
 	question.Answers = answersString
