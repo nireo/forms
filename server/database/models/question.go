@@ -11,7 +11,7 @@ type Question struct {
 	Required   bool
 	Question   string
 	AnswerType uint8
-	Answers    []string
+	Answers    string
 	Step       uint
 	Min        uint
 	Max        uint

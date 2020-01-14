@@ -26,9 +26,13 @@ func createAnswer(c *gin.Context) {
 	db := c.MustGet("id").(*gorm.DB)
 	id := c.Param("id")
 
+	if id == "" {
+		c.AbortWithStatus(400)
+		return
+	}
+
 	type RequestBody struct {
 		Answer string `json:"title" binding:"required"`
-		
 	}
 
 	var requestBody RequestBody
@@ -37,10 +41,7 @@ func createAnswer(c *gin.Context) {
 		return
 	}
 
-	answer := Answer{
-		Answer: requestBody.Answer,
-		toForm: id,
-	}
+	answer := Answer{}
 
 	db.NewRecord(answer)
 	db.Create(&answer)

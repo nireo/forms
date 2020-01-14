@@ -1,6 +1,8 @@
 package question
 
 import (
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/nireo/forms/server/database/models"
@@ -18,6 +20,7 @@ type Form = models.Form
 func createQuestion(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	user := c.MustGet("user").(User)
+	id := c.Param("id")
 
 	type RequestBody struct {
 		Required   bool     `json:"required" binding:"required"`
@@ -28,7 +31,6 @@ func createQuestion(c *gin.Context) {
 		Min        uint     `json:"min" binding:"required"`
 		Max        uint     `json:"max" binding:"required"`
 		UUID       string   `json:"temp_uuid" binding:"required"`
-		ToForm     uint     `json:"toForm" binding:"required"`
 	}
 
 	var requestBody RequestBody
@@ -38,7 +40,7 @@ func createQuestion(c *gin.Context) {
 	}
 
 	var form Form
-	if err := db.Set("gorm:auto_preload", true).Where("id = ?", requestBody.ToForm).First(&form).Error; err != nil {
+	if err := db.Set("gorm:auto_preload", true).Where("id = ?", id).First(&form).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
@@ -48,11 +50,13 @@ func createQuestion(c *gin.Context) {
 		return
 	}
 
+	answersString := strings.Join(requestBody.Answers[:], "|")
+
 	question := Question{
 		Required:   requestBody.Required,
 		Question:   requestBody.Question,
 		AnswerType: requestBody.AnswerType,
-		Answers:    requestBody.Answers,
+		Answers:    answersString,
 		Step:       requestBody.Step,
 		Min:        requestBody.Min,
 		Max:        requestBody.Max,
@@ -119,10 +123,12 @@ func updateQuestion(c *gin.Context) {
 		return
 	}
 
+	answersString := strings.Join(requestBody.Answers[:], "|")
+
 	question.Required = requestBody.Required
 	question.Question = requestBody.Question
 	question.AnswerType = requestBody.AnswerType
-	question.Answers = requestBody.Answers
+	question.Answers = answersString
 	question.Step = requestBody.Step
 	question.Min = requestBody.Min
 	question.Max = requestBody.Max
