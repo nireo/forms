@@ -18,7 +18,7 @@ import { RadioGroup, Radio } from '@material-ui/core';
 
 type Props = {
   removeQuestion: (id: string) => void;
-  addQuestion: (question: Question) => void;
+  addQuestion: (question: Question, id: string) => void;
   create: Question[];
   removeQuestionPreview: (id: string) => void;
   questionId: string;

@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type Props = {
   id: string;
   create: Question[];
-  addQuestion: (question: Question) => void;
+  addQuestion: (question: Question, id: string) => void;
   removeQuestion: (id: string) => void;
   clearQuestions: () => void;
   updateQuestion: (question: Question) => void;
@@ -77,8 +77,6 @@ const TestView: React.FC<Props> = props => {
     }
   }, []);
 
-  console.log(props.create);
-
   const newQuestion = () => {
     const uuid: string = uuidv4();
     const templateQuestion: Question = {
@@ -92,7 +90,7 @@ const TestView: React.FC<Props> = props => {
       max: 10
     };
 
-    props.addQuestion(templateQuestion);
+    props.addQuestion(templateQuestion, props.id);
 
     // automatically start editing new question
     setSelected(templateQuestion);

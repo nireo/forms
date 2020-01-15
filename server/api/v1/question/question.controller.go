@@ -41,7 +41,7 @@ func createQuestion(c *gin.Context) {
 	}
 
 	var form Form
-	if err := db.Set("gorm:auto_preload", true).Where("id = ?", id).First(&form).Error; err != nil {
+	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
@@ -120,7 +120,7 @@ func updateQuestion(c *gin.Context) {
 	}
 
 	var question Question
-	if err := db.Where("id = ?", id).First(&question).Error; err != nil {
+	if err := db.Where("uuid = ?", id).First(&question).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}

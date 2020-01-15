@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type Props = {
   create: Question[];
-  addQuestion: (question: Question) => void;
+  addQuestion: (question: Question, id: string) => void;
   removeQuestion: (id: string) => void;
   clearQuestions: () => void;
 };

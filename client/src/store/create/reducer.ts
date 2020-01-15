@@ -1,6 +1,10 @@
 import { Dispatch } from 'redux';
-import { Question } from './../../interfaces/Question';
+import { Question, QuestionToServer } from './../../interfaces/Question';
 import { getForm } from '../../services/form.service';
+import {
+  createQuestion,
+  updateQuestion as serviceUpdateQuestion
+} from '../../services/question.service';
 
 const reducer = (state: Question[] = [], action: any) => {
   switch (action.type) {
@@ -29,8 +33,14 @@ const turnAnswersToArray = (answers: string): string[] => {
 export const initQuestions = (id: string) => {
   return async (dispatch: Dispatch) => {
     const response: any = await getForm(id);
-    console.log('?!?!?');
-    console.log(response);
+
+    // answer array is stored as a string so here we parse it
+    for (let i = 0; i < response.questions.length; i++) {
+      response.questions[i].answers = turnAnswersToArray(
+        response.questions[i].answers
+      );
+    }
+
     dispatch({
       type: 'SET_FULL',
       data: response.questions
@@ -46,10 +56,22 @@ export const removeQuestion = (id: string) => {
   return { type: 'REMOVE_QUESTION', id: id };
 };
 
-export const addQuestion = (question: Question) => {
-  return {
-    type: 'ADD_QUESTION',
-    data: question
+export const addQuestion = (question: Question, id: string) => {
+  return async (dispatch: Dispatch) => {
+    let questionToServer: any = question;
+    if (questionToServer.answers.length < 1) {
+      questionToServer.answers = '';
+    } else {
+      questionToServer.answers = question.answers.join('|');
+    }
+
+    const newQuestion: any = await createQuestion(id, questionToServer);
+    newQuestion.answers = turnAnswersToArray(newQuestion.answers);
+
+    dispatch({
+      type: 'ADD_QUESTION',
+      data: newQuestion
+    });
   };
 };
 
@@ -61,9 +83,24 @@ export const setQuestionFully = (questions: Question[]) => {
 };
 
 export const updateQuestion = (question: Question) => {
-  return {
-    type: 'UPDATE',
-    data: question
+  return async (dispatch: Dispatch) => {
+    let questionToServer: any = question;
+    if (questionToServer.answers.length < 1) {
+      questionToServer.answers = '';
+    } else {
+      questionToServer.answers = question.answers.join('|');
+    }
+
+    const newQuestion: any = await serviceUpdateQuestion(
+      questionToServer.temp_uuid,
+      questionToServer
+    );
+    newQuestion.answers = turnAnswersToArray(newQuestion.answers);
+
+    dispatch({
+      type: 'UPDATE_QUESTION',
+      data: newQuestion
+    });
   };
 };
 

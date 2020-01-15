@@ -27,6 +27,18 @@ export interface Question {
   max: number;
 }
 
+// same as above, but has answers as a string
+export interface QuestionToServer {
+  required: boolean;
+  question: string;
+  answerType: QuestionType;
+  answers: string;
+  temp_uuid: string;
+  step: number;
+  min: number;
+  max: number;
+}
+
 export enum QuestionType {
   MultipleChoice = 1,
   Written = 2,
