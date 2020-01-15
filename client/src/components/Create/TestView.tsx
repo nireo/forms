@@ -71,11 +71,13 @@ const TestView: React.FC<Props> = props => {
   const [initial, setInitial] = useState<boolean>(false);
 
   useEffect(() => {
-    if (initial === false && props.create === []) {
-      initQuestions(props.id);
+    if (initial === false) {
+      props.initQuestions(props.id);
       setInitial(true);
     }
   }, []);
+
+  console.log(props.create);
 
   const newQuestion = () => {
     const uuid: string = uuidv4();

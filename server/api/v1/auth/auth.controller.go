@@ -112,11 +112,6 @@ func login(c *gin.Context) {
 		return
 	}
 
-	if !checkHash(body.Password, user.Password) {
-		c.AbortWithStatus(401)
-		return
-	}
-
 	serialized := user.Serialize()
 	token, err := generateToken(serialized)
 

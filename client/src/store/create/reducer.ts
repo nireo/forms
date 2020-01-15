@@ -29,7 +29,8 @@ const turnAnswersToArray = (answers: string): string[] => {
 export const initQuestions = (id: string) => {
   return async (dispatch: Dispatch) => {
     const response: any = await getForm(id);
-    response.questions.answers = turnAnswersToArray(response.questions.answers);
+    console.log('?!?!?');
+    console.log(response);
     dispatch({
       type: 'SET_FULL',
       data: response.questions
