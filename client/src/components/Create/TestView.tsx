@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -9,7 +9,8 @@ import {
   addQuestion,
   removeQuestion,
   clearQuestions,
-  updateQuestion
+  updateQuestion,
+  initQuestions
 } from '../../store/create/reducer';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
@@ -49,12 +50,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 type Props = {
+  id: string;
   create: Question[];
   addQuestion: (question: Question) => void;
   removeQuestion: (id: string) => void;
   clearQuestions: () => void;
   updateQuestion: (question: Question) => void;
   setNotification: (notification: Notification) => void;
+  initQuestions: (id: string) => void;
 };
 
 const TestView: React.FC<Props> = props => {
@@ -63,6 +66,16 @@ const TestView: React.FC<Props> = props => {
   const [description, setDescription] = useState<string>('');
   const [selected, setSelected] = useState<Question | null>(null);
   const [preview, setPreview] = useState<boolean>(false);
+
+  // used for initially loading all questions
+  const [initial, setInitial] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (initial === false && props.create === []) {
+      initQuestions(props.id);
+      setInitial(true);
+    }
+  }, []);
 
   const newQuestion = () => {
     const uuid: string = uuidv4();
@@ -226,5 +239,6 @@ export default connect(mapStateToProps, {
   removeQuestion,
   clearQuestions,
   updateQuestion,
-  setNotification
+  setNotification,
+  initQuestions
 })(TestView);

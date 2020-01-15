@@ -34,16 +34,15 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
       <CssBaseline />
       <Navbar />
       <Switch>
-        <Route
-          exact
-          path="/:id/edit"
-          render={({ match }) => <MainView id={+match.params.id} />}
-        />
         <Route exact path="/view" render={() => <FormMain />} />
         <Route exact path="/" render={() => <ManageMain />} />
         <Route exact path="/welcome" render={() => <Welcome />} />
         <Route exact path="/create" render={() => <CreateMain />} />
-        <Route exact path="/test" render={() => <TestView />} />
+        <Route
+          exact
+          path="/:id/edit"
+          render={({ match }) => <TestView id={match.params.id} />}
+        />
         <Route exact path="/answer-test" render={() => <AnswerMain />} />
         <Route render={() => <NotFound />} />
       </Switch>

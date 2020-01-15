@@ -1,9 +1,11 @@
+import { Question } from './../../components/Form/Question';
 import { Form } from './../../interfaces/Question';
 import { Dispatch } from 'redux';
 import {
   createForm as serviceCreateForm,
   deleteForm as serviceDeleteForm,
-  getUserForms as serviceGetUserForms
+  getUserForms as serviceGetUserForms,
+  getForm
 } from '../../services/form.service';
 
 const reducer = (state: Form[] = [], action: any) => {

@@ -15,6 +15,7 @@ const getConfig = () => ({
 
 export const getForm = async (id: string) => {
   const response = await axios.get(`${baseUrl}/${id}`);
+  console.log(response.data);
   return response.data;
 };
 

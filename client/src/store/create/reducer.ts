@@ -1,4 +1,6 @@
+import { Dispatch } from 'redux';
 import { Question } from './../../interfaces/Question';
+import { getForm } from '../../services/form.service';
 
 const reducer = (state: Question[] = [], action: any) => {
   switch (action.type) {
@@ -18,6 +20,21 @@ const reducer = (state: Question[] = [], action: any) => {
     default:
       return state;
   }
+};
+
+const turnAnswersToArray = (answers: string): string[] => {
+  return answers.split('|');
+};
+
+export const initQuestions = (id: string) => {
+  return async (dispatch: Dispatch) => {
+    const response: any = await getForm(id);
+    response.questions.answers = turnAnswersToArray(response.questions.answers);
+    dispatch({
+      type: 'SET_FULL',
+      data: response.questions
+    });
+  };
 };
 
 export const clearQuestions = () => {
