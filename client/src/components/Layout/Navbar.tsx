@@ -6,9 +6,13 @@ import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import Button from '@material-ui/core/Button';
 import { Question } from '../../interfaces/Question';
+import { logout } from '../../store/user/reducer';
+import { User } from '../../interfaces/User';
 
 type Props = {
   create: Question[];
+  user: User;
+  logout: () => void;
 };
 
 const Navbar: React.FC<Props> = () => {
@@ -28,6 +32,9 @@ const Navbar: React.FC<Props> = () => {
             <Button color="inherit" style={{ color: 'white' }}>
               Save
             </Button>
+            <Button color="inherit" style={{ color: 'white' }}>
+              Log out
+            </Button>
           </Toolbar>
         </AppBar>
       </AppBar>
@@ -36,7 +43,8 @@ const Navbar: React.FC<Props> = () => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  create: state.create
+  create: state.create,
+  user: state.user
 });
 
-export default connect(mapStateToProps, {})(Navbar);
+export default connect(mapStateToProps, { logout })(Navbar);

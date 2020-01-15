@@ -52,7 +52,7 @@ func formFromID(c *gin.Context) {
 	id := c.Param("id")
 
 	var form Form
-	if err := db.Set("gorm:auto_preload", true).Where("id = ?", id).First(&form).Error; err != nil {
+	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}

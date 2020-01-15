@@ -19,6 +19,7 @@ import Grid from '@material-ui/core/Grid';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { User } from '../../interfaces/User';
 import { UserMain } from '../User/UserMain';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -101,16 +102,23 @@ const ManageMain: React.FC<Props> = ({
       <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
         {forms.map(form => (
           <Card className={classes.card} style={{ marginBottom: '0.5rem' }}>
-            <CardActionArea>
-              <CardContent>
-                <Grid container>
-                  <Grid item xs={11}>
-                    <Typography className={classes.title} gutterBottom>
-                      {form.title}
-                    </Typography>
-                    <Typography>{form.description.slice(0, 50)}</Typography>
-                  </Grid>
-                  <Grid item xs={1}>
+            <CardContent>
+              <Grid container>
+                <Grid item xs={11}>
+                  <Typography className={classes.title} gutterBottom>
+                    {form.title}
+                  </Typography>
+                  <Typography>{form.description.slice(0, 50)}</Typography>
+                  {form.created_at !== undefined && (
+                    <Typography>Created {form.created_at}</Typography>
+                  )}
+                </Grid>
+                <Grid item xs={1}>
+                  <Link
+                    to={`/${
+                      form.uuid === undefined ? '' : `${form.uuid}`
+                    }/edit`}
+                  >
                     <IconButton
                       color="primary"
                       aria-label="edit-form"
@@ -118,10 +126,10 @@ const ManageMain: React.FC<Props> = ({
                     >
                       <EditIcon />
                     </IconButton>
-                  </Grid>
+                  </Link>
                 </Grid>
-              </CardContent>
-            </CardActionArea>
+              </Grid>
+            </CardContent>
           </Card>
         ))}
       </div>

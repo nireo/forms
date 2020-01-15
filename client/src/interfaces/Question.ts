@@ -2,7 +2,11 @@ export interface Form {
   title: string;
   description: string;
   questions: Question[];
+  created_at?: string;
   id?: number;
+
+  // id used for getting the form so that the number id doesn't show
+  uuid?: string;
 }
 
 export interface Question {

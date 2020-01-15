@@ -30,6 +30,7 @@ func (form *Form) Serialize() common.JSON {
 		"id":          form.ID,
 		"created_at":  form.CreatedAt,
 		"questions":   form.Questions,
+		"uuid":        form.UniqueID,
 	}
 }
 

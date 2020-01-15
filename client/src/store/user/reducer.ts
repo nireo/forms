@@ -18,6 +18,7 @@ const reducer = (state: null | User = null, action: any) => {
 };
 
 export const logout = () => {
+  localStorage.clear();
   return { type: 'LOG_OUT' };
 };
 
