@@ -3,7 +3,8 @@ import { Question, QuestionToServer } from './../../interfaces/Question';
 import { getForm } from '../../services/form.service';
 import {
   createQuestion,
-  updateQuestion as serviceUpdateQuestion
+  updateQuestion as serviceUpdateQuestion,
+  deleteQuestion
 } from '../../services/question.service';
 
 const reducer = (state: Question[] = [], action: any) => {
@@ -53,21 +54,25 @@ export const clearQuestions = () => {
 };
 
 export const removeQuestion = (id: string) => {
-  return { type: 'REMOVE_QUESTION', id: id };
+  return async (dispatch: Dispatch) => {
+    await removeQuestion(id);
+    dispatch({
+      type: 'REMOVE_QUESTION',
+      data: id
+    });
+  };
 };
 
 export const addQuestion = (question: Question, id: string) => {
   return async (dispatch: Dispatch) => {
-    let questionToServer: any = question;
-    if (questionToServer.answers.length < 1) {
-      questionToServer.answers = '';
+    let copy: any = question;
+    if (copy.required) {
+      copy.required = 'true';
     } else {
-      questionToServer.answers = question.answers.join('|');
+      copy.required = 'false';
     }
-
-    const newQuestion: any = await createQuestion(id, questionToServer);
+    const newQuestion: any = await createQuestion(id, copy);
     newQuestion.answers = turnAnswersToArray(newQuestion.answers);
-
     dispatch({
       type: 'ADD_QUESTION',
       data: newQuestion

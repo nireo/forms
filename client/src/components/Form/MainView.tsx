@@ -3,7 +3,6 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { makeStyles } from '@material-ui/core/styles';
-import CreateMain from '../Create/CreateMain';
 import { AnswersMain } from '../Answers/AnswersMain';
 import Container from '@material-ui/core/Container';
 
@@ -41,7 +40,6 @@ export const MainView: React.FC<Props> = props => {
           </Tabs>
         </Paper>
       </Container>
-      {page === 0 && <CreateMain />}
       {page === 1 && <AnswersMain />}
     </div>
   );

@@ -24,9 +24,7 @@ export const logout = () => {
 
 export const login = (credentials: UserAction, remember: boolean) => {
   return async (dispatch: Dispatch) => {
-    console.log(credentials);
     const user: UserWithToken = await log_in(credentials);
-    console.log(user);
     if (remember) {
       window.localStorage.setItem('user', JSON.stringify(user));
     }

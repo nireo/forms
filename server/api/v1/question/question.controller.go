@@ -24,7 +24,7 @@ func createQuestion(c *gin.Context) {
 	id := c.Param("id")
 
 	type RequestBody struct {
-		Required   bool     `json:"required" binding:"required"`
+		Required   string   `json:"required" binding:"required"`
 		Question   string   `json:"question" binding:"required"`
 		AnswerType uint8    `json:"answerType" binding:"required"`
 		Answers    []string `json:"answers" binding:"required"`
@@ -36,6 +36,7 @@ func createQuestion(c *gin.Context) {
 
 	var requestBody RequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
+		fmt.Println(err)
 		c.AbortWithStatus(400)
 		return
 	}
@@ -51,10 +52,14 @@ func createQuestion(c *gin.Context) {
 		return
 	}
 
+	isRequired := false
+	if requestBody.Required == "true" {
+		isRequired = true
+	}
 	answersString := strings.Join(requestBody.Answers[:], "|")
 
 	question := Question{
-		Required:   requestBody.Required,
+		Required:   isRequired,
 		Question:   requestBody.Question,
 		AnswerType: requestBody.AnswerType,
 		Answers:    answersString,
@@ -76,7 +81,7 @@ func deleteQuestion(c *gin.Context) {
 	user := c.MustGet("user").(User)
 
 	var question Question
-	if err := db.Where("id = ? ", id).First(&question).Error; err != nil {
+	if err := db.Where("uuid = ? ", id).First(&question).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
@@ -125,7 +130,7 @@ func updateQuestion(c *gin.Context) {
 		return
 	}
 
-	// convery required to from string to boolean since binding
+	// convert required to from string to boolean since binding
 	// the request body struct fails if required == false
 	isRequired := false
 	if requestBody.Required == "true" {

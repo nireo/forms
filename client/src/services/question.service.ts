@@ -12,10 +12,7 @@ const getConfig = () => ({
   headers: { Authorization: token }
 });
 
-export const createQuestion = async (
-  id: string,
-  question: QuestionToServer
-) => {
+export const createQuestion = async (id: string, question: Question) => {
   const response = await axios.post(`${baseUrl}/${id}`, question, getConfig());
   return response.data;
 };

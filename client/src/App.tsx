@@ -4,10 +4,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Navbar from './components/Layout/Navbar';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { FormMain } from './components/Form/FormMain';
-import { MainView } from './components/Form/MainView';
 import ManageMain from './components/Manage/ManageMain';
 import { Welcome } from './components/Welcome/Welcome';
-import CreateMain from './components/Create/CreateMain';
 import TestView from './components/Create/TestView';
 import { NotFound } from './components/Layout/NotFound';
 import { Notification } from './components/Layout/Notification';
@@ -37,7 +35,6 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
         <Route exact path="/view" render={() => <FormMain />} />
         <Route exact path="/" render={() => <ManageMain />} />
         <Route exact path="/welcome" render={() => <Welcome />} />
-        <Route exact path="/create" render={() => <CreateMain />} />
         <Route
           exact
           path="/:id/edit"
