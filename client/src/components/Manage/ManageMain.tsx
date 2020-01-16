@@ -95,6 +95,21 @@ const ManageMain: React.FC<Props> = ({
     setOpen(false);
   };
 
+  const returnSensibleDate = (date: string) => {
+    const time = new Date(date);
+    return (
+      time.getDate() +
+      '-' +
+      (time.getMonth() + 1) +
+      '-' +
+      time.getFullYear() +
+      ' ' +
+      time.getHours() +
+      ':' +
+      time.getMinutes()
+    );
+  };
+
   return (
     <Container maxWidth="md" style={{ marginTop: '2rem' }}>
       <Typography variant="h3">Your forms</Typography>
@@ -109,7 +124,9 @@ const ManageMain: React.FC<Props> = ({
                   </Typography>
                   <Typography>{form.description.slice(0, 50)}</Typography>
                   {form.created_at !== undefined && (
-                    <Typography>Created {form.created_at}</Typography>
+                    <Typography>
+                      Created {returnSensibleDate(form.created_at)}
+                    </Typography>
                   )}
                 </Grid>
                 <Grid item xs={1}>

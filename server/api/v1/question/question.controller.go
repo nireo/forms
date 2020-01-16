@@ -36,7 +36,6 @@ func createQuestion(c *gin.Context) {
 
 	var requestBody RequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
-		fmt.Println(err)
 		c.AbortWithStatus(400)
 		return
 	}

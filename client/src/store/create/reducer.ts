@@ -55,10 +55,10 @@ export const clearQuestions = () => {
 
 export const removeQuestion = (id: string) => {
   return async (dispatch: Dispatch) => {
-    await removeQuestion(id);
+    await deleteQuestion(id);
     dispatch({
       type: 'REMOVE_QUESTION',
-      data: id
+      id: id
     });
   };
 };
