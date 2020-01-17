@@ -17,11 +17,12 @@ type Answer struct {
 	TrueOrFalse      bool
 }
 
-// AnswerFull data model
-type AnswerFull struct {
+// Full data model
+type Full struct {
 	gorm.Model
 	Answers []Answer
 	FormID  uint
+	UUID    string
 }
 
 // Serialize data
@@ -39,10 +40,10 @@ func (answer *Answer) Serialize() common.JSON {
 }
 
 // Serialize answers data
-func (answerFull *AnswerFull) Serialize() common.JSON {
+func (full *Full) Serialize() common.JSON {
 	return common.JSON{
-		"id":      answerFull.ID,
-		"formID":  answerFull.FormID,
-		"answers": answerFull.Answers,
+		"id":      full.ID,
+		"formID":  full.FormID,
+		"answers": full.Answers,
 	}
 }

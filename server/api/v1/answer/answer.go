@@ -2,6 +2,7 @@ package answer
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/nireo/forms/server/lib/middlewares"
 )
 
 // ApplyRoutes to gin engine
@@ -10,5 +11,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	{
 		auth.GET("/:id", getAnswer)
 		auth.POST("/:id", createAnswer)
+		auth.DELETE("/:id", middlewares.Authorized, deleteAnswer)
 	}
 }
