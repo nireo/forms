@@ -4,6 +4,9 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import { connect } from 'react-redux';
+import { AppState } from '../../store';
+import { Notification as notificationInterface } from '../../interfaces/Notification';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -13,7 +16,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Notification: React.FC = props => {
+type Props = {
+  notification: notificationInterface;
+};
+
+const Notification: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [open, setOpen] = React.useState(false);
 
@@ -25,28 +32,28 @@ export const Notification: React.FC = props => {
     setOpen(false);
   };
 
-  return (
-    <div>
+  if (props.notification !== null) {
+    return (
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left'
         }}
-        open={open}
-        autoHideDuration={6000}
+        open={props.notification !== null}
+        autoHideDuration={props.notification.autoHideTime}
         onClose={handleClose}
         ContentProps={{
           'aria-describedby': 'message-id'
         }}
-        message={<span id="message-id">Message</span>}
+        message={<span id="message-id">{props.notification.message}</span>}
         action={[
           <Button
             key="action"
             color="secondary"
             size="small"
-            onClick={handleClose}
+            onClick={props.notification.actionFunction}
           >
-            ACTION
+            {props.notification.actionName}
           </Button>,
           <IconButton
             key="close"
@@ -59,6 +66,14 @@ export const Notification: React.FC = props => {
           </IconButton>
         ]}
       />
-    </div>
-  );
+    );
+  }
+
+  return null;
 };
+
+const mapStateToProps = (state: AppState) => ({
+  notification: state.notification
+});
+
+export default connect(mapStateToProps, {})(Notification);

@@ -8,7 +8,7 @@ import ManageMain from './components/Manage/ManageMain';
 import { Welcome } from './components/Welcome/Welcome';
 import TestView from './components/Create/TestView';
 import { NotFound } from './components/Layout/NotFound';
-import { Notification } from './components/Layout/Notification';
+import Notification from './components/Layout/Notification';
 import { AnswerMain } from './components/Answer/AnswerMain';
 import { connect } from 'react-redux';
 import { AppState } from './store';
