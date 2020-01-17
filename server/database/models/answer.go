@@ -8,17 +8,41 @@ import (
 // Answer Data Model
 type Answer struct {
 	gorm.Model
-	toForm      string
-	Type        uint8
-	SliderValue uint
-	SliderMax   uint
-	SliderMin   uint
+	Type             uint8
+	SliderValue      uint
+	SliderMax        uint
+	SliderMin        uint
+	QuestionTempUUID string
+	Answers          string
+	TrueOrFalse      bool
+}
+
+// AnswerFull data model
+type AnswerFull struct {
+	gorm.Model
+	Answers []Answer
+	FormID  uint
 }
 
 // Serialize data
 func (answer *Answer) Serialize() common.JSON {
 	return common.JSON{
-		"toForm": answer.toForm,
-		"id":     answer.ID,
+		"id":            answer.ID,
+		"type":          answer.Type,
+		"min":           answer.SliderMin,
+		"max":           answer.SliderMax,
+		"value":         answer.SliderValue,
+		"question_uuid": answer.QuestionTempUUID,
+		"answers":       answer.Answers,
+		"trueOrFalse":   answer.TrueOrFalse,
+	}
+}
+
+// Serialize answers data
+func (answerFull *AnswerFull) Serialize() common.JSON {
+	return common.JSON{
+		"id":      answerFull.ID,
+		"formID":  answerFull.FormID,
+		"answers": answerFull.Answers,
 	}
 }

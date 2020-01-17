@@ -92,6 +92,18 @@ const TestView: React.FC<Props> = props => {
 
     props.addQuestion(templateQuestion, props.id);
 
+    const notification: Notification = {
+      message: 'Created question successfully',
+      actionName: 'Undo',
+      actionFunction: () => {
+        props.removeQuestion(templateQuestion.temp_uuid);
+        return;
+      },
+      autoHideTime: 3000
+    };
+
+    props.setNotification(notification);
+
     // automatically start editing new question
     setSelected(templateQuestion);
   };

@@ -9,6 +9,9 @@ import (
 // Answer alias for model
 type Answer = models.Answer
 
+// Form alias for model
+type Form = models.Form
+
 func getAnswer(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	id := c.Param("id")
@@ -26,18 +29,32 @@ func createAnswer(c *gin.Context) {
 	db := c.MustGet("id").(*gorm.DB)
 	id := c.Param("id")
 
+	// validate id
 	if id == "" {
 		c.AbortWithStatus(400)
 		return
 	}
 
-	type RequestBody struct {
-		Answer string `json:"title" binding:"required"`
+	type AnswerRequestBody struct {
+		Type             string   `json:"type" binding:"required"`
+		Answer           []string `json:"answer" binding:"required"`
+		TrueOrFalse      string   `json:"trueOrFalse" binding:"required"`
+		QuestionTempUUID string   `json:"temp_uuid" binding:"required"`
 	}
 
-	var requestBody RequestBody
+	type MainRequestBody struct {
+		Answers []AnswerRequestBody
+	}
+
+	var requestBody MainRequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
 		c.AbortWithStatus(400)
+		return
+	}
+
+	var form Form
+	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
+		c.AbortWithStatus(404)
 		return
 	}
 

@@ -7,6 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import { Notification as notificationInterface } from '../../interfaces/Notification';
+import { clearNotification } from '../../store/notification/reducer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type Props = {
   notification: notificationInterface;
+  clearNotification: () => void;
 };
 
 const Notification: React.FC<Props> = props => {
@@ -29,7 +31,7 @@ const Notification: React.FC<Props> = props => {
       return;
     }
 
-    setOpen(false);
+    props.clearNotification();
   };
 
   if (props.notification !== null) {
@@ -76,4 +78,4 @@ const mapStateToProps = (state: AppState) => ({
   notification: state.notification
 });
 
-export default connect(mapStateToProps, {})(Notification);
+export default connect(mapStateToProps, { clearNotification })(Notification);
