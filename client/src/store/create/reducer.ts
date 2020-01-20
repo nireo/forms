@@ -89,19 +89,15 @@ export const setQuestionFully = (questions: Question[]) => {
 
 export const updateQuestion = (question: Question) => {
   return async (dispatch: Dispatch) => {
-    let questionToServer: any = question;
-    if (questionToServer.answers.length < 1) {
-      questionToServer.answers = '';
+    let copy: any = question;
+    if (copy.required) {
+      copy.required = 'true';
     } else {
-      questionToServer.answers = question.answers.join('|');
+      copy.required = 'false';
     }
 
-    const newQuestion: any = await serviceUpdateQuestion(
-      questionToServer.temp_uuid,
-      questionToServer
-    );
+    const newQuestion: any = await serviceUpdateQuestion(copy.temp_uuid, copy);
     newQuestion.answers = turnAnswersToArray(newQuestion.answers);
-
     dispatch({
       type: 'UPDATE_QUESTION',
       data: newQuestion

@@ -22,10 +22,7 @@ export const deleteQuestion = async (id: string) => {
   return response.data;
 };
 
-export const updateQuestion = async (
-  id: string,
-  question: QuestionToServer
-) => {
+export const updateQuestion = async (id: string, question: Question) => {
   const response = await axios.patch(`${baseUrl}/${id}`, question, getConfig());
   return response.data;
 };

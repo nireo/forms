@@ -106,6 +106,7 @@ func createAnswer(c *gin.Context) {
 	c.JSON(200, answers.Serialize())
 }
 
+// since users don't sign up to answer only the form owner can delete answers
 func deleteAnswer(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	id := c.Param("id")
