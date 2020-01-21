@@ -23,8 +23,9 @@ import EditQuestion from './EditQuestion';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { setNotification } from '../../store/notification/reducer';
-import { Notification } from '../../interfaces/Notification';
+import { Notification as NotificationInterface } from '../../interfaces/Notification';
 import { AnswerMain } from '../Answer/AnswerMain';
+import Notification from '../Layout/Notification';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -56,7 +57,7 @@ type Props = {
   removeQuestion: (id: string) => void;
   clearQuestions: () => void;
   updateQuestion: (question: Question) => void;
-  setNotification: (notification: Notification) => void;
+  setNotification: (notification: NotificationInterface) => void;
   initQuestions: (id: string) => void;
 };
 
@@ -92,17 +93,17 @@ const TestView: React.FC<Props> = props => {
 
     props.addQuestion(templateQuestion, props.id);
 
-    const notification: Notification = {
-      message: 'Created question successfully',
-      actionName: 'Undo',
-      actionFunction: () => {
-        props.removeQuestion(templateQuestion.temp_uuid);
-        return;
-      },
-      autoHideTime: 3000
-    };
+    // const notification: NotificationInterface = {
+    //   message: 'Created question successfully',
+    //   actionName: 'Undo',
+    //   actionFunction: () => {
+    //     props.removeQuestion(templateQuestion.temp_uuid);
+    //     return;
+    //   },
+    //   autoHideTime: 3000
+    // };
 
-    props.setNotification(notification);
+    // props.setNotification(notification);
 
     // automatically start editing new question
     setSelected(templateQuestion);
@@ -131,19 +132,20 @@ const TestView: React.FC<Props> = props => {
     props.updateQuestion(question);
     setSelected(question);
 
-    const notification: Notification = {
-      message: 'Saved successfully',
-      actionName: 'Undo',
-      actionFunction: () => {
-        return;
-      },
-      autoHideTime: 3000
-    };
-    props.setNotification(notification);
+    // const notification: NotificationInterface = {
+    //   message: 'Saved successfully',
+    //   actionName: 'Undo',
+    //   actionFunction: () => {
+    //     return;
+    //   },
+    //   autoHideTime: 3000
+    // };
+    // props.setNotification(notification);
   };
 
   return (
     <div>
+      <Notification />
       {!preview && (
         <Container maxWidth="md" style={{ marginTop: '0' }}>
           <Paper className={classes.paper}>

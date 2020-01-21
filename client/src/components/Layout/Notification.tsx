@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, MouseEvent } from 'react';
+import React, { SyntheticEvent, MouseEvent, useEffect } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -31,47 +31,54 @@ const Notification: React.FC<Props> = props => {
       return;
     }
 
+    setOpen(false);
     props.clearNotification();
   };
 
-  if (props.notification !== null) {
-    return (
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
-        }}
-        open={props.notification !== null}
-        autoHideDuration={props.notification.autoHideTime}
-        onClose={handleClose}
-        ContentProps={{
-          'aria-describedby': 'message-id'
-        }}
-        message={<span id="message-id">{props.notification.message}</span>}
-        action={[
-          <Button
-            key="action"
-            color="secondary"
-            size="small"
-            onClick={props.notification.actionFunction}
-          >
-            {props.notification.actionName}
-          </Button>,
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            className={classes.close}
-            onClick={handleClose}
-          >
-            <CloseIcon />
-          </IconButton>
-        ]}
-      />
-    );
-  }
+  useEffect(() => {
+    if (props.notification.message !== '') {
+      setOpen(true);
+    }
 
-  return null;
+    if (props.notification.message === '') {
+      setOpen(false);
+    }
+  }, [props.notification.message]);
+
+  return (
+    <Snackbar
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left'
+      }}
+      open={open}
+      autoHideDuration={4000}
+      onClose={handleClose}
+      ContentProps={{
+        'aria-describedby': 'message-id'
+      }}
+      message={<span id="message-id">{props.notification.message}</span>}
+      action={[
+        <Button
+          key="action"
+          color="secondary"
+          size="small"
+          onClick={props.notification.actionFunction}
+        >
+          {props.notification.actionName}
+        </Button>,
+        <IconButton
+          key="close"
+          aria-label="close"
+          color="inherit"
+          className={classes.close}
+          onClick={handleClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      ]}
+    />
+  );
 };
 
 const mapStateToProps = (state: AppState) => ({

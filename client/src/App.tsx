@@ -43,7 +43,6 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
         <Route exact path="/answer-test" render={() => <AnswerMain />} />
         <Route render={() => <NotFound />} />
       </Switch>
-      <Notification />
     </Router>
   );
 };

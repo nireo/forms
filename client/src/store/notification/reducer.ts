@@ -1,11 +1,20 @@
 import { Notification } from '../../interfaces/Notification';
 
-const reducer = (state: Notification | null = null, action: any) => {
+const initialState: Notification = {
+  message: '',
+  actionName: '',
+  actionFunction: () => {
+    return;
+  },
+  autoHideTime: 0
+};
+
+const reducer = (state: Notification = initialState, action: any) => {
   switch (action.type) {
     case 'SET_NOTIFICATION':
       return action.data;
     case 'CLEAR':
-      return null;
+      return action.data;
     default:
       return state;
   }
@@ -19,7 +28,7 @@ export const setNotification = (notification: Notification) => {
 };
 
 export const clearNotification = () => {
-  return { type: 'CLEAR' };
+  return { type: 'CLEAR', data: initialState };
 };
 
 export default reducer;
