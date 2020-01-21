@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
-import { Question, QuestionType } from '../../interfaces/Question';
+import { Question, QuestionType, Form } from '../../interfaces/Question';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +13,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
+import { getForm } from '../../services/form.service';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -50,6 +51,7 @@ interface AnswerItem {
 type Props = {
   previewData?: Question[];
   hidePreview?: () => void;
+  id?: string;
 };
 
 export const AnswerMain: React.FC<Props> = props => {
@@ -99,10 +101,11 @@ export const AnswerMain: React.FC<Props> = props => {
       temp_uuid: '8c495d25-bce4-4e4c-8e74'
     }
   ]);
+  const [data, setData] = useState<Question[] | null>(null);
   const [answerItems, setAnswerItem] = useState<AnswerItem[]>([]);
 
   useEffect(() => {
-    if (mockData.length !== answerItems.length) {
+    if (mockData.length !== answerItems.length && props.id === undefined) {
       if (props.previewData === undefined) {
         setAnswerItem(
           mockData.map((q: Question) => {
@@ -134,6 +137,38 @@ export const AnswerMain: React.FC<Props> = props => {
           })
         );
       }
+    }
+
+    // we have to make a separate function for async in useEffect
+    const getData = async (id: string) => {
+      const loadedData = await getForm(id);
+      return loadedData;
+    };
+
+    if (data === null && props.id !== undefined) {
+      const temp: any = getData(props.id);
+      if (temp.questions.length === 0) {
+        return;
+      }
+
+      setAnswerItem(
+        temp.questions.map((q: Question) => {
+          const answer: AnswerItem = {
+            answer: [],
+            required: q.required,
+            type: q.answerType,
+            question: q.question,
+            temp_uuid: q.temp_uuid,
+            questionAnswers: q.answers,
+            trueOrFalse: false
+          };
+
+          return answer;
+        })
+      );
+
+      // set data just incase
+      setData(temp);
     }
   }, []);
 

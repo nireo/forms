@@ -8,7 +8,6 @@ import ManageMain from './components/Manage/ManageMain';
 import { Welcome } from './components/Welcome/Welcome';
 import TestView from './components/Create/TestView';
 import { NotFound } from './components/Layout/NotFound';
-import Notification from './components/Layout/Notification';
 import { AnswerMain } from './components/Answer/AnswerMain';
 import { connect } from 'react-redux';
 import { AppState } from './store';
@@ -39,6 +38,11 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
           exact
           path="/:id/edit"
           render={({ match }) => <TestView id={match.params.id} />}
+        />
+        <Route
+          exact
+          path="/:id"
+          render={({ match }) => <AnswerMain id={match.params.id} />}
         />
         <Route exact path="/answer-test" render={() => <AnswerMain />} />
         <Route render={() => <NotFound />} />
