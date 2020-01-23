@@ -139,38 +139,36 @@ export const AnswerMain: React.FC<Props> = props => {
       }
     }
 
-    // we have to make a separate function for async in useEffect
-    const getData = async (id: string) => {
-      const loadedData = await getForm(id);
-      return loadedData;
-    };
-
     if (data === null && props.id !== undefined) {
-      const temp: any = getData(props.id);
-      if (temp.questions.length === 0) {
-        return;
-      }
-
-      setAnswerItem(
-        temp.questions.map((q: Question) => {
-          const answer: AnswerItem = {
-            answer: [],
-            required: q.required,
-            type: q.answerType,
-            question: q.question,
-            temp_uuid: q.temp_uuid,
-            questionAnswers: q.answers,
-            trueOrFalse: false
-          };
-
-          return answer;
-        })
-      );
-
-      // set data just incase
-      setData(temp);
+      loadData();
     }
   }, []);
+
+  const loadData = async (): Promise<void> => {
+    if (props.id === undefined) {
+      return;
+    }
+    const loadData: any = await getForm(props.id);
+
+    setAnswerItem(
+      loadData.questions.map((q: Question) => {
+        const answer: AnswerItem = {
+          answer: [],
+          required: q.required,
+          type: q.answerType,
+          question: q.question,
+          temp_uuid: q.temp_uuid,
+          questionAnswers: q.answers,
+          trueOrFalse: false
+        };
+
+        return answer;
+      })
+    );
+
+    // set data just incase
+    setData(loadData);
+  };
 
   const submitQuestion = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
