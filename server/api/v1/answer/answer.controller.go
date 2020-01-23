@@ -1,6 +1,7 @@
 package answer
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/nireo/forms/server/lib/common"
@@ -26,17 +27,28 @@ func getAnswer(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	id := c.Param("id")
 
-	var answer Answer
-	if err := db.Set("gorm:auto_preload", true).Where("toform = ?", id).First(&answer).Error; err != nil {
+	var form Form
+	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
 
-	c.JSON(200, answer.Serialize())
+	var answers []Answer
+	if err := db.Model(&form).Related(&answers).Error; err != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
+	serialized := make([]common.JSON, len(answers), len(answers))
+	for index := range answers {
+		serialized[index] = answers[index].Serialize()
+	}
+
+	c.JSON(200, serialized)
 }
 
 func createAnswer(c *gin.Context) {
-	db := c.MustGet("id").(*gorm.DB)
+	db := c.MustGet("db").(*gorm.DB)
 	id := c.Param("id")
 
 	// validate id
@@ -55,15 +67,18 @@ func createAnswer(c *gin.Context) {
 		QuestionTempUUID string   `json:"temp_uuid" binding:"required"`
 	}
 
-	type MainRequestBody struct {
-		Answers []AnswerRequestBody
+	type RequestBody struct {
+		Answers []AnswerRequestBody `json:"answers" binding:"required"`
 	}
 
-	var requestBody MainRequestBody
+	var requestBody RequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
 		c.AbortWithStatus(400)
+		fmt.Println(err)
 		return
 	}
+
+	fmt.Println(requestBody)
 
 	var form Form
 	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
@@ -72,7 +87,7 @@ func createAnswer(c *gin.Context) {
 	}
 
 	// turn answers array into proper Answer type
-	answersArray := make([]Answer, len(requestBody.Answers)-1)
+	answersArray := make([]Answer, len(requestBody.Answers), len(requestBody.Answers))
 	for index, value := range requestBody.Answers {
 		isTrue := false
 		if value.TrueOrFalse == "true" {

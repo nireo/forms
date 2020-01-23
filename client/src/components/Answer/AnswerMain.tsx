@@ -14,6 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import { getForm } from '../../services/form.service';
+import { Loading } from '../Layout/Loading';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -103,6 +104,8 @@ export const AnswerMain: React.FC<Props> = props => {
   ]);
   const [data, setData] = useState<Question[] | null>(null);
   const [answerItems, setAnswerItem] = useState<AnswerItem[]>([]);
+  const [formName, setFormName] = useState<string>('');
+  const [formDescription, setFormDescription] = useState<string>('');
 
   useEffect(() => {
     if (mockData.length !== answerItems.length && props.id === undefined) {
@@ -149,6 +152,9 @@ export const AnswerMain: React.FC<Props> = props => {
       return;
     }
     const loadData: any = await getForm(props.id);
+
+    setFormName(loadData.form.title);
+    setFormDescription(loadData.form.description);
 
     setAnswerItem(
       loadData.questions.map((q: Question) => {
@@ -248,6 +254,8 @@ export const AnswerMain: React.FC<Props> = props => {
     );
   };
 
+  console.log(answerItems);
+
   return (
     <Container maxWidth="md">
       {finished ? (
@@ -255,112 +263,127 @@ export const AnswerMain: React.FC<Props> = props => {
       ) : (
         <div>
           <Paper className={classes.paper} style={{ marginBottom: '0' }}>
-            <Typography variant="h4">The form name</Typography>
-            <Typography>The form description</Typography>
-            {props.hidePreview !== undefined && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  if (props.hidePreview !== undefined) {
-                    props.hidePreview();
-                  }
-                }}
-              >
-                Hide preview
-              </Button>
-            )}
-            <hr style={{ marginBottom: '1rem' }} />
-            <form onSubmit={submitQuestion}>
-              {answerItems.map((answer: AnswerItem, index: number) => (
-                <div key={answer.temp_uuid} style={{ marginTop: '3rem' }}>
-                  {answer.type === 1 && <div>multiple choice</div>}
-                  {answer.type === 2 && (
-                    <div>
-                      <Typography variant="h5">{answer.question}</Typography>
-                      <TextField
-                        id={`standard-${
-                          answer.required ? 'required' : 'basic'
-                        }`}
-                        value={answer.answer[0]}
-                        onChange={event => changeValue(event, index)}
-                        style={{ width: '100%', marginTop: '1rem' }}
-                        required={answer.required}
-                        label="Answer"
-                      />
-                    </div>
-                  )}
-                  {answer.type === 3 && (
-                    <div>
-                      <Typography variant="h5">{answer.question}</Typography>
-                      {answer.questionAnswers.map((question: string) => (
+            {data === null ? (
+              <Loading />
+            ) : (
+              <div>
+                <Typography variant="h4">The form name</Typography>
+                <Typography>The form description</Typography>
+                {props.hidePreview !== undefined && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      if (props.hidePreview !== undefined) {
+                        props.hidePreview();
+                      }
+                    }}
+                  >
+                    Hide preview
+                  </Button>
+                )}
+                <hr style={{ marginBottom: '1rem' }} />
+                <form onSubmit={submitQuestion}>
+                  {answerItems.map((answer: AnswerItem, index: number) => (
+                    <div key={answer.temp_uuid} style={{ marginTop: '3rem' }}>
+                      {answer.type === 1 && <div>multiple choice</div>}
+                      {answer.type === 2 && (
                         <div>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                value={question}
-                                onClick={() => checkKey(question, index)}
-                                color="primary"
-                              />
-                            }
-                            label={question}
+                          <Typography variant="h5">
+                            {answer.question}
+                          </Typography>
+                          <TextField
+                            id={`standard-${
+                              answer.required ? 'required' : 'basic'
+                            }`}
+                            value={answer.answer[0]}
+                            onChange={event => changeValue(event, index)}
+                            style={{ width: '100%', marginTop: '1rem' }}
+                            required={answer.required}
+                            label="Answer"
                           />
                         </div>
-                      ))}
+                      )}
+                      {answer.type === 3 && (
+                        <div>
+                          <Typography variant="h5">
+                            {answer.question}
+                          </Typography>
+                          {answer.questionAnswers.map((question: string) => (
+                            <div>
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    value={question}
+                                    onClick={() => checkKey(question, index)}
+                                    color="primary"
+                                  />
+                                }
+                                label={question}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {answer.type === 4 && (
+                        <div>
+                          <Typography variant="h5">
+                            {answer.question}
+                          </Typography>
+                          <TextField
+                            id="standard-multiline-flexible"
+                            label="Answer"
+                            multiline
+                            value={answer.answer[0]}
+                            onChange={event => changeValue(event, index)}
+                            style={{ width: '100%' }}
+                          />
+                        </div>
+                      )}
+                      {answer.type === 5 && (
+                        <div>
+                          <Typography variant="h5">
+                            {answer.question}
+                          </Typography>
+                          <RadioGroup
+                            name={answer.question}
+                            value={answer.trueOrFalse}
+                            onChange={event => handleChange(event, index)}
+                          >
+                            <FormControlLabel
+                              value={true}
+                              control={<Radio />}
+                              label="True"
+                            />
+                            <FormControlLabel
+                              value={false}
+                              control={<Radio />}
+                              label="False"
+                            />
+                          </RadioGroup>
+                        </div>
+                      )}
+                      {answer.type === 6 && <div>slider</div>}
                     </div>
-                  )}
-                  {answer.type === 4 && (
-                    <div>
-                      <Typography variant="h5">{answer.question}</Typography>
-                      <TextField
-                        id="standard-multiline-flexible"
-                        label="Answer"
-                        multiline
-                        value={answer.answer[0]}
-                        onChange={event => changeValue(event, index)}
-                        style={{ width: '100%' }}
-                      />
-                    </div>
-                  )}
-                  {answer.type === 5 && (
-                    <div>
-                      <Typography variant="h5">{answer.question}</Typography>
-                      <RadioGroup
-                        name={answer.question}
-                        value={answer.trueOrFalse}
-                        onChange={event => handleChange(event, index)}
-                      >
-                        <FormControlLabel
-                          value={true}
-                          control={<Radio />}
-                          label="True"
-                        />
-                        <FormControlLabel
-                          value={false}
-                          control={<Radio />}
-                          label="False"
-                        />
-                      </RadioGroup>
-                    </div>
-                  )}
-                  {answer.type === 6 && <div>slider</div>}
-                </div>
-              ))}
-            </form>
-            <Grid container spacing={3}>
-              <Grid item xs={10}></Grid>
-              <Grid item xs={2}>
-                <Button
-                  variant="contained"
-                  style={{ marginTop: '3rem' }}
-                  color="primary"
-                  endIcon={<SendIcon />}
-                  disabled={props.previewData === undefined ? false : true}
-                >
-                  Send
-                </Button>
-              </Grid>
-            </Grid>
+                  ))}
+                </form>
+                <Grid container spacing={3}>
+                  <Grid item xs={10}></Grid>
+                  <Grid item xs={2}>
+                    <Button
+                      variant="contained"
+                      style={{ marginTop: '3rem' }}
+                      color="primary"
+                      endIcon={<SendIcon />}
+                      disabled={props.previewData === undefined ? false : true}
+                      type="submit"
+                    >
+                      Send
+                    </Button>
+                  </Grid>
+                </Grid>
+              </div>
+            )}
           </Paper>
           <div style={{ textAlign: 'center', color: '#586069' }}>
             <Typography style={{ marginTop: '0', paddingTop: '0' }}>
