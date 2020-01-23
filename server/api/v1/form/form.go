@@ -11,7 +11,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	{
 		form.POST("/create", middlewares.Authorized, create)
 		form.GET("/:id", formFromID)
-		form.PATCH("/:id", update)
 		form.DELETE("/:id", middlewares.Authorized, removeForm)
 		form.GET("/", middlewares.Authorized, getUserForms)
 	}

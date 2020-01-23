@@ -33,7 +33,7 @@ func getAnswer(c *gin.Context) {
 		return
 	}
 
-	var answers []Answer
+	var answers []Full
 	if err := db.Model(&form).Related(&answers).Error; err != nil {
 		c.AbortWithStatus(500)
 		return
@@ -74,11 +74,8 @@ func createAnswer(c *gin.Context) {
 	var requestBody RequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
 		c.AbortWithStatus(400)
-		fmt.Println(err)
 		return
 	}
-
-	fmt.Println(requestBody)
 
 	var form Form
 	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
@@ -86,6 +83,7 @@ func createAnswer(c *gin.Context) {
 		return
 	}
 
+	uuid := common.GenerateUUID()
 	// turn answers array into proper Answer type
 	answersArray := make([]Answer, len(requestBody.Answers), len(requestBody.Answers))
 	for index, value := range requestBody.Answers {
@@ -108,8 +106,9 @@ func createAnswer(c *gin.Context) {
 		answersArray[index] = tempItem
 	}
 
+	fmt.Println(answersArray)
+
 	// create answer after validation
-	uuid := common.GenerateUUID()
 	answers := Full{
 		FormID:  form.ID,
 		Answers: answersArray,
