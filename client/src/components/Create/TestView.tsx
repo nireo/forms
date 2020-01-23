@@ -238,7 +238,11 @@ const TestView: React.FC<Props> = props => {
         </Container>
       )}
       {preview && (
-        <AnswerMain hidePreview={hidePreview} previewData={props.create} />
+        <AnswerMain
+          preview={true}
+          hidePreview={hidePreview}
+          previewData={props.create}
+        />
       )}
     </div>
   );

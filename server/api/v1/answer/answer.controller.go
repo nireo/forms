@@ -1,7 +1,6 @@
 package answer
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nireo/forms/server/lib/common"
@@ -105,8 +104,6 @@ func createAnswer(c *gin.Context) {
 
 		answersArray[index] = tempItem
 	}
-
-	fmt.Println(answersArray)
 
 	// create answer after validation
 	answers := Full{

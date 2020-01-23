@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import { makeStyles } from '@material-ui/core/styles';
 import { AnswersMain } from '../Answers/AnswersMain';
 import Container from '@material-ui/core/Container';
+import TestView from '../Create/TestView';
 
 const useStyles = makeStyles({
   root: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles({
 });
 
 type Props = {
-  id: number;
+  id: string;
 };
 
 export const MainView: React.FC<Props> = props => {
@@ -40,7 +41,8 @@ export const MainView: React.FC<Props> = props => {
           </Tabs>
         </Paper>
       </Container>
-      {page === 1 && <AnswersMain />}
+      {page === 1 && <AnswersMain id={props.id} />}
+      {page === 0 && <TestView id={props.id} />}
     </div>
   );
 };

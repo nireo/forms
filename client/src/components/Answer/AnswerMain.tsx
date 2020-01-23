@@ -53,6 +53,7 @@ type Props = {
   previewData?: Question[];
   hidePreview?: () => void;
   id?: string;
+  preview?: boolean;
 };
 
 export const AnswerMain: React.FC<Props> = props => {
@@ -263,7 +264,7 @@ export const AnswerMain: React.FC<Props> = props => {
       ) : (
         <div>
           <Paper className={classes.paper} style={{ marginBottom: '0' }}>
-            {data === null ? (
+            {data === null && props.preview === undefined ? (
               <Loading />
             ) : (
               <div>

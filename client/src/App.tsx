@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { AppState } from './store';
 import { User } from './interfaces/User';
 import { checkLocalStorage } from './store/user/reducer';
+import { MainView } from './components/Form/MainView';
 
 type Props = {
   user: User;
@@ -37,7 +38,7 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
         <Route
           exact
           path="/:id/edit"
-          render={({ match }) => <TestView id={match.params.id} />}
+          render={({ match }) => <MainView id={match.params.id} />}
         />
         <Route
           exact
