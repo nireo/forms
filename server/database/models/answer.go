@@ -7,7 +7,6 @@ import (
 
 // Answer Data Model
 type Answer struct {
-	gorm.Model
 	Type             uint8
 	SliderValue      uint
 	SliderMax        uint
@@ -15,6 +14,7 @@ type Answer struct {
 	QuestionTempUUID string
 	Answers          string
 	TrueOrFalse      bool
+	FullID           uint
 }
 
 // Full data model
@@ -28,7 +28,6 @@ type Full struct {
 // Serialize data
 func (answer *Answer) Serialize() common.JSON {
 	return common.JSON{
-		"id":            answer.ID,
 		"type":          answer.Type,
 		"min":           answer.SliderMin,
 		"max":           answer.SliderMax,
@@ -42,8 +41,9 @@ func (answer *Answer) Serialize() common.JSON {
 // Serialize answers data
 func (full *Full) Serialize() common.JSON {
 	return common.JSON{
-		"id":      full.ID,
-		"formID":  full.FormID,
-		"answers": full.Answers,
+		"id":         full.ID,
+		"formID":     full.FormID,
+		"answers":    full.Answers,
+		"created_at": full.CreatedAt,
 	}
 }

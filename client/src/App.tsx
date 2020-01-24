@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { FormMain } from './components/Form/FormMain';
 import ManageMain from './components/Manage/ManageMain';
 import { Welcome } from './components/Welcome/Welcome';
-import TestView from './components/Create/TestView';
 import { NotFound } from './components/Layout/NotFound';
 import { AnswerMain } from './components/Answer/AnswerMain';
 import { connect } from 'react-redux';

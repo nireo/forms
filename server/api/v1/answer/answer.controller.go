@@ -1,6 +1,7 @@
 package answer
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/nireo/forms/server/lib/common"
@@ -100,21 +101,24 @@ func createAnswer(c *gin.Context) {
 			QuestionTempUUID: value.QuestionTempUUID,
 			Answers:          answersString,
 			TrueOrFalse:      isTrue,
+			FullID:           0,
 		}
 
 		answersArray[index] = tempItem
 	}
 
+	fmt.Println(answersArray)
+
 	// create answer after validation
-	answers := Full{
+	full := Full{
 		FormID:  form.ID,
 		Answers: answersArray,
 		UUID:    uuid,
 	}
 
-	db.NewRecord(answers)
-	db.Create(&answers)
-	c.JSON(200, answers.Serialize())
+	db.NewRecord(full)
+	db.Create(&full)
+	c.JSON(200, full.Serialize())
 }
 
 // since users don't sign up to answer only the form owner can delete answers
