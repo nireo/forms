@@ -22,7 +22,7 @@ type Props = {
 
 const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
   useEffect(() => {
-    if (!user) {
+    if (user === null) {
       checkLocalStorage();
     }
   }, [user]);
