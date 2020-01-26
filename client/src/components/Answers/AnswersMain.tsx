@@ -6,6 +6,13 @@ import Typography from '@material-ui/core/Typography';
 import { getAnswer } from '../../services/answer.service';
 import { Answer } from '../../interfaces/Answer';
 import { Loading } from '../Layout/Loading';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -27,6 +34,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginBottom: theme.spacing(6),
       padding: theme.spacing(3)
     }
+  },
+  table: {
+    minWidth: 650
   }
 }));
 
@@ -59,12 +69,29 @@ export const AnswersMain: React.FC<Props> = props => {
           <Loading />
         ) : (
           <div>
-            {answers.map((answer: any) => (
-              <div>
-                {answer.formID}
-                {answer.id}
-              </div>
-            ))}
+            <TableContainer component={Paper}>
+              <Table className={classes.table} aria-label="answer table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Index</TableCell>
+                    <TableCell>ID</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {answers.map((answer: any, index: number) => (
+                    <TableRow key={index}>
+                      <TableCell component="th" scope="row">
+                        {index}
+                      </TableCell>
+                      <TableCell>{answer.id}</TableCell>
+                      <TableCell>
+                        <Link to={`/answer/${answer.uuid}`}>View Answer</Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </div>
         )}
       </Paper>
