@@ -1,7 +1,6 @@
 package answer
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nireo/forms/server/lib/common"
@@ -45,6 +44,35 @@ func getAnswer(c *gin.Context) {
 	}
 
 	c.JSON(200, serialized)
+}
+
+func getSingleAnswer(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Param("id")
+
+	if id == "" {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	var full Full
+	if err := db.Where("uuid = ", id).First(&full).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	var answers []Answer
+	if err := db.Model(&full).Related(&answers).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	answersSerialized := make([]common.JSON, len(answers), len(answers))
+	for index := range answers {
+		answersSerialized[index] = answers[index].Serialize()
+	}
+
+	c.JSON(200, answersSerialized)
 }
 
 func createAnswer(c *gin.Context) {
@@ -107,8 +135,6 @@ func createAnswer(c *gin.Context) {
 		answersArray[index] = tempItem
 	}
 
-	fmt.Println(answersArray)
-
 	// create answer after validation
 	full := Full{
 		FormID:  form.ID,
@@ -118,6 +144,14 @@ func createAnswer(c *gin.Context) {
 
 	db.NewRecord(full)
 	db.Create(&full)
+
+	// store the answers
+	for index := range answersArray {
+		answersArray[index].FullID = full.ID
+		db.NewRecord(answersArray[index])
+		db.Save(&answersArray[index])
+	}
+
 	c.JSON(200, full.Serialize())
 }
 

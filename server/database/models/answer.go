@@ -7,6 +7,7 @@ import (
 
 // Answer Data Model
 type Answer struct {
+	gorm.Model
 	Type             uint8
 	SliderValue      uint
 	SliderMax        uint
