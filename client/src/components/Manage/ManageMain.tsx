@@ -8,13 +8,18 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Form } from '../../interfaces/Question';
 import CardContent from '@material-ui/core/CardContent';
 import { NewQuestion } from '../Create/NewQuestion';
-import { createForm, getUserForms } from '../../store/forms/reducer';
+import {
+  createForm,
+  getUserForms,
+  deleteForm
+} from '../../store/forms/reducer';
 import { Modal } from '../Layout/Modal';
 import { TextField } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Grid from '@material-ui/core/Grid';
 import { User } from '../../interfaces/User';
 import { UserMain } from '../User/UserMain';
@@ -23,9 +28,6 @@ import { Link } from 'react-router-dom';
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
     minWidth: 240
-  },
-  title: {
-    fontSize: 18
   },
   paper: {
     position: 'absolute',
@@ -42,13 +44,15 @@ type Props = {
   createForm: (info: Form) => void;
   user: User | null;
   getUserForms: () => void;
+  deleteForm: (id: string) => void;
 };
 
 const ManageMain: React.FC<Props> = ({
   forms,
   createForm,
   user,
-  getUserForms
+  getUserForms,
+  deleteForm
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('Untitled form');
@@ -95,19 +99,34 @@ const ManageMain: React.FC<Props> = ({
     setOpen(false);
   };
 
-  const returnSensibleDate = (date: string) => {
-    const time = new Date(date);
-    return (
-      time.getDate() +
-      '-' +
-      (time.getMonth() + 1) +
-      '-' +
-      time.getFullYear() +
-      ' ' +
-      time.getHours() +
-      ':' +
-      time.getMinutes()
-    );
+  const removeForm = (id: string): void => {
+    if (window.confirm('Are you sure you want to delete the form?')) {
+      deleteForm(id);
+    }
+  };
+
+  const returnSensibleDate = (dateString: string) => {
+    const date = new Date(dateString);
+    var monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+
+    return day + ' ' + monthNames[monthIndex] + ' ' + year;
   };
 
   return (
@@ -119,10 +138,18 @@ const ManageMain: React.FC<Props> = ({
             <CardContent>
               <Grid container>
                 <Grid item xs={11}>
-                  <Typography className={classes.title} gutterBottom>
+                  <Typography variant="h6" gutterBottom>
                     {form.title}
                   </Typography>
-                  <Typography>{form.description.slice(0, 50)}</Typography>
+                  {form.description.length === 0 ? (
+                    <div>
+                      <Typography>No Description.</Typography>
+                    </div>
+                  ) : (
+                    <div>
+                      <Typography>{form.description.slice(0, 50)}</Typography>
+                    </div>
+                  )}
                   {form.created_at !== undefined && (
                     <Typography>
                       Created {returnSensibleDate(form.created_at)}
@@ -141,6 +168,15 @@ const ManageMain: React.FC<Props> = ({
                       component="span"
                     >
                       <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      color="primary"
+                      component="span"
+                      onClick={() =>
+                        removeForm(form.uuid === undefined ? '' : form.uuid)
+                      }
+                    >
+                      <DeleteIcon />
                     </IconButton>
                   </Link>
                 </Grid>
@@ -180,6 +216,8 @@ const mapStateToProps = (state: AppState) => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, { createForm, getUserForms })(
-  ManageMain
-);
+export default connect(mapStateToProps, {
+  createForm,
+  getUserForms,
+  deleteForm
+})(ManageMain);

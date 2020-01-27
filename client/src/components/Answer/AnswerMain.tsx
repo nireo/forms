@@ -255,7 +255,6 @@ export const AnswerMain: React.FC<Props> = props => {
     );
   };
 
-  console.log(answerItems);
 
   return (
     <Container maxWidth="md">

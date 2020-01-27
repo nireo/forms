@@ -48,7 +48,8 @@ export const createForm = (info: Form) => {
 
 export const deleteForm = (id: string) => {
   return async (dispatch: Dispatch) => {
-    serviceDeleteForm(id);
+    // there is no data that needs to be stored
+    await serviceDeleteForm(id);
     dispatch({
       type: 'DELETE',
       id: id
