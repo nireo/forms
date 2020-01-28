@@ -255,7 +255,6 @@ export const AnswerMain: React.FC<Props> = props => {
     );
   };
 
-
   return (
     <Container maxWidth="md">
       {finished ? (

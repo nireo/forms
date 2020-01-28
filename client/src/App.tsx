@@ -13,6 +13,7 @@ import { AppState } from './store';
 import { User } from './interfaces/User';
 import { checkLocalStorage } from './store/user/reducer';
 import { MainView } from './components/Form/MainView';
+import Settings from './components/User/Settings';
 
 type Props = {
   user: User;
@@ -34,6 +35,7 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
         <Route exact path="/view" render={() => <FormMain />} />
         <Route exact path="/" render={() => <ManageMain />} />
         <Route exact path="/welcome" render={() => <Welcome />} />
+        <Route exact path="/settings" render={() => <Settings />} />
         <Route
           exact
           path="/:id/edit"
