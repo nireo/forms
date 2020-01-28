@@ -2,7 +2,8 @@ import { Dispatch } from 'redux';
 import { User, UserAction, UserWithToken } from './../../interfaces/User';
 import {
   login as log_in,
-  register as registerUser
+  register as registerUser,
+  remove
 } from '../../services/user.service';
 import setToken from '../../utils/setToken';
 
@@ -20,6 +21,16 @@ const reducer = (state: null | User = null, action: any) => {
 export const logout = () => {
   localStorage.clear();
   return { type: 'LOG_OUT' };
+};
+
+export const removeUser = () => {
+  return async (dispatch: Dispatch) => {
+    await remove();
+    localStorage.clear();
+    dispatch({
+      type: 'LOG_OUT'
+    });
+  };
 };
 
 export const login = (credentials: UserAction, remember: boolean) => {
