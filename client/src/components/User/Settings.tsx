@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../store/index';
 import { User } from '../../interfaces/User';
@@ -8,6 +8,8 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { removeUser } from '../../store/user/reducer';
+import TextField from '@material-ui/core/TextField';
+import { updatePassword as s_updatePassword } from '../../services/user.service';
 
 type Props = {
   user: User;
@@ -30,6 +32,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Settings: React.FC<Props> = props => {
   const classes = useStyles(props);
   const { user } = props;
+  const [current, setCurrent] = useState<string>('');
+  const [newPassword, setNewPassword] = useState<string>('');
 
   if (!user) {
     return null;
@@ -47,6 +51,11 @@ const Settings: React.FC<Props> = props => {
 
   const updatePassword = (event: ChangeEvent<HTMLFormElement>): void => {
     event.preventDefault();
+    if (newPassword === '') {
+      return;
+    }
+
+    s_updatePassword(newPassword);
   };
 
   return (
@@ -56,6 +65,28 @@ const Settings: React.FC<Props> = props => {
         <hr />
         <div style={{ marginTop: '2rem' }}>
           <Typography variant="h5">Password</Typography>
+          <form onSubmit={updatePassword}>
+            <div>
+              <TextField
+                id="standard-basic"
+                label="Current password"
+                value={current}
+                onChange={({ target }) => setCurrent(target.value)}
+              />
+              <TextField
+                id="standard-basic"
+                label="New password"
+                value={newPassword}
+                onChange={({ target }) => setNewPassword(target.value)}
+              />
+            </div>
+            <Typography>
+              Next time you can login with the new password
+            </Typography>
+            <Button variant="contained" color="primary">
+              Change
+            </Button>
+          </form>
         </div>
         <div style={{ marginTop: '2rem' }}>
           <Typography variant="h5">Delete account</Typography>
