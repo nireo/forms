@@ -13,7 +13,7 @@ type Answer struct {
 	SliderMax        uint
 	SliderMin        uint
 	QuestionTempUUID string
-	Answers          string
+	QuestionAnswers  string
 	TrueOrFalse      bool
 	FullID           uint
 }
@@ -34,7 +34,7 @@ func (answer *Answer) Serialize() common.JSON {
 		"max":           answer.SliderMax,
 		"value":         answer.SliderValue,
 		"question_uuid": answer.QuestionTempUUID,
-		"answers":       answer.Answers,
+		"answers":       answer.QuestionAnswers,
 		"trueOrFalse":   answer.TrueOrFalse,
 	}
 }
@@ -46,5 +46,6 @@ func (full *Full) Serialize() common.JSON {
 		"formID":     full.FormID,
 		"answers":    full.Answers,
 		"created_at": full.CreatedAt,
+		"uuid":       full.UUID,
 	}
 }

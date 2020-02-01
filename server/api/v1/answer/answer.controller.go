@@ -1,6 +1,7 @@
 package answer
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/nireo/forms/server/lib/common"
@@ -56,7 +57,7 @@ func getSingleAnswer(c *gin.Context) {
 	}
 
 	var full Full
-	if err := db.Where("uuid = ", id).First(&full).Error; err != nil {
+	if err := db.Where("uuid = ?", id).First(&full).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
@@ -66,6 +67,8 @@ func getSingleAnswer(c *gin.Context) {
 		c.AbortWithStatus(404)
 		return
 	}
+
+	fmt.Println(answers)
 
 	answersSerialized := make([]common.JSON, len(answers), len(answers))
 	for index := range answers {
@@ -127,7 +130,7 @@ func createAnswer(c *gin.Context) {
 			SliderMin:        value.SliderMin,
 			SliderMax:        value.SliderMax,
 			QuestionTempUUID: value.QuestionTempUUID,
-			Answers:          answersString,
+			QuestionAnswers:  answersString,
 			TrueOrFalse:      isTrue,
 			FullID:           0,
 		}

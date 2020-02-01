@@ -54,7 +54,6 @@ const Settings: React.FC<Props> = props => {
     if (newPassword === '') {
       return;
     }
-
     s_updatePassword(newPassword);
   };
 

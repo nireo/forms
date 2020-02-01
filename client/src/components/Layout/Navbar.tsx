@@ -15,7 +15,7 @@ type Props = {
   logout: () => void;
 };
 
-const Navbar: React.FC<Props> = () => {
+const Navbar: React.FC<Props> = ({ user, logout }) => {
   return (
     <div>
       <AppBar position="relative">
@@ -29,12 +29,15 @@ const Navbar: React.FC<Props> = () => {
             >
               Benevol forms
             </Typography>
-            <Button color="inherit" style={{ color: 'white' }}>
-              Save
-            </Button>
-            <Button color="inherit" style={{ color: 'white' }}>
-              Log out
-            </Button>
+            {user && (
+              <Button
+                color="inherit"
+                style={{ color: 'white' }}
+                onClick={() => logout()}
+              >
+                Log out
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
       </AppBar>
