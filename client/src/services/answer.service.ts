@@ -22,6 +22,11 @@ export const createAnswer = async (answer: AnswerFull) => {
 };
 
 export const getAnswer = async (id: string) => {
-  const response = await axios.get(`${baseUrl}/${id}`);
+  const response = await axios.get(`${baseUrl}/form/${id}`);
+  return response.data;
+};
+
+export const getAnswerData = async (id: string) => {
+  const response = await axios.get(`${baseUrl}/content/${id}`);
   return response.data;
 };
