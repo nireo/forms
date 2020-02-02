@@ -6,6 +6,9 @@ import { Loading } from '../Layout/Loading';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { getAnswerData } from '../../services/answer.service';
 import { QuestionType } from '../../interfaces/Question';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -71,17 +74,46 @@ export const ViewAnswer: React.FC<Props> = props => {
       );
       setFilter(true);
     }
-  }, []);
+  }, [data]);
 
-  console.log(data);
+  const removeAnswer = async () => {
+    await axios.delete(`/api/answer/${props.id}`);
+    return;
+  };
 
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
         <Typography variant="h4">Answer {props.id}</Typography>
+        <Button variant="contained" color="primary" onClick={removeAnswer}>
+          Remove
+        </Button>
         {!loaded && (
           <div style={{ marginTop: '3rem' }}>
             <Loading />
+          </div>
+        )}
+        {!filter && loaded && (
+          <div style={{ marginTop: '3rem' }}>
+            <Loading />
+          </div>
+        )}
+        {filter && filtered.length > 0 && (
+          <div>
+            {filtered.map((item: AnswerItem) => (
+              <div key={item.question_uuid} style={{ marginTop: '3rem' }}>
+                {item.type === 2 && (
+                  <div>
+                    <TextField
+                      id="standard-basic"
+                      value={item.answers[0]}
+                      style={{ width: '100%', marginTop: '1rem' }}
+                      disabled={true}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </Paper>

@@ -148,7 +148,6 @@ export const AnswerMain: React.FC<Props> = props => {
     }
   }, []);
 
-  console.log(answerItems);
   const loadData = async (): Promise<void> => {
     if (props.id === undefined) {
       return;
