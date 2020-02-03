@@ -10,6 +10,10 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { getForm } from '../../services/form.service';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import Slider from '@material-ui/core/Slider';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -160,6 +164,52 @@ export const ViewAnswer: React.FC<Props> = props => {
                       id="standard-basic"
                       value={item.answers[0]}
                       style={{ width: '100%', marginTop: '1rem' }}
+                      disabled={true}
+                    />
+                  </div>
+                )}
+                {item.type === 4 && (
+                  <div>
+                    <Typography variant="h5">{item.questionString}</Typography>
+                    <TextField
+                      multiline
+                      value={item.answers[0]}
+                      style={{ width: '100%' }}
+                      disabled
+                    />
+                  </div>
+                )}
+                {item.type === 5 && (
+                  <div>
+                    <Typography variant="h5">{item.questionString}</Typography>
+                    <RadioGroup
+                      name={item.questionString}
+                      value={item.trueOrFalse}
+                    >
+                      <FormControlLabel
+                        label="True"
+                        control={<Radio />}
+                        value={true}
+                      />
+                      <FormControlLabel
+                        label="False"
+                        control={<Radio />}
+                        value={false}
+                      />
+                    </RadioGroup>
+                  </div>
+                )}
+                {item.type === 6 && (
+                  <div>
+                    <Typography variant="h5">{item.questionString}</Typography>
+                    <Slider
+                      max={item.max}
+                      min={item.min}
+                      marks
+                      step={1}
+                      aria-labelledby="answer-slider"
+                      valueLabelDisplay="auto"
+                      value={item.value}
                       disabled={true}
                     />
                   </div>
