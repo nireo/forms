@@ -9,6 +9,7 @@ import { QuestionType } from '../../interfaces/Question';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import { getForm } from '../../services/form.service';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -31,6 +32,7 @@ interface AnswerItem {
   trueOrFalse: boolean;
   min: number;
   max: number;
+  questionString: string;
 }
 
 type Props = {
@@ -43,10 +45,20 @@ export const ViewAnswer: React.FC<Props> = props => {
   const [data, setData] = useState<any>([]);
   const [filtered, setFiltered] = useState<AnswerItem[]>([]);
   const [filter, setFilter] = useState<boolean>(false);
+  const [formID, setFormID] = useState<string>('');
+  const [formQuestions, setFormQuestions] = useState<any>([]);
+  const [formLoaded, setFormLoaded] = useState<boolean>(false);
 
   const getQuestionData = async () => {
     const dataFromServer = await getAnswerData(props.id);
-    setData(dataFromServer);
+    setFormID(dataFromServer.full.form_uuid);
+    setData(dataFromServer.answers);
+  };
+
+  const getQuestions = async () => {
+    const questionsFormServer = await getForm(formID);
+    console.log(questionsFormServer);
+    setFormQuestions(questionsFormServer.questions);
   };
 
   useEffect(() => {
@@ -55,9 +67,9 @@ export const ViewAnswer: React.FC<Props> = props => {
       setLoaded(true);
     }
 
-    if (!filter && data.length > 0) {
+    if (!filter && data.length > 0 && formQuestions.length > 0) {
       setFiltered(
-        data.map((item: any) => {
+        data.map((item: any, index: number) => {
           let answerArray = item.answers.split('|');
           const answer: AnswerItem = {
             type: item.type,
@@ -66,7 +78,8 @@ export const ViewAnswer: React.FC<Props> = props => {
             trueOrFalse: item.trueOrFalse,
             question_uuid: item.question_uuid,
             max: item.max,
-            min: item.min
+            min: item.min,
+            questionString: formQuestions[index].question
           };
 
           return answer;
@@ -74,12 +87,19 @@ export const ViewAnswer: React.FC<Props> = props => {
       );
       setFilter(true);
     }
-  }, [data]);
+
+    if (formQuestions.length === 0 && !formLoaded && formID !== '') {
+      getQuestions();
+      setFormLoaded(true);
+    }
+  }, [data, formQuestions, formLoaded]);
 
   const removeAnswer = async () => {
     await axios.delete(`/api/answer/${props.id}`);
     return;
   };
+
+  console.log(filtered);
 
   return (
     <Container maxWidth="md">
@@ -88,22 +108,20 @@ export const ViewAnswer: React.FC<Props> = props => {
         <Button variant="contained" color="primary" onClick={removeAnswer}>
           Remove
         </Button>
-        {!loaded && (
-          <div style={{ marginTop: '3rem' }}>
-            <Loading />
-          </div>
-        )}
-        {!filter && loaded && (
-          <div style={{ marginTop: '3rem' }}>
-            <Loading />
-          </div>
-        )}
+        {!filter ||
+          !loaded ||
+          (!formLoaded && (
+            <div style={{ marginTop: '3rem' }}>
+              <Loading />
+            </div>
+          ))}
         {filter && filtered.length > 0 && (
           <div>
             {filtered.map((item: AnswerItem) => (
               <div key={item.question_uuid} style={{ marginTop: '3rem' }}>
                 {item.type === 2 && (
                   <div>
+                    <Typography variant="h5">{item.questionString}</Typography>
                     <TextField
                       id="standard-basic"
                       value={item.answers[0]}

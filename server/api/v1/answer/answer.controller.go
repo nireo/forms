@@ -1,7 +1,6 @@
 package answer
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nireo/forms/server/lib/common"
@@ -68,14 +67,15 @@ func getSingleAnswer(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(answers)
-
 	answersSerialized := make([]common.JSON, len(answers), len(answers))
 	for index := range answers {
 		answersSerialized[index] = answers[index].Serialize()
 	}
 
-	c.JSON(200, answersSerialized)
+	c.JSON(200, gin.H{
+		"answers": answersSerialized,
+		"full":    full.Serialize(),
+	})
 }
 
 func createAnswer(c *gin.Context) {
@@ -140,9 +140,10 @@ func createAnswer(c *gin.Context) {
 
 	// create answer after validation
 	full := Full{
-		FormID:  form.ID,
-		Answers: answersArray,
-		UUID:    uuid,
+		FormID:   form.ID,
+		Answers:  answersArray,
+		UUID:     uuid,
+		FormUUID: form.UniqueID,
 	}
 
 	db.NewRecord(full)
