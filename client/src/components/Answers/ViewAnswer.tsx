@@ -48,16 +48,17 @@ export const ViewAnswer: React.FC<Props> = props => {
   const [formID, setFormID] = useState<string>('');
   const [formQuestions, setFormQuestions] = useState<any>([]);
   const [formLoaded, setFormLoaded] = useState<boolean>(false);
+  const [otherInfo, setOtherInfo] = useState<any>();
 
   const getQuestionData = async () => {
     const dataFromServer = await getAnswerData(props.id);
     setFormID(dataFromServer.full.form_uuid);
     setData(dataFromServer.answers);
+    setOtherInfo(dataFromServer.full);
   };
 
   const getQuestions = async () => {
     const questionsFormServer = await getForm(formID);
-    console.log(questionsFormServer);
     setFormQuestions(questionsFormServer.questions);
   };
 
@@ -95,17 +96,50 @@ export const ViewAnswer: React.FC<Props> = props => {
   }, [data, formQuestions, formLoaded]);
 
   const removeAnswer = async () => {
-    await axios.delete(`/api/answer/${props.id}`);
-    return;
+    if (window.confirm('Are you sure you want delete the form?')) {
+      await axios.delete(`/api/answer/${props.id}`);
+    }
   };
 
-  console.log(filtered);
+  const returnSensibleDate = (dateString: string) => {
+    const date = new Date(dateString);
+    var monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+
+    return day + ' ' + monthNames[monthIndex] + ' ' + year;
+  };
 
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
         <Typography variant="h4">Answer {props.id}</Typography>
-        <Button variant="contained" color="primary" onClick={removeAnswer}>
+        {otherInfo && (
+          <Typography>
+            Answered {returnSensibleDate(otherInfo.created_at)}
+          </Typography>
+        )}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={removeAnswer}
+          style={{ marginTop: '1.5rem' }}
+        >
           Remove
         </Button>
         {!filter ||
