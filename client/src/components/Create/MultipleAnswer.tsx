@@ -68,6 +68,7 @@ export const MultipleAnswer: React.FC<Props> = ({ answers, setAnswers }) => {
       {answersWithState.map((answer: MAQuestion, index: number) => (
         <div>
           <FormControlLabel
+            disabled
             control={
               <Checkbox
                 color="primary"
@@ -80,32 +81,39 @@ export const MultipleAnswer: React.FC<Props> = ({ answers, setAnswers }) => {
           <Button onClick={() => removeAnswer(index)}>Delete</Button>
         </div>
       ))}
-      {showEdit ? (
+      {answers.length < 10 && (
         <div>
-          <form onSubmit={addAnswer}>
-            <TextField
-              value={newAnswer}
-              onChange={({ target }) => setNewAnswer(target.value)}
-              placeholder="New answer"
-            />
-            <div style={{ marginTop: '0.25rem' }}>
-              <Button
-                variant="contained"
-                type="submit"
-                style={{ marginRight: '0.25rem' }}
-              >
-                Add
-              </Button>
-              <Button variant="contained" onClick={() => setShowEdit(false)}>
-                Cancel
-              </Button>
+          {showEdit ? (
+            <div>
+              <form onSubmit={addAnswer}>
+                <TextField
+                  value={newAnswer}
+                  onChange={({ target }) => setNewAnswer(target.value)}
+                  placeholder="New answer"
+                />
+                <div style={{ marginTop: '0.25rem' }}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    style={{ marginRight: '0.25rem' }}
+                  >
+                    Add
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => setShowEdit(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </form>
             </div>
-          </form>
+          ) : (
+            <IconButton onClick={() => setShowEdit(true)}>
+              <Add />
+            </IconButton>
+          )}
         </div>
-      ) : (
-        <IconButton onClick={() => setShowEdit(true)}>
-          <Add />
-        </IconButton>
       )}
     </div>
   );

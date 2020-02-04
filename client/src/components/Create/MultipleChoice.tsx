@@ -20,15 +20,8 @@ export const MultipleChoice: React.FC<Props> = ({
   label,
   setAnswers
 }) => {
-  // Temporarily keeping state here, in the future will move somewhere else
-  const [value, setValue] = useState<string>('');
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [newAnswer, setNewAnswer] = useState<string>('');
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue((event.target as HTMLInputElement).value);
-  };
-
   const addAnswer = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     setAnswers(answers.concat(newAnswer));
@@ -36,28 +29,24 @@ export const MultipleChoice: React.FC<Props> = ({
     setShowEdit(false);
   };
 
+  const removeAnswer = (index: number) => {
+    setAnswers(answers.filter((_: string, i: number) => i !== index));
+  };
+
   return (
     <div>
       <Typography>{answers.length}/10</Typography>
-      <RadioGroup
-        aria-label={label}
-        name={label}
-        {...answers.map((answer: string) => (
-          <FormControlLabel
-            disabled
-            value={answer}
-            control={<Radio />}
-            label={answer}
-          />
-        ))}
-      >
-        {answers.map((answer: string) => (
-          <FormControlLabel
-            disabled
-            value={answer}
-            control={<Radio />}
-            label={answer}
-          />
+      <RadioGroup aria-label={label} name={label}>
+        {answers.map((answer: string, index: number) => (
+          <div>
+            <FormControlLabel
+              disabled
+              value={answer}
+              control={<Radio />}
+              label={answer}
+            />
+            <Button onClick={() => removeAnswer(index)}></Button>
+          </div>
         ))}
       </RadioGroup>
       {answers.length < 10 && (
