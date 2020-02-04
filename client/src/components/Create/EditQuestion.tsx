@@ -78,7 +78,11 @@ const EditQuestion: React.FC<Props> = props => {
           {answerType === 1 && (
             <div>
               <FormInput value={title} setValue={setTitle} />
-              <MultipleChoice label={title} answers={answers} />
+              <MultipleChoice
+                label={title}
+                answers={answers}
+                setAnswers={setAnswers}
+              />
             </div>
           )}
           {answerType === 2 && (
