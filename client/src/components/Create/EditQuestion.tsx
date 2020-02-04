@@ -76,13 +76,15 @@ const EditQuestion: React.FC<Props> = props => {
       <Grid container spacing={1}>
         <Grid item xs={10}>
           {answerType === 1 && (
-            <MultipleChoice label={title} answers={answers} />
+            <div>
+              <FormInput value={title} setValue={setTitle} />
+              <MultipleChoice label={title} answers={answers} />
+            </div>
           )}
           {answerType === 2 && (
             <div>
               <FormInput value={title} setValue={setTitle} />
               <TextField
-                id="standard-required"
                 label="Preview"
                 defaultValue="This is the preview"
                 disabled
@@ -91,7 +93,10 @@ const EditQuestion: React.FC<Props> = props => {
             </div>
           )}
           {answerType === 3 && (
-            <MultipleAnswer answers={answers} setAnswers={setAnswers} />
+            <div>
+              <FormInput value={title} setValue={setTitle} />
+              <MultipleAnswer answers={answers} setAnswers={setAnswers} />
+            </div>
           )}
           {answerType === 4 && (
             <div>

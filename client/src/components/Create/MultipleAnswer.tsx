@@ -11,6 +11,7 @@ import Add from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { Typography } from '@material-ui/core';
 
 type Props = {
   answers: string[];
@@ -27,6 +28,7 @@ export const MultipleAnswer: React.FC<Props> = ({ answers, setAnswers }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [newAnswer, setNewAnswer] = useState<string>('');
+  const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
   useEffect(() => {
     if (loaded === false) {
@@ -53,13 +55,17 @@ export const MultipleAnswer: React.FC<Props> = ({ answers, setAnswers }) => {
     setShowEdit(false);
   };
 
-  // IDEA ABOUT FUTURE: create own array for answers, so that it takes less space
-  // and is much cleaner than storing both checked states, which won't mean anything
-  // in the future.
+  const removeAnswer = (index: number) => {
+    setAnswersWithState(
+      answersWithState.filter((_: MAQuestion, i: number) => i !== index)
+    );
+    setAnswers(answers.filter((_: string, i: number) => i !== index));
+  };
 
   return (
     <div>
-      {answersWithState.map((answer: MAQuestion) => (
+      <Typography>{answers.length}/10</Typography>
+      {answersWithState.map((answer: MAQuestion, index: number) => (
         <div>
           <FormControlLabel
             control={
@@ -71,6 +77,7 @@ export const MultipleAnswer: React.FC<Props> = ({ answers, setAnswers }) => {
             }
             label={answer.answer}
           />
+          <Button onClick={() => removeAnswer(index)}>Delete</Button>
         </div>
       ))}
       {showEdit ? (
