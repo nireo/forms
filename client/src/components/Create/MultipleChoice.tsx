@@ -45,7 +45,7 @@ export const MultipleChoice: React.FC<Props> = ({
               control={<Radio />}
               label={answer}
             />
-            <Button onClick={() => removeAnswer(index)}></Button>
+            <Button onClick={() => removeAnswer(index)}>Delete</Button>
           </div>
         ))}
       </RadioGroup>
