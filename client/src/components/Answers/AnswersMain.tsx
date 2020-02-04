@@ -3,15 +3,11 @@ import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { getAnswer } from '../../services/answer.service';
-import { Answer } from '../../interfaces/Answer';
+import {
+  getAnswer,
+  removeAnswer as serviceRemoveAnswer
+} from '../../services/answer.service';
 import { Loading } from '../Layout/Loading';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import CardContent from '@material-ui/core/CardContent';
@@ -90,6 +86,13 @@ export const AnswersMain: React.FC<Props> = props => {
     return day + ' ' + monthNames[monthIndex] + ' ' + year;
   };
 
+  const removeAnswer = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete the answer?')) {
+      await serviceRemoveAnswer(id);
+      setAnswers(answers.filter((item: any) => item.uuid !== id));
+    }
+  };
+
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
@@ -98,7 +101,7 @@ export const AnswersMain: React.FC<Props> = props => {
           <Loading />
         ) : (
           <div>
-            {answers.map((answer: any, index: number) => (
+            {answers.map((answer: any) => (
               <div style={{ marginTop: '0.5rem' }}>
                 <Card>
                   <CardContent>
@@ -126,6 +129,7 @@ export const AnswersMain: React.FC<Props> = props => {
                           color="primary"
                           component="span"
                           aria-label="delete-answer"
+                          onClick={() => removeAnswer(answer.uuid)}
                         >
                           <DeleteIcon />
                         </IconButton>
