@@ -15,6 +15,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import { getForm } from '../../services/form.service';
 import { Loading } from '../Layout/Loading';
+import { createAnswer } from '../../services/answer.service';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -178,28 +179,35 @@ export const AnswerMain: React.FC<Props> = props => {
     setData(loadData);
   };
 
-  const submitQuestion = (event: ChangeEvent<HTMLFormElement>) => {
+  const submitQuestion = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    // validate that every required answer has been answered
-    let passes: boolean = false;
-    answerItems.forEach((item: AnswerItem) => {
-      if (!item.required) {
-        return;
+    const finalAnswers = answerItems.map((a: AnswerItem) => {
+      let trueOrFalse: string = '';
+      if (a.trueOrFalse) {
+        trueOrFalse = 'true';
+      } else {
+        trueOrFalse = 'false';
       }
 
-      if (item.answer !== []) {
-        passes = true;
-        return;
-      }
+      const filtered = {
+        answer: a.answer,
+        type: a.type,
+        temp_uuid: a.temp_uuid,
+        slider_value: 0,
+        slider_min: 0,
+        trueOrFalse: trueOrFalse
+      };
+      return filtered;
     });
 
-    if (!passes) {
+    try {
+      if (props.id) {
+        await createAnswer({ answers: finalAnswers }, props.id);
+      }
       return;
+    } catch (error) {
+      console.log(error);
     }
-
-    // send answers
-    setFinished(true);
   };
 
   const changeValue = (
@@ -397,22 +405,24 @@ export const AnswerMain: React.FC<Props> = props => {
                       {answer.type === 6 && <div>slider</div>}
                     </div>
                   ))}
-                </form>
-                <Grid container spacing={3}>
-                  <Grid item xs={10}></Grid>
-                  <Grid item xs={2}>
-                    <Button
-                      variant="contained"
-                      style={{ marginTop: '3rem' }}
-                      color="primary"
-                      endIcon={<SendIcon />}
-                      disabled={props.previewData === undefined ? false : true}
-                      type="submit"
-                    >
-                      Send
-                    </Button>
+                  <Grid container spacing={3}>
+                    <Grid item xs={10}></Grid>
+                    <Grid item xs={2}>
+                      <Button
+                        variant="contained"
+                        style={{ marginTop: '3rem' }}
+                        color="primary"
+                        endIcon={<SendIcon />}
+                        disabled={
+                          props.previewData === undefined ? false : true
+                        }
+                        type="submit"
+                      >
+                        Send
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
+                </form>
               </div>
             )}
           </Paper>

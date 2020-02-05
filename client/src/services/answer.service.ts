@@ -12,12 +12,8 @@ const getConfig = () => ({
   headers: { Authorization: token }
 });
 
-export const createAnswer = async (answer: AnswerFull) => {
-  const response = await axios.post(
-    `${baseUrl}/${answer.toForm}`,
-    answer,
-    getConfig()
-  );
+export const createAnswer = async (answer: any, id: string) => {
+  const response = await axios.post(`${baseUrl}/answer/${id}`, answer);
   return response.data;
 };
 

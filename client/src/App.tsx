@@ -52,7 +52,6 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
           path="/:id"
           render={({ match }) => <AnswerMain id={match.params.id} />}
         />
-        <Route exact path="/answer-test" render={() => <AnswerMain />} />
         <Route render={() => <NotFound />} />
       </Switch>
     </Router>
