@@ -158,14 +158,15 @@ export const AnswerMain: React.FC<Props> = props => {
     setFormDescription(loadData.form.description);
 
     setAnswerItem(
-      loadData.questions.map((q: Question) => {
+      loadData.questions.map((q: any) => {
+        const answerArray: string[] = q.answers.split('|');
         const answer: AnswerItem = {
           answer: [],
           required: q.required,
           type: q.answerType,
           question: q.question,
           temp_uuid: q.temp_uuid,
-          questionAnswers: q.answers,
+          questionAnswers: answerArray,
           trueOrFalse: false
         };
 
@@ -255,6 +256,17 @@ export const AnswerMain: React.FC<Props> = props => {
     );
   };
 
+  const handleRadioChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const answer = answerItems[index];
+    answer.answer[0] = (event.target as HTMLInputElement).value;
+    setAnswerItem(
+      answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
+    );
+  };
+
   return (
     <Container maxWidth="md">
       {finished ? (
@@ -285,7 +297,27 @@ export const AnswerMain: React.FC<Props> = props => {
                 <form onSubmit={submitQuestion}>
                   {answerItems.map((answer: AnswerItem, index: number) => (
                     <div key={answer.temp_uuid} style={{ marginTop: '3rem' }}>
-                      {answer.type === 1 && <div>multiple choice</div>}
+                      {answer.type === 1 && (
+                        <div>
+                          <Typography variant="h5">
+                            {answer.question}
+                          </Typography>
+                          <RadioGroup
+                            aria-label={answer.question}
+                            name={answer.question}
+                            onChange={event => handleRadioChange(event, index)}
+                          >
+                            {answer.questionAnswers.map((question: string) => (
+                              <div>
+                                <FormControlLabel
+                                  control={<Radio value={question} />}
+                                  label={question}
+                                />
+                              </div>
+                            ))}
+                          </RadioGroup>
+                        </div>
+                      )}
                       {answer.type === 2 && (
                         <div>
                           <Typography variant="h5">
