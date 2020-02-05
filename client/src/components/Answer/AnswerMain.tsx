@@ -60,88 +60,31 @@ type Props = {
 export const AnswerMain: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [finished, setFinished] = useState<boolean>(false);
-
-  // use mock data to properly test answers
-  const [mockData] = useState<Question[]>([
-    {
-      step: 1,
-      min: 0,
-      max: 0,
-      required: true,
-      question: 'this is a small written question',
-      answers: [],
-      answerType: 2,
-      temp_uuid: 'c59cfe6c-bf68-472a-8418-c7ba8dc629c3'
-    },
-    {
-      step: 1,
-      min: 0,
-      max: 0,
-      required: true,
-      question: 'This is a paragraph question',
-      answers: [],
-      answerType: 4,
-      temp_uuid: '8c495d25-bce4-4e4c-8e74-e28769af1302'
-    },
-    {
-      step: 1,
-      min: 0,
-      max: 0,
-      required: true,
-      question: 'This is a multiple answer question',
-      answers: ['Answer 1', 'Answer 2', 'Answer 3'],
-      answerType: 3,
-      temp_uuid: '8c495d25-bce4-4e4c-8e74-e28769'
-    },
-    {
-      step: 1,
-      min: 0,
-      max: 0,
-      required: true,
-      question: 'This is a true or false question',
-      answers: [],
-      answerType: 5,
-      temp_uuid: '8c495d25-bce4-4e4c-8e74'
-    }
-  ]);
   const [data, setData] = useState<Question[] | null>(null);
   const [answerItems, setAnswerItem] = useState<AnswerItem[]>([]);
   const [formName, setFormName] = useState<string>('');
   const [formDescription, setFormDescription] = useState<string>('');
 
   useEffect(() => {
-    if (mockData.length !== answerItems.length && props.id === undefined) {
-      if (props.previewData === undefined) {
-        setAnswerItem(
-          mockData.map((q: Question) => {
-            const answer: AnswerItem = {
-              answer: [],
-              required: q.required,
-              type: q.answerType,
-              question: q.question,
-              temp_uuid: q.temp_uuid,
-              questionAnswers: q.answers,
-              trueOrFalse: false
-            };
-            return answer;
-          })
-        );
-      } else {
-        setAnswerItem(
-          props.previewData.map((q: Question) => {
-            const answer: AnswerItem = {
-              answer: [],
-              required: q.required,
-              type: q.answerType,
-              question: q.question,
-              temp_uuid: q.temp_uuid,
-              questionAnswers: q.answers,
-              trueOrFalse: false
-            };
-            return answer;
-          })
-        );
-      }
+    if (
+      props.id === undefined &&
+      props.preview !== undefined &&
+      props.previewData !== undefined
+    ) {
+      setAnswerItem(
+        props.previewData.map((q: Question) => {
+          const answer: AnswerItem = {
+            answer: [],
+            required: q.required,
+            type: q.answerType,
+            question: q.question,
+            temp_uuid: q.temp_uuid,
+            questionAnswers: q.answers,
+            trueOrFalse: false
+          };
+          return answer;
+        })
+      );
     }
 
     if (data === null && props.id !== undefined) {
@@ -203,6 +146,7 @@ export const AnswerMain: React.FC<Props> = props => {
     try {
       if (props.id) {
         await createAnswer({ answers: finalAnswers }, props.id);
+        setFinished(true);
       }
       return;
     } catch (error) {
@@ -286,8 +230,8 @@ export const AnswerMain: React.FC<Props> = props => {
               <Loading />
             ) : (
               <div>
-                <Typography variant="h4">The form name</Typography>
-                <Typography>The form description</Typography>
+                <Typography variant="h4">{formName}</Typography>
+                <Typography>{formDescription}</Typography>
                 {props.hidePreview !== undefined && (
                   <Button
                     variant="contained"
