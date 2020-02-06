@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -50,17 +50,17 @@ export const AnswersMain: React.FC<Props> = props => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [answers, setAnswers] = useState<any>([]);
 
+  const getAnswers = useCallback(async () => {
+    const data: any = await getAnswer(props.id);
+    setAnswers(data);
+  }, [props.id]);
+
   useEffect(() => {
     if (!loaded) {
       getAnswers();
       setLoaded(true);
     }
-  }, []);
-
-  const getAnswers = async () => {
-    const data: any = await getAnswer(props.id);
-    setAnswers(data);
-  };
+  }, [getAnswers, loaded]);
 
   const returnSensibleDate = (dateString: string) => {
     const date = new Date(dateString);

@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { Question, QuestionToServer } from './../../interfaces/Question';
+import { Question } from './../../interfaces/Question';
 import { getForm } from '../../services/form.service';
 import {
   createQuestion,

@@ -3,8 +3,7 @@ import { Dispatch } from 'redux';
 import {
   createForm as serviceCreateForm,
   deleteForm as serviceDeleteForm,
-  getUserForms as serviceGetUserForms,
-  getForm
+  getUserForms as serviceGetUserForms
 } from '../../services/form.service';
 
 const reducer = (state: Form[] = [], action: any) => {

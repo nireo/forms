@@ -28,7 +28,6 @@ export const MultipleAnswer: React.FC<Props> = ({ answers, setAnswers }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [newAnswer, setNewAnswer] = useState<string>('');
-  const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
   useEffect(() => {
     if (loaded === false) {

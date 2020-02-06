@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -54,17 +54,17 @@ export const ViewAnswer: React.FC<Props> = props => {
   const [formLoaded, setFormLoaded] = useState<boolean>(false);
   const [otherInfo, setOtherInfo] = useState<any>();
 
-  const getQuestionData = async () => {
+  const getQuestionData = useCallback(async () => {
     const dataFromServer = await getAnswerData(props.id);
     setFormID(dataFromServer.full.form_uuid);
     setData(dataFromServer.answers);
     setOtherInfo(dataFromServer.full);
-  };
+  }, [props.id]);
 
-  const getQuestions = async () => {
+  const getQuestions = useCallback(async () => {
     const questionsFormServer = await getForm(formID);
     setFormQuestions(questionsFormServer.questions);
-  };
+  }, [formID]);
 
   useEffect(() => {
     if (!loaded) {
@@ -97,7 +97,16 @@ export const ViewAnswer: React.FC<Props> = props => {
       getQuestions();
       setFormLoaded(true);
     }
-  }, [data, formQuestions, formLoaded]);
+  }, [
+    data,
+    formQuestions,
+    formLoaded,
+    filter,
+    formID,
+    getQuestionData,
+    getQuestions,
+    loaded
+  ]);
 
   const removeAnswer = async () => {
     if (window.confirm('Are you sure you want delete the form?')) {

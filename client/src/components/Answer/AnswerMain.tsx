@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
-import { Question, QuestionType, Form } from '../../interfaces/Question';
+import React, { useState, ChangeEvent, useEffect, useCallback } from 'react';
+import { Question, QuestionType } from '../../interfaces/Question';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -65,34 +65,7 @@ export const AnswerMain: React.FC<Props> = props => {
   const [formName, setFormName] = useState<string>('');
   const [formDescription, setFormDescription] = useState<string>('');
 
-  useEffect(() => {
-    if (
-      props.id === undefined &&
-      props.preview !== undefined &&
-      props.previewData !== undefined
-    ) {
-      setAnswerItem(
-        props.previewData.map((q: Question) => {
-          const answer: AnswerItem = {
-            answer: [],
-            required: q.required,
-            type: q.answerType,
-            question: q.question,
-            temp_uuid: q.temp_uuid,
-            questionAnswers: q.answers,
-            trueOrFalse: false
-          };
-          return answer;
-        })
-      );
-    }
-
-    if (data === null && props.id !== undefined) {
-      loadData();
-    }
-  }, []);
-
-  const loadData = async (): Promise<void> => {
+  const loadData = useCallback(async () => {
     if (props.id === undefined) {
       return;
     }
@@ -120,7 +93,34 @@ export const AnswerMain: React.FC<Props> = props => {
 
     // set data just incase
     setData(loadData);
-  };
+  }, [props.id]);
+
+  useEffect(() => {
+    if (
+      props.id === undefined &&
+      props.preview !== undefined &&
+      props.previewData !== undefined
+    ) {
+      setAnswerItem(
+        props.previewData.map((q: Question) => {
+          const answer: AnswerItem = {
+            answer: [],
+            required: q.required,
+            type: q.answerType,
+            question: q.question,
+            temp_uuid: q.temp_uuid,
+            questionAnswers: q.answers,
+            trueOrFalse: false
+          };
+          return answer;
+        })
+      );
+    }
+
+    if (data === null && props.id !== undefined) {
+      loadData();
+    }
+  }, [data, loadData, props.id, props.preview, props.previewData]);
 
   const submitQuestion = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();

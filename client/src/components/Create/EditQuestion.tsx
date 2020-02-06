@@ -41,7 +41,7 @@ const EditQuestion: React.FC<Props> = props => {
   const question = props.question;
 
   useEffect(() => {
-    if (loaded === false && props.question) {
+    if (loaded === false && question) {
       setStep(question.step);
       setMin(question.min);
       setMax(question.max);
@@ -51,7 +51,7 @@ const EditQuestion: React.FC<Props> = props => {
       setAnswers(question.answers);
       setLoaded(true);
     }
-  }, []);
+  }, [loaded, question]);
 
   const updateQuestion = () => {
     const questionObject: Question = {

@@ -76,7 +76,7 @@ const TestView: React.FC<Props> = props => {
       props.initQuestions(props.id);
       setInitial(true);
     }
-  }, []);
+  }, [initial, props]);
 
   const newQuestion = () => {
     const uuid: string = uuidv4();

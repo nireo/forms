@@ -1,4 +1,3 @@
-import { AnswerFull } from './../interfaces/Answer';
 import axios from 'axios';
 
 const baseUrl: string = '/api/answer';

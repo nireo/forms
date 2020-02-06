@@ -1,4 +1,4 @@
-import { Question, QuestionToServer } from './../interfaces/Question';
+import { Question } from './../interfaces/Question';
 import axios from 'axios';
 
 const baseUrl: string = '/api/question';
