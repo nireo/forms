@@ -65,10 +65,10 @@ export const SliderForm: React.FC<Props> = props => {
             />
             <TextField
               id="standard-basic"
-              label="Min"
-              value={props.min}
+              label="Max"
+              value={props.max}
               type="number"
-              onChange={({ target }) => props.setMin(+target.value)}
+              onChange={({ target }) => props.setMax(+target.value)}
               className={classes.margin_2}
             />
           </div>
