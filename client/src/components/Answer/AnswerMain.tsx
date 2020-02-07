@@ -16,6 +16,7 @@ import Radio from '@material-ui/core/Radio';
 import { getForm } from '../../services/form.service';
 import { Loading } from '../Layout/Loading';
 import { createAnswer } from '../../services/answer.service';
+import Slider from '@material-ui/core/Slider';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -48,6 +49,9 @@ interface AnswerItem {
   temp_uuid: string;
   questionAnswers: string[];
   trueOrFalse: boolean;
+  step: number;
+  min: number;
+  max: number;
 }
 
 type Props = {
@@ -84,7 +88,10 @@ export const AnswerMain: React.FC<Props> = props => {
           question: q.question,
           temp_uuid: q.temp_uuid,
           questionAnswers: answerArray,
-          trueOrFalse: false
+          trueOrFalse: false,
+          step: q.step,
+          max: q.max,
+          min: q.min
         };
 
         return answer;
@@ -110,7 +117,10 @@ export const AnswerMain: React.FC<Props> = props => {
             question: q.question,
             temp_uuid: q.temp_uuid,
             questionAnswers: q.answers,
-            trueOrFalse: false
+            trueOrFalse: false,
+            step: q.step,
+            min: q.min,
+            max: q.max
           };
           return answer;
         })
@@ -346,7 +356,21 @@ export const AnswerMain: React.FC<Props> = props => {
                           </RadioGroup>
                         </div>
                       )}
-                      {answer.type === 6 && <div>slider</div>}
+                      {answer.type === 6 && (
+                        <div>
+                          <Typography variant="h5">
+                            {answer.question}
+                          </Typography>
+                          <Slider
+                            defaultValue={answer.min}
+                            step={answer.step}
+                            marks
+                            valueLabelDisplay="auto"
+                            min={answer.min}
+                            max={answer.max}
+                          />
+                        </div>
+                      )}
                     </div>
                   ))}
                   <Grid container spacing={3}>
@@ -370,7 +394,13 @@ export const AnswerMain: React.FC<Props> = props => {
               </div>
             )}
           </Paper>
-          <div style={{ textAlign: 'center', color: '#586069' }}>
+          <div
+            style={{
+              textAlign: 'center',
+              color: '#586069',
+              marginBottom: '5rem'
+            }}
+          >
             <Typography style={{ marginTop: '0', paddingTop: '0' }}>
               Forms does not approve of this content.
             </Typography>
