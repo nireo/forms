@@ -14,6 +14,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Slider from '@material-ui/core/Slider';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -37,6 +38,7 @@ interface AnswerItem {
   min: number;
   max: number;
   questionString: string;
+  questionAnswers: string[];
 }
 
 type Props = {
@@ -84,7 +86,8 @@ export const ViewAnswer: React.FC<Props> = props => {
             question_uuid: item.question_uuid,
             max: item.max,
             min: item.min,
-            questionString: formQuestions[index].question
+            questionString: formQuestions[index].question,
+            questionAnswers: formQuestions[index].answers.split('|')
           };
 
           return answer;
@@ -175,6 +178,26 @@ export const ViewAnswer: React.FC<Props> = props => {
                       style={{ width: '100%', marginTop: '1rem' }}
                       disabled={true}
                     />
+                  </div>
+                )}
+                {item.type === 3 && (
+                  <div>
+                    <Typography variant="h5">{item.questionString}</Typography>
+                    {item.questionAnswers.map((questionAnswer: string) => (
+                      <div>
+                        <FormControlLabel
+                          disabled
+                          control={
+                            <Checkbox
+                              color="primary"
+                              value={questionAnswer}
+                              checked={item.answers.includes(questionAnswer)}
+                            />
+                          }
+                          label={questionAnswer}
+                        />
+                      </div>
+                    ))}
                   </div>
                 )}
                 {item.type === 4 && (

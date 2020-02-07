@@ -117,7 +117,7 @@ export const AnswersMain: React.FC<Props> = props => {
                         </div>
                         <div style={{ marginTop: '0.5rem' }}>
                           <Link
-                            to={`answer/${answer.uuid}`}
+                            to={`/answer/${answer.uuid}`}
                             style={{ textDecoration: 'none' }}
                           >
                             View
