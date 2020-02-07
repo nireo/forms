@@ -65,9 +65,6 @@ const EditQuestion: React.FC<Props> = props => {
       temp_uuid: question.temp_uuid
     };
 
-    if (typeof props.updateWithNewInfo === 'undefined') {
-      return;
-    }
     props.updateWithNewInfo(questionObject);
   };
 

@@ -130,7 +130,6 @@ const TestView: React.FC<Props> = props => {
 
   const updateWithNewInfo = (question: Question): void => {
     props.updateQuestion(question);
-    setSelected(question);
 
     // const notification: NotificationInterface = {
     //   message: 'Saved successfully',

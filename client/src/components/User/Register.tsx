@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.secondary.main
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(1)
   },
   submit: {
@@ -101,7 +101,7 @@ const Register: React.FC<Props> = props => {
             autoComplete="current-password"
             error={
               startedPassword &&
-              !/^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$/.test(
+              /^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$/.test(
                 password
               )
             }

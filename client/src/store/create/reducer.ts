@@ -17,7 +17,7 @@ const reducer = (state: Question[] = [], action: any) => {
       return [];
     case 'SET_FULL':
       return action.data;
-    case 'UPDATE':
+    case 'UPDATE_QUESTION':
       const question: Question = action.data;
       return state.map(q =>
         q.temp_uuid === question.temp_uuid ? question : q
@@ -71,8 +71,10 @@ export const addQuestion = (question: Question, id: string) => {
     } else {
       copy.required = 'false';
     }
+
     const newQuestion: any = await createQuestion(id, copy);
     newQuestion.answers = turnAnswersToArray(newQuestion.answers);
+
     dispatch({
       type: 'ADD_QUESTION',
       data: newQuestion
@@ -100,7 +102,7 @@ export const updateQuestion = (question: Question) => {
     newQuestion.answers = turnAnswersToArray(newQuestion.answers);
     dispatch({
       type: 'UPDATE_QUESTION',
-      data: newQuestion
+      data: question
     });
   };
 };
