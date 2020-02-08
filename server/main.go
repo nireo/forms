@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	v1 "github.com/nireo/forms/server/api/v1"
 	"github.com/nireo/forms/server/database"
@@ -26,6 +27,10 @@ func main() {
 	db, _ := database.Initialize()
 
 	app := gin.Default()
+
+	// Serve the react front-end
+	app.Use(static.Serve("/", static.LocalFile("../client/build", true)))
+
 	app.Use(database.Inject(db))
 	app.Use(middlewares.JWTMiddleware())
 	v1.ApplyRoutes(app)

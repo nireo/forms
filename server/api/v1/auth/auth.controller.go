@@ -120,7 +120,6 @@ func login(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("token", token, 60*60*26*7, "/", "", false, true)
 	c.JSON(200, common.JSON{
 		"user":  user.Serialize(),
 		"token": token,
