@@ -15,6 +15,7 @@ import { checkLocalStorage } from './store/user/reducer';
 import { MainView } from './components/Form/MainView';
 import Settings from './components/User/Settings';
 import { ViewAnswer } from './components/Answers/ViewAnswer';
+import { ChooseAction } from './components/Welcome/ChooseAction';
 
 type Props = {
   user: User;
@@ -34,9 +35,10 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
       <Navbar />
       <Switch>
         <Route exact path="/view" render={() => <FormMain />} />
-        <Route exact path="/" render={() => <ManageMain />} />
+        <Route exact path="/main" render={() => <ManageMain />} />
         <Route exact path="/welcome" render={() => <Welcome />} />
         <Route exact path="/settings" render={() => <Settings />} />
+        <Route exact path="/" render={() => <ChooseAction />} />
         <Route
           exact
           path="/answer/:id"
