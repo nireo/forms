@@ -59,6 +59,7 @@ type Props = {
   hidePreview?: () => void;
   id?: string;
   preview?: boolean;
+  demo?: boolean;
 };
 
 export const AnswerMain: React.FC<Props> = props => {
@@ -68,6 +69,48 @@ export const AnswerMain: React.FC<Props> = props => {
   const [answerItems, setAnswerItem] = useState<AnswerItem[]>([]);
   const [formName, setFormName] = useState<string>('');
   const [formDescription, setFormDescription] = useState<string>('');
+  const [demoData] = useState([
+    {
+      answerType: 2,
+      answers: [''],
+      max: 10,
+      min: 1,
+      question: 'This is a small written question',
+      required: true,
+      step: 1,
+      temp_uuid: '02a5715f-2396-45b3-84fc-257c4bd02a08'
+    },
+    {
+      answerType: 3,
+      answers: ['Option 1', 'Option 2', 'Option 3'],
+      max: 10,
+      min: 1,
+      question: 'Multiple answer question',
+      required: false,
+      step: 1,
+      temp_uuid: '4fc0942a-21d8-429b-9ce2-d97cc23a7dfe'
+    },
+    {
+      answerType: 5,
+      answers: [''],
+      max: 10,
+      min: 1,
+      question: 'True or false question',
+      required: false,
+      step: 1,
+      temp_uuid: '3396d1c3-54e0-4786-8282-e0caf8e002ce'
+    },
+    {
+      answerType: 6,
+      answers: [''],
+      max: 8,
+      min: 1,
+      question: 'Slider question',
+      required: false,
+      step: 1,
+      temp_uuid: '4844c6e1-a005-416a-bc22-1206ed076b5d'
+    }
+  ]);
 
   const loadData = useCallback(async () => {
     if (props.id === undefined) {
@@ -110,6 +153,27 @@ export const AnswerMain: React.FC<Props> = props => {
     ) {
       setAnswerItem(
         props.previewData.map((q: Question) => {
+          const answer: AnswerItem = {
+            answer: [],
+            required: q.required,
+            type: q.answerType,
+            question: q.question,
+            temp_uuid: q.temp_uuid,
+            questionAnswers: q.answers,
+            trueOrFalse: false,
+            step: q.step,
+            min: q.min,
+            max: q.max
+          };
+          return answer;
+        })
+      );
+    }
+
+    if (props.demo !== undefined && props.id === undefined) {
+      console.log('demo mode');
+      setAnswerItem(
+        demoData.map((q: Question) => {
           const answer: AnswerItem = {
             answer: [],
             required: q.required,
@@ -236,12 +300,25 @@ export const AnswerMain: React.FC<Props> = props => {
       ) : (
         <div>
           <Paper className={classes.paper} style={{ marginBottom: '0' }}>
-            {data === null && props.preview === undefined ? (
+            {data === null &&
+            props.preview === undefined &&
+            props.demo === undefined ? (
               <Loading />
             ) : (
               <div>
-                <Typography variant="h4">{formName}</Typography>
-                <Typography>{formDescription}</Typography>
+                {props.demo === undefined ? (
+                  <Typography variant="h4">{formName}</Typography>
+                ) : (
+                  <Typography variant="h4">Demo form</Typography>
+                )}
+                {props.demo === undefined ? (
+                  <Typography>{formDescription}</Typography>
+                ) : (
+                  <Typography>
+                    This form displays a few of the features you can use when
+                    making forms.
+                  </Typography>
+                )}
                 {props.hidePreview !== undefined && (
                   <Button
                     variant="contained"

@@ -40,12 +40,23 @@ export const ChooseAction: React.FC = props => {
               >
                 Answer form
               </button>
-              <button className="choice-button">Create form</button>
+              <Link to="/main">
+                <button className="choice-button">Create form</button>
+              </Link>
+              <Link to="/demo">
+                <button
+                  className="choice-button"
+                  style={{ marginLeft: '2rem' }}
+                >
+                  Try demo
+                </button>
+              </Link>
             </div>
           </div>
         )}
         {step === 1 && (
           <div>
+            <Button onClick={() => setStep(0)}>Go back</Button>
             <Typography variant="h2">Answer form</Typography>
             <Typography>Copy paste the id</Typography>
             <div>

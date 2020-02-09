@@ -39,6 +39,7 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
         <Route exact path="/welcome" render={() => <Welcome />} />
         <Route exact path="/settings" render={() => <Settings />} />
         <Route exact path="/" render={() => <ChooseAction />} />
+        <Route exact path="/demo" render={() => <AnswerMain demo={true} />} />
         <Route
           exact
           path="/answer/:id"
