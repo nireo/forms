@@ -7,7 +7,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { getAnswerData } from '../../services/answer.service';
 import { QuestionType } from '../../interfaces/Question';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { getForm } from '../../services/form.service';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -15,6 +14,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Slider from '@material-ui/core/Slider';
 import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ArrayBackIcon from '@material-ui/icons/ArrowBack';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -144,20 +147,31 @@ export const ViewAnswer: React.FC<Props> = props => {
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
+        <div style={{ marginBottom: '1rem' }}>
+          <Link to={`/${formID}/edit`}>
+            <IconButton
+              component="span"
+              aria-label="go-back"
+              style={{ color: '#ff9999' }}
+            >
+              <ArrayBackIcon />
+            </IconButton>
+          </Link>
+          <IconButton
+            component="span"
+            aria-label="delete-answer"
+            style={{ color: '#ff9999' }}
+            onClick={removeAnswer}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </div>
         <Typography variant="h4">Answer {props.id}</Typography>
         {otherInfo && (
           <Typography>
             Answered {returnSensibleDate(otherInfo.created_at)}
           </Typography>
         )}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={removeAnswer}
-          style={{ marginTop: '1.5rem' }}
-        >
-          Remove
-        </Button>
         {!filter ||
           !loaded ||
           (!formLoaded && (

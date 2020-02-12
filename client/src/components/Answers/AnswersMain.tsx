@@ -118,7 +118,11 @@ export const AnswersMain: React.FC<Props> = props => {
                         <div style={{ marginTop: '0.5rem' }}>
                           <Link
                             to={`/answer/${answer.uuid}`}
-                            style={{ textDecoration: 'none' }}
+                            style={{
+                              textDecoration: 'none',
+                              fontSize: '14px',
+                              color: '#ff9999'
+                            }}
                           >
                             View
                           </Link>
@@ -126,7 +130,7 @@ export const AnswersMain: React.FC<Props> = props => {
                       </Grid>
                       <Grid item xs={1}>
                         <IconButton
-                          color="primary"
+                          style={{ color: '#ff9999' }}
                           component="span"
                           aria-label="delete-answer"
                           onClick={() => removeAnswer(answer.uuid)}

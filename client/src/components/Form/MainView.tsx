@@ -6,6 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AnswersMain } from '../Answers/AnswersMain';
 import Container from '@material-ui/core/Container';
 import TestView from '../Create/TestView';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -29,16 +32,24 @@ export const MainView: React.FC<Props> = props => {
     <div>
       <Container maxWidth="md" style={{ marginTop: '2rem', marginBottom: '0' }}>
         <Paper className={classes.root}>
-          <Tabs
-            value={page}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            centered
-          >
-            <Tab label="Questions" />
-            <Tab label="Answers" />
-          </Tabs>
+          <div>
+            <Link to="/main">
+              <IconButton component="span" aria-label="go-back">
+                <ArrowBackIcon />
+              </IconButton>
+            </Link>
+            Go back
+            <Tabs
+              value={page}
+              onChange={handleChange}
+              indicatorColor="default"
+              style={{ color: '#ff9999' }}
+              centered
+            >
+              <Tab style={{ color: '#ff9999' }} label="Questions" />
+              <Tab style={{ color: '#ff9999' }} label="Answers" />
+            </Tabs>
+          </div>
         </Paper>
       </Container>
       {page === 1 && <AnswersMain id={props.id} />}
