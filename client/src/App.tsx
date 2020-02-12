@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Navbar from './components/Layout/Navbar';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { FormMain } from './components/Form/FormMain';
 import ManageMain from './components/Manage/ManageMain';
@@ -32,7 +31,6 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
   return (
     <Router>
       <CssBaseline />
-      <Navbar />
       <Switch>
         <Route exact path="/view" render={() => <FormMain />} />
         <Route exact path="/main" render={() => <ManageMain />} />
