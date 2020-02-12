@@ -20,7 +20,11 @@ export const NewQuestion: React.FC<Props> = props => {
 
   return (
     <div className={classes.root}>
-      <Fab color="primary" aria-label="add" onClick={() => props.newQuestion()}>
+      <Fab
+        style={{ background: '#ff9999', color: 'white' }}
+        aria-label="add"
+        onClick={() => props.newQuestion()}
+      >
         <AddIcon />
       </Fab>
     </div>

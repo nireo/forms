@@ -24,6 +24,7 @@ import Grid from '@material-ui/core/Grid';
 import { User } from '../../interfaces/User';
 import { UserMain } from '../User/UserMain';
 import { Link } from 'react-router-dom';
+import { ReactComponent as Avatar } from '../../svg/avatar.svg';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -131,7 +132,17 @@ const ManageMain: React.FC<Props> = ({
 
   return (
     <Container maxWidth="md" style={{ marginTop: '2rem' }}>
-      <Typography variant="h3">Your forms</Typography>
+      <div>
+        <Typography variant="h3">Welcome</Typography>
+        <div>
+          <Avatar style={{ height: '35px' }} />
+          <Typography variant="h4">{user.username}</Typography>
+        </div>
+      </div>
+
+      <Typography variant="h3" style={{ marginTop: '8rem' }}>
+        Your forms
+      </Typography>
       <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
         {forms.map(form => (
           <Card className={classes.card} style={{ marginBottom: '0.5rem' }}>
@@ -163,14 +174,14 @@ const ManageMain: React.FC<Props> = ({
                     }/edit`}
                   >
                     <IconButton
-                      color="primary"
+                      style={{ color: '#ff9999' }}
                       aria-label="edit-form"
                       component="span"
                     >
                       <EditIcon />
                     </IconButton>
                     <IconButton
-                      color="primary"
+                      style={{ color: '#ff9999' }}
                       component="span"
                       onClick={() =>
                         removeForm(form.uuid === undefined ? '' : form.uuid)
@@ -200,7 +211,11 @@ const ManageMain: React.FC<Props> = ({
               }}
             />
             <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-              <Fab color="primary" aria-label="add" type="submit">
+              <Fab
+                style={{ backgroundColor: '#ff9999', color: 'white' }}
+                aria-label="add"
+                type="submit"
+              >
                 <AddIcon />
               </Fab>
             </div>

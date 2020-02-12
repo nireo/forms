@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 type Props = {
   handleClose: () => void;
@@ -13,12 +15,14 @@ export const Modal: React.FC<Props> = ({ handleClose, show, children }) => {
   return (
     <div className={showHideClassName}>
       <div className="modal-main">
+        <IconButton
+          onClick={() => handleClose()}
+          aria-label="close-icon"
+          component="span"
+        >
+          <CloseIcon />
+        </IconButton>
         <div style={{ padding: '2rem' }}>{children}</div>
-        <div>
-          <Button onClick={() => handleClose()} variant="text" color="primary">
-            Close
-          </Button>
-        </div>
       </div>
     </div>
   );

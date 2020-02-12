@@ -26,6 +26,7 @@ import { setNotification } from '../../store/notification/reducer';
 import { Notification as NotificationInterface } from '../../interfaces/Notification';
 import { AnswerMain } from '../Answer/AnswerMain';
 import Notification from '../Layout/Notification';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -169,7 +170,7 @@ const TestView: React.FC<Props> = props => {
             <Button
               onClick={() => setPreview(true)}
               variant="contained"
-              color="primary"
+              style={{ color: 'white', backgroundColor: '#ff9999' }}
             >
               Preview
             </Button>
@@ -178,10 +179,9 @@ const TestView: React.FC<Props> = props => {
                 <Grid item xs={1}>
                   {q === selected && (
                     <IconButton
-                      color="primary"
                       aria-label="close"
                       component="span"
-                      style={{ marginTop: '2rem' }}
+                      style={{ marginTop: '2rem', color: '#ff9999' }}
                       onClick={() => setSelected(null)}
                     >
                       <CloseIcon />
@@ -189,15 +189,22 @@ const TestView: React.FC<Props> = props => {
                   )}
                   {q !== selected && (
                     <IconButton
-                      color="primary"
                       aria-label="edit"
                       component="span"
-                      style={{ marginTop: '2rem' }}
+                      style={{ marginTop: '2rem', color: '#ff9999' }}
                       onClick={() => findAndSetSelected(q.temp_uuid)}
                     >
                       <EditIcon />
                     </IconButton>
                   )}
+                  <IconButton
+                    aria-label="remove"
+                    component="span"
+                    style={{ color: '#ff9999' }}
+                    onClick={() => removeQuestion(q.temp_uuid)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </Grid>
                 <Grid item xs={11}>
                   {selected !== null && q === selected && (
@@ -217,14 +224,6 @@ const TestView: React.FC<Props> = props => {
                         defaultValue={q.question}
                         style={{ width: '100%' }}
                       />
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => removeQuestion(q.temp_uuid)}
-                        style={{ marginTop: '1rem' }}
-                      >
-                        Delete
-                      </Button>
                     </div>
                   )}
                 </Grid>

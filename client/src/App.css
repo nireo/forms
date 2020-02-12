@@ -74,6 +74,13 @@
   border-width: initial;
   border-color: initial;
   border-image: initial;
-  background: #3f51b5;
+  background: #ff9999;
   text-decoration: none;
+}
+
+::selection {
+  background: #ff9999; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: #ff9999; /* Gecko Browsers */
 }
