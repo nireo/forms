@@ -163,7 +163,7 @@ const EditQuestion: React.FC<Props> = props => {
                 <Switch
                   checked={required}
                   onChange={() => setRequired(!required)}
-                  color="primary"
+                  style={{ color: '#ff9999' }}
                 />
               }
             />
@@ -179,11 +179,9 @@ const EditQuestion: React.FC<Props> = props => {
             >
               <DeleteIcon />
             </IconButton>
-          </div>
-          <div>
             <Button
               variant="contained"
-              color="primary"
+              style={{ color: 'white', backgroundColor: '#ff9999' }}
               onClick={updateQuestion}
             >
               Save

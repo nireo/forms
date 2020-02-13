@@ -11,8 +11,11 @@ type Props = {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    '& > *': {
-      margin: theme.spacing(1)
+    '& label.Mui-focused': {
+      color: '#ff9999'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: '#ff9999'
     }
   },
   formBig: {
@@ -32,6 +35,7 @@ export const FormInput: React.FC<Props> = props => {
         fullWidth
         value={props.value}
         onChange={({ target }) => props.setValue(target.value)}
+        style={{ color: '#ff9999' }}
       />
     </div>
   );

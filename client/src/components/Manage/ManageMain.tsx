@@ -14,7 +14,7 @@ import {
   deleteForm
 } from '../../store/forms/reducer';
 import { Modal } from '../Layout/Modal';
-import { TextField } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -24,7 +24,7 @@ import Grid from '@material-ui/core/Grid';
 import { User } from '../../interfaces/User';
 import { UserMain } from '../User/UserMain';
 import { Link } from 'react-router-dom';
-import { ReactComponent as Avatar } from '../../svg/avatar.svg';
+import { logout } from '../../store/user/reducer';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -37,6 +37,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3)
+  },
+  root: {
+    '& label.Mui-focused': {
+      color: '#ff9999'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: '#ff9999'
+    }
   }
 }));
 
@@ -46,6 +54,7 @@ type Props = {
   user: User | null;
   getUserForms: () => void;
   deleteForm: (id: string) => void;
+  logout: () => void;
 };
 
 const ManageMain: React.FC<Props> = ({
@@ -53,7 +62,8 @@ const ManageMain: React.FC<Props> = ({
   createForm,
   user,
   getUserForms,
-  deleteForm
+  deleteForm,
+  logout
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('Untitled form');
@@ -133,10 +143,27 @@ const ManageMain: React.FC<Props> = ({
   return (
     <Container maxWidth="md" style={{ marginTop: '2rem' }}>
       <div>
-        <Typography variant="h3">Welcome</Typography>
-        <div>
-          <Avatar style={{ height: '35px' }} />
-          <Typography variant="h4">{user.username}</Typography>
+        <Typography variant="h3">Welcome {user.username}</Typography>
+        <div style={{ marginTop: '1rem' }}>
+          <Button
+            variant="contained"
+            style={{ color: 'white', backgroundColor: '#ff9999' }}
+            onClick={() => logout()}
+          >
+            Logout
+          </Button>
+          <Link to="/settings">
+            <Button
+              variant="contained"
+              style={{
+                color: 'white',
+                backgroundColor: '#ff9999',
+                marginLeft: '1rem'
+              }}
+            >
+              Settings
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -196,7 +223,9 @@ const ManageMain: React.FC<Props> = ({
           </Card>
         ))}
       </div>
-      <div style={{ textAlign: 'center', marginTop: '2px' }}>
+      <div
+        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '4rem' }}
+      >
         <NewQuestion newQuestion={handleOpen} />
       </div>
       <Modal show={open} handleClose={handleClose}>
@@ -206,6 +235,7 @@ const ManageMain: React.FC<Props> = ({
               value={title}
               onChange={({ target }) => setTitle(target.value)}
               label="Title"
+              className={classes.root}
               style={{
                 width: '100%'
               }}
@@ -234,5 +264,6 @@ const mapStateToProps = (state: AppState) => ({
 export default connect(mapStateToProps, {
   createForm,
   getUserForms,
-  deleteForm
+  deleteForm,
+  logout
 })(ManageMain);
