@@ -152,7 +152,7 @@ const ManageMain: React.FC<Props> = ({
           >
             Logout
           </Button>
-          <Link to="/settings">
+          <Link to="/settings" style={{ textDecoration: 'none' }}>
             <Button
               variant="contained"
               style={{

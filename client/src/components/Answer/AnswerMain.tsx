@@ -38,6 +38,14 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginBottom: theme.spacing(6),
       padding: theme.spacing(3)
     }
+  },
+  root: {
+    '& label.Mui-focused': {
+      color: '#ff9999'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: '#ff9999'
+    }
   }
 }));
 
@@ -194,7 +202,15 @@ export const AnswerMain: React.FC<Props> = props => {
     if (data === null && props.id !== undefined) {
       loadData();
     }
-  }, [data, loadData, props.id, props.preview, props.previewData]);
+  }, [
+    data,
+    loadData,
+    props.id,
+    props.preview,
+    props.previewData,
+    demoData,
+    props.demo
+  ]);
 
   const submitQuestion = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -333,7 +349,7 @@ export const AnswerMain: React.FC<Props> = props => {
                   </Button>
                 )}
                 <hr style={{ marginBottom: '1rem' }} />
-                <form onSubmit={submitQuestion}>
+                <form onSubmit={submitQuestion} className={classes.root}>
                   {answerItems.map((answer: AnswerItem, index: number) => (
                     <div key={answer.temp_uuid} style={{ marginTop: '3rem' }}>
                       {answer.type === 1 && (
@@ -349,7 +365,12 @@ export const AnswerMain: React.FC<Props> = props => {
                             {answer.questionAnswers.map((question: string) => (
                               <div>
                                 <FormControlLabel
-                                  control={<Radio value={question} />}
+                                  control={
+                                    <Radio
+                                      style={{ color: '#ff9999' }}
+                                      value={question}
+                                    />
+                                  }
                                   label={question}
                                 />
                               </div>
@@ -363,12 +384,9 @@ export const AnswerMain: React.FC<Props> = props => {
                             {answer.question}
                           </Typography>
                           <TextField
-                            id={`standard-${
-                              answer.required ? 'required' : 'basic'
-                            }`}
                             value={answer.answer[0]}
                             onChange={event => changeValue(event, index)}
-                            style={{ width: '100%', marginTop: '1rem' }}
+                            style={{ width: '100%', color: '#ff9999' }}
                             required={answer.required}
                             label="Answer"
                           />
@@ -386,10 +404,16 @@ export const AnswerMain: React.FC<Props> = props => {
                                   <Checkbox
                                     value={question}
                                     onClick={() => checkKey(question, index)}
-                                    color="primary"
+                                    style={{
+                                      color: '#ff9999'
+                                    }}
                                   />
                                 }
-                                label={question}
+                                label={
+                                  <Typography style={{ fontSize: '14px' }}>
+                                    {question}
+                                  </Typography>
+                                }
                               />
                             </div>
                           ))}
@@ -401,12 +425,11 @@ export const AnswerMain: React.FC<Props> = props => {
                             {answer.question}
                           </Typography>
                           <TextField
-                            id="standard-multiline-flexible"
                             label="Answer"
                             multiline
                             value={answer.answer[0]}
                             onChange={event => changeValue(event, index)}
-                            style={{ width: '100%' }}
+                            style={{ width: '100%', color: '#ff9999' }}
                           />
                         </div>
                       )}
@@ -422,13 +445,21 @@ export const AnswerMain: React.FC<Props> = props => {
                           >
                             <FormControlLabel
                               value={true}
-                              control={<Radio />}
-                              label="True"
+                              control={<Radio style={{ color: '#ff9999' }} />}
+                              label={
+                                <Typography style={{ fontSize: '14px' }}>
+                                  True
+                                </Typography>
+                              }
                             />
                             <FormControlLabel
                               value={false}
-                              control={<Radio />}
-                              label="False"
+                              control={<Radio style={{ color: '#ff9999' }} />}
+                              label={
+                                <Typography style={{ fontSize: '14px' }}>
+                                  False
+                                </Typography>
+                              }
                             />
                           </RadioGroup>
                         </div>
@@ -445,6 +476,7 @@ export const AnswerMain: React.FC<Props> = props => {
                             valueLabelDisplay="auto"
                             min={answer.min}
                             max={answer.max}
+                            style={{ color: '#ff9999' }}
                           />
                         </div>
                       )}
@@ -455,7 +487,11 @@ export const AnswerMain: React.FC<Props> = props => {
                     <Grid item xs={2}>
                       <Button
                         variant="contained"
-                        style={{ marginTop: '3rem' }}
+                        style={{
+                          marginTop: '3rem',
+                          color: 'white',
+                          backgroundColor: '#ff9999'
+                        }}
                         color="primary"
                         endIcon={<SendIcon />}
                         disabled={
