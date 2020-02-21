@@ -13,5 +13,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		form.GET("/:id", formFromID)
 		form.DELETE("/:id", middlewares.Authorized, removeForm)
 		form.GET("/", middlewares.Authorized, getUserForms)
+		form.PATCH("/:id", middlewares.Authorized, updateForm)
 	}
 }

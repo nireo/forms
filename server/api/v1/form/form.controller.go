@@ -111,3 +111,37 @@ func getUserForms(c *gin.Context) {
 	}
 	c.JSON(200, serialized)
 }
+
+func updateForm(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
+	id := c.MustGet("id")
+
+	type RequestBody struct {
+		Title       string `json:"title" binding:"required"`
+		Description string `json:"description" binding:"required"`
+	}
+
+	var body RequestBody
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	var form Form
+	if err := db.Where("unique_id = ?", id).First(&form).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	if form.UserID != user.ID {
+		c.AbortWithStatus(401)
+		return
+	}
+
+	form.Title = body.Title
+	form.Description = body.Description
+
+	db.Save(&form)
+	c.JSON(200, form.Serialize())
+}
