@@ -1,15 +1,15 @@
-import React, { ChangeEvent, useState } from 'react';
-import { connect } from 'react-redux';
-import { AppState } from '../../store/index';
-import { User } from '../../interfaces/User';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import { removeUser } from '../../store/user/reducer';
-import TextField from '@material-ui/core/TextField';
-import { updatePassword as s_updatePassword } from '../../services/user.service';
+import React, { ChangeEvent, useState } from "react";
+import { connect } from "react-redux";
+import { AppState } from "../../store/index";
+import { User } from "../../interfaces/User";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import { removeUser } from "../../store/user/reducer";
+import TextField from "@material-ui/core/TextField";
+import { updatePassword as s_updatePassword } from "../../services/user.service";
 
 type Props = {
   user: User;
@@ -26,14 +26,22 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginBottom: theme.spacing(6),
       padding: theme.spacing(3)
     }
+  },
+  root: {
+    "& label.Mui-focused": {
+      color: "#ff9999"
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#ff9999"
+    }
   }
 }));
 
 const Settings: React.FC<Props> = props => {
   const classes = useStyles(props);
   const { user } = props;
-  const [current, setCurrent] = useState<string>('');
-  const [newPassword, setNewPassword] = useState<string>('');
+  const [current, setCurrent] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
 
   if (!user) {
     return null;
@@ -42,7 +50,7 @@ const Settings: React.FC<Props> = props => {
   const removeAccount = (): void => {
     if (
       window.confirm(
-        'Are you sure you want to delete your account? All data will be lost.'
+        "Are you sure you want to delete your account? All data will be lost."
       )
     ) {
       props.removeUser();
@@ -51,7 +59,7 @@ const Settings: React.FC<Props> = props => {
 
   const updatePassword = (event: ChangeEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    if (newPassword === '') {
+    if (newPassword === "") {
       return;
     }
     s_updatePassword(newPassword);
@@ -62,19 +70,25 @@ const Settings: React.FC<Props> = props => {
       <Paper className={classes.paper}>
         <Typography variant="h4">Settings</Typography>
         <hr />
-        <div style={{ marginTop: '2rem' }}>
-          <Typography variant="h5">Password</Typography>
+        <div style={{ marginTop: "2rem" }}>
+          <Typography variant="h5">Change password</Typography>
           <form onSubmit={updatePassword}>
-            <div>
+            <div style={{ marginBottom: "2rem" }}>
               <TextField
-                id="standard-basic"
+                className={classes.root}
+                type="password"
                 label="Current password"
+                style={{ width: "100%" }}
                 value={current}
                 onChange={({ target }) => setCurrent(target.value)}
               />
+            </div>
+            <div style={{ marginBottom: "2rem" }}>
               <TextField
-                id="standard-basic"
+                className={classes.root}
+                type="password"
                 label="New password"
+                style={{ width: "100%" }}
                 value={newPassword}
                 onChange={({ target }) => setNewPassword(target.value)}
               />
@@ -82,17 +96,25 @@ const Settings: React.FC<Props> = props => {
             <Typography>
               Next time you can login with the new password
             </Typography>
-            <Button variant="contained" color="primary">
+            <Button
+              variant="contained"
+              type="submit"
+              style={{ backgroundColor: "#ff9999", color: "white" }}
+            >
               Change
             </Button>
           </form>
         </div>
-        <div style={{ marginTop: '2rem' }}>
+        <div style={{ marginTop: "2rem" }}>
           <Typography variant="h5">Delete account</Typography>
           <Typography>
             All data related to you will be deleted as well.
           </Typography>
-          <Button variant="contained" color="primary" onClick={removeAccount}>
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "#ff9999", color: "white" }}
+            onClick={removeAccount}
+          >
             Delete
           </Button>
         </div>

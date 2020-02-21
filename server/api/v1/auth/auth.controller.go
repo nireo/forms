@@ -156,7 +156,7 @@ func changePassword(c *gin.Context) {
 	}
 
 	var user User
-	if err := db.Preload("User").Where("id = ?", userRaw.ID).First(&user).Error; err != nil {
+	if err := db.Where("id = ?", userRaw.ID).First(&user).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
