@@ -1,7 +1,7 @@
-import { Form } from './../interfaces/Question';
-import axios from 'axios';
+import { Form } from "./../interfaces/Question";
+import axios from "axios";
 
-const baseUrl: string = '/api/form';
+const baseUrl: string = "/api/form";
 
 let token: string | null = null;
 
@@ -18,7 +18,8 @@ export const getForm = async (id: string) => {
   return response.data;
 };
 
-export const updateForm = async (form: Form, id: string) => {
+export const updateForm = async (form: any, id: string) => {
+  console.log(form);
   const response = await axios.patch(`${baseUrl}/${id}`, form, getConfig());
   return response.data;
 };

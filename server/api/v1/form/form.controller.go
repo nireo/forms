@@ -1,6 +1,8 @@
 package form
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/nireo/forms/server/database/models"
@@ -115,7 +117,7 @@ func getUserForms(c *gin.Context) {
 func updateForm(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	user := c.MustGet("user").(User)
-	id := c.MustGet("id")
+	id := c.Param("id")
 
 	type RequestBody struct {
 		Title       string `json:"title" binding:"required"`
@@ -125,6 +127,7 @@ func updateForm(c *gin.Context) {
 	var body RequestBody
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatus(400)
+		fmt.Println(err)
 		return
 	}
 

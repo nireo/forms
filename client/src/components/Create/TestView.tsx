@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -27,7 +27,7 @@ import { Notification as NotificationInterface } from "../../interfaces/Notifica
 import { AnswerMain } from "../Answer/AnswerMain";
 import Notification from "../Layout/Notification";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { getForm } from "../../services/form.service";
+import { getForm, updateForm } from "../../services/form.service";
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -158,6 +158,14 @@ const TestView: React.FC<Props> = props => {
     // props.setNotification(notification);
   };
 
+  const updateFormInfo = (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (description === "") {
+      setDescription(" ");
+    }
+    updateForm({ title, description }, props.id);
+  };
+
   return (
     <div>
       <Notification />
@@ -190,7 +198,24 @@ const TestView: React.FC<Props> = props => {
               >
                 Preview
               </Button>
-              {}
+              {form !== null && (
+                <form onSubmit={updateFormInfo}>
+                  {(form.title !== title ||
+                    form.description !== description) && (
+                    <Button
+                      variant="contained"
+                      style={{
+                        color: "white",
+                        marginTop: "1rem",
+                        backgroundColor: "#ff9999"
+                      }}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  )}
+                </form>
+              )}
             </div>
             {props.create.map((q: Question) => (
               <Grid container spacing={1}>
