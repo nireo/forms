@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import { removeUser } from "../../store/user/reducer";
 import TextField from "@material-ui/core/TextField";
 import { updatePassword as s_updatePassword } from "../../services/user.service";
+import { GoBack } from "../Layout/GoBack";
 
 type Props = {
   user: User;
@@ -68,6 +69,7 @@ const Settings: React.FC<Props> = props => {
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
+        <GoBack goMain={true} />
         <Typography variant="h4">Settings</Typography>
         <hr />
         <div style={{ marginTop: "2rem" }}>

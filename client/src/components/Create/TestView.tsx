@@ -1,42 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { FormInput } from './FormInput';
-import { NewQuestion } from './NewQuestion';
-import { Question } from '../../interfaces/Question';
+import React, { useState, useEffect } from "react";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { FormInput } from "./FormInput";
+import { NewQuestion } from "./NewQuestion";
+import { Question } from "../../interfaces/Question";
 import {
   addQuestion,
   removeQuestion,
   clearQuestions,
   updateQuestion,
   initQuestions
-} from '../../store/create/reducer';
-import { connect } from 'react-redux';
-import { AppState } from '../../store';
-import uuidv4 from 'uuid/v4';
-import Grid from '@material-ui/core/Grid';
-import EditIcon from '@material-ui/icons/Edit';
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton';
-import EditQuestion from './EditQuestion';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { setNotification } from '../../store/notification/reducer';
-import { Notification as NotificationInterface } from '../../interfaces/Notification';
-import { AnswerMain } from '../Answer/AnswerMain';
-import Notification from '../Layout/Notification';
-import DeleteIcon from '@material-ui/icons/Delete';
+} from "../../store/create/reducer";
+import { connect } from "react-redux";
+import { AppState } from "../../store";
+import uuidv4 from "uuid/v4";
+import Grid from "@material-ui/core/Grid";
+import EditIcon from "@material-ui/icons/Edit";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
+import EditQuestion from "./EditQuestion";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { setNotification } from "../../store/notification/reducer";
+import { Notification as NotificationInterface } from "../../interfaces/Notification";
+import { AnswerMain } from "../Answer/AnswerMain";
+import Notification from "../Layout/Notification";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { getForm } from "../../services/form.service";
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
-    width: 'auto',
+    width: "auto",
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto'
+      marginLeft: "auto",
+      marginRight: "auto"
     }
   },
   paper: {
@@ -64,18 +65,32 @@ type Props = {
 
 const TestView: React.FC<Props> = props => {
   const classes = useStyles(props);
-  const [title, setTitle] = useState<string>('Untitled Form');
-  const [description, setDescription] = useState<string>('');
+  const [form, setForm] = useState<any>(null);
+  const [title, setTitle] = useState<string>("Untitled Form");
+  const [description, setDescription] = useState<string>("");
   const [selected, setSelected] = useState<Question | null>(null);
   const [preview, setPreview] = useState<boolean>(false);
 
   // used for initially loading all questions
   const [initial, setInitial] = useState<boolean>(false);
 
+  const loadForm = async () => {
+    const form = await getForm(props.id);
+    return form;
+  };
+
   useEffect(() => {
     if (initial === false) {
       props.initQuestions(props.id);
       setInitial(true);
+    }
+
+    if (form === null) {
+      loadForm().then((response: any) => {
+        setForm(response.form);
+        setTitle(response.form.title);
+        setDescription(response.form.description);
+      });
     }
   }, [initial, props]);
 
@@ -83,7 +98,7 @@ const TestView: React.FC<Props> = props => {
     const uuid: string = uuidv4();
     const templateQuestion: Question = {
       required: false,
-      question: 'untitled question',
+      question: "untitled question",
       answerType: 2,
       answers: [],
       temp_uuid: uuid,
@@ -147,16 +162,16 @@ const TestView: React.FC<Props> = props => {
     <div>
       <Notification />
       {!preview && (
-        <Container maxWidth="md" style={{ marginTop: '0' }}>
+        <Container maxWidth="md" style={{ marginTop: "0" }}>
           <Paper className={classes.paper}>
             <input
               value={title}
               onChange={({ target }) => setTitle(target.value)}
               style={{
-                border: 'none',
-                fontSize: '36px',
-                fontFamily: 'Roboto',
-                width: '100%'
+                border: "none",
+                fontSize: "36px",
+                fontFamily: "Roboto",
+                width: "100%"
               }}
               placeholder="Title..."
               maxLength={50}
@@ -167,13 +182,16 @@ const TestView: React.FC<Props> = props => {
               value={description}
               setValue={setDescription}
             />
-            <Button
-              onClick={() => setPreview(true)}
-              variant="contained"
-              style={{ color: 'white', backgroundColor: '#ff9999' }}
-            >
-              Preview
-            </Button>
+            <div>
+              <Button
+                onClick={() => setPreview(true)}
+                variant="contained"
+                style={{ color: "white", backgroundColor: "#ff9999" }}
+              >
+                Preview
+              </Button>
+              {}
+            </div>
             {props.create.map((q: Question) => (
               <Grid container spacing={1}>
                 <Grid item xs={1}>
@@ -181,7 +199,7 @@ const TestView: React.FC<Props> = props => {
                     <IconButton
                       aria-label="close"
                       component="span"
-                      style={{ marginTop: '2rem', color: '#ff9999' }}
+                      style={{ marginTop: "2rem", color: "#ff9999" }}
                       onClick={() => setSelected(null)}
                     >
                       <CloseIcon />
@@ -191,7 +209,7 @@ const TestView: React.FC<Props> = props => {
                     <IconButton
                       aria-label="edit"
                       component="span"
-                      style={{ marginTop: '2rem', color: '#ff9999' }}
+                      style={{ marginTop: "2rem", color: "#ff9999" }}
                       onClick={() => findAndSetSelected(q.temp_uuid)}
                     >
                       <EditIcon />
@@ -200,7 +218,7 @@ const TestView: React.FC<Props> = props => {
                   <IconButton
                     aria-label="remove"
                     component="span"
-                    style={{ color: '#ff9999' }}
+                    style={{ color: "#ff9999" }}
                     onClick={() => removeQuestion(q.temp_uuid)}
                   >
                     <DeleteIcon />
@@ -216,20 +234,20 @@ const TestView: React.FC<Props> = props => {
                     </div>
                   )}
                   {selected !== q && (
-                    <div style={{ marginTop: '2rem' }}>
+                    <div style={{ marginTop: "2rem" }}>
                       <TextField
                         disabled
                         id="standard-disabled"
                         label="Question"
                         defaultValue={q.question}
-                        style={{ width: '100%' }}
+                        style={{ width: "100%" }}
                       />
                     </div>
                   )}
                 </Grid>
               </Grid>
             ))}
-            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+            <div style={{ textAlign: "center", marginTop: "2rem" }}>
               <NewQuestion newQuestion={newQuestion} />
             </div>
           </Paper>

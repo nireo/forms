@@ -18,6 +18,14 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginBottom: theme.spacing(6),
       padding: theme.spacing(3)
     }
+  },
+  root: {
+    "& label.Mui-focused": {
+      color: "#ff9999"
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#ff9999"
+    }
   }
 }));
 
@@ -65,15 +73,19 @@ export const ChooseAction: React.FC = props => {
             <div>
               <TextField
                 style={{ width: "100%", marginTop: "1rem" }}
+                className={classes.root}
                 value={formID}
                 onChange={({ target }) => setFormID(target.value)}
                 label="Form ID"
               />
               <Link to={`/${formID}`} style={{ textDecoration: "none" }}>
                 <Button
-                  style={{ marginTop: "1rem" }}
+                  style={{
+                    marginTop: "1rem",
+                    backgroundColor: `${formID === "" ? "#e1e1e1" : "#ff9999"}`,
+                    color: `${formID === "" ? "black" : "white"}`
+                  }}
                   variant="contained"
-                  color="primary"
                   disabled={formID === ""}
                 >
                   Go to form
