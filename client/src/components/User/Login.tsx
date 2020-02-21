@@ -1,32 +1,33 @@
-import React, { useState, ChangeEvent } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { connect } from 'react-redux';
-import { login } from '../../store/user/reducer';
-import { UserAction } from '../../interfaces/User';
+import React, { useState, ChangeEvent } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { connect } from "react-redux";
+import { login } from "../../store/user/reducer";
+import { UserAction } from "../../interfaces/User";
+import { GoBack } from "../Layout/GoBack";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1)
   },
   submit: {
@@ -41,13 +42,13 @@ type Props = {
 
 const Login: React.FC<Props> = props => {
   const classes = useStyles(props);
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [remember, setRemember] = useState<boolean>(false);
 
   const login = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (username === '' || password === '') {
+    if (username === "" || password === "") {
       return;
     }
 
@@ -55,12 +56,15 @@ const Login: React.FC<Props> = props => {
     try {
       props.login(credentials, remember);
     } catch {
-      console.log('something went wrong logging you in.');
+      console.log("something went wrong logging you in.");
     }
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
+      <div style={{ marginTop: "2rem", marginBottom: "0" }}>
+        <GoBack />
+      </div>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />

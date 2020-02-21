@@ -57,7 +57,7 @@ func JWTMiddleware() gin.HandlerFunc {
 				return
 			}
 
-			sp := strings.Split(authorization, "Bearer ")
+			sp := strings.Split(authorization, "bearer ")
 			if len(sp) < 1 {
 				c.Next()
 				return

@@ -1,32 +1,33 @@
-import React, { useState, ChangeEvent, useEffect, useCallback } from 'react';
-import { Question, QuestionType } from '../../interfaces/Question';
-import Paper from '@material-ui/core/Paper';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import SendIcon from '@material-ui/icons/Send';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import { Ending } from './Ending';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
-import { getForm } from '../../services/form.service';
-import { Loading } from '../Layout/Loading';
-import { createAnswer } from '../../services/answer.service';
-import Slider from '@material-ui/core/Slider';
+import React, { useState, ChangeEvent, useEffect, useCallback } from "react";
+import { Question, QuestionType } from "../../interfaces/Question";
+import Paper from "@material-ui/core/Paper";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import SendIcon from "@material-ui/icons/Send";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import { Ending } from "./Ending";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Radio from "@material-ui/core/Radio";
+import { getForm } from "../../services/form.service";
+import { Loading } from "../Layout/Loading";
+import { createAnswer } from "../../services/answer.service";
+import Slider from "@material-ui/core/Slider";
+import { GoBack } from "../Layout/GoBack";
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
-    width: 'auto',
+    width: "auto",
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto'
+      marginLeft: "auto",
+      marginRight: "auto"
     }
   },
   paper: {
@@ -40,11 +41,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   root: {
-    '& label.Mui-focused': {
-      color: '#ff9999'
+    "& label.Mui-focused": {
+      color: "#ff9999"
     },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: '#ff9999'
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#ff9999"
     }
   }
 }));
@@ -75,48 +76,48 @@ export const AnswerMain: React.FC<Props> = props => {
   const [finished, setFinished] = useState<boolean>(false);
   const [data, setData] = useState<Question[] | null>(null);
   const [answerItems, setAnswerItem] = useState<AnswerItem[]>([]);
-  const [formName, setFormName] = useState<string>('');
-  const [formDescription, setFormDescription] = useState<string>('');
+  const [formName, setFormName] = useState<string>("");
+  const [formDescription, setFormDescription] = useState<string>("");
   const [demoData] = useState([
     {
       answerType: 2,
-      answers: [''],
+      answers: [""],
       max: 10,
       min: 1,
-      question: 'This is a small written question',
+      question: "This is a small written question",
       required: true,
       step: 1,
-      temp_uuid: '02a5715f-2396-45b3-84fc-257c4bd02a08'
+      temp_uuid: "02a5715f-2396-45b3-84fc-257c4bd02a08"
     },
     {
       answerType: 3,
-      answers: ['Option 1', 'Option 2', 'Option 3'],
+      answers: ["Option 1", "Option 2", "Option 3"],
       max: 10,
       min: 1,
-      question: 'Multiple answer question',
+      question: "Multiple answer question",
       required: false,
       step: 1,
-      temp_uuid: '4fc0942a-21d8-429b-9ce2-d97cc23a7dfe'
+      temp_uuid: "4fc0942a-21d8-429b-9ce2-d97cc23a7dfe"
     },
     {
       answerType: 5,
-      answers: [''],
+      answers: [""],
       max: 10,
       min: 1,
-      question: 'True or false question',
+      question: "True or false question",
       required: false,
       step: 1,
-      temp_uuid: '3396d1c3-54e0-4786-8282-e0caf8e002ce'
+      temp_uuid: "3396d1c3-54e0-4786-8282-e0caf8e002ce"
     },
     {
       answerType: 6,
-      answers: [''],
+      answers: [""],
       max: 8,
       min: 1,
-      question: 'Slider question',
+      question: "Slider question",
       required: false,
       step: 1,
-      temp_uuid: '4844c6e1-a005-416a-bc22-1206ed076b5d'
+      temp_uuid: "4844c6e1-a005-416a-bc22-1206ed076b5d"
     }
   ]);
 
@@ -131,7 +132,7 @@ export const AnswerMain: React.FC<Props> = props => {
 
     setAnswerItem(
       loadData.questions.map((q: any) => {
-        const answerArray: string[] = q.answers.split('|');
+        const answerArray: string[] = q.answers.split("|");
         const answer: AnswerItem = {
           answer: [],
           required: q.required,
@@ -179,7 +180,7 @@ export const AnswerMain: React.FC<Props> = props => {
     }
 
     if (props.demo !== undefined && props.id === undefined) {
-      console.log('demo mode');
+      console.log("demo mode");
       setAnswerItem(
         demoData.map((q: Question) => {
           const answer: AnswerItem = {
@@ -215,11 +216,11 @@ export const AnswerMain: React.FC<Props> = props => {
   const submitQuestion = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     const finalAnswers = answerItems.map((a: AnswerItem) => {
-      let trueOrFalse: string = '';
+      let trueOrFalse: string = "";
       if (a.trueOrFalse) {
-        trueOrFalse = 'true';
+        trueOrFalse = "true";
       } else {
-        trueOrFalse = 'false';
+        trueOrFalse = "false";
       }
 
       const filtered = {
@@ -288,7 +289,7 @@ export const AnswerMain: React.FC<Props> = props => {
   ) => {
     const value = (event.target as HTMLInputElement).value;
     const answer = answerItems[index];
-    if (value === 'true') {
+    if (value === "true") {
       answer.trueOrFalse = true;
     } else {
       answer.trueOrFalse = false;
@@ -315,7 +316,7 @@ export const AnswerMain: React.FC<Props> = props => {
         <Ending />
       ) : (
         <div>
-          <Paper className={classes.paper} style={{ marginBottom: '0' }}>
+          <Paper className={classes.paper} style={{ marginBottom: "0" }}>
             {data === null &&
             props.preview === undefined &&
             props.demo === undefined ? (
@@ -325,7 +326,10 @@ export const AnswerMain: React.FC<Props> = props => {
                 {props.demo === undefined ? (
                   <Typography variant="h4">{formName}</Typography>
                 ) : (
-                  <Typography variant="h4">Demo form</Typography>
+                  <div>
+                    <GoBack />
+                    <Typography variant="h4">Demo form</Typography>
+                  </div>
                 )}
                 {props.demo === undefined ? (
                   <Typography>{formDescription}</Typography>
@@ -348,10 +352,10 @@ export const AnswerMain: React.FC<Props> = props => {
                     Hide preview
                   </Button>
                 )}
-                <hr style={{ marginBottom: '1rem' }} />
+                <hr style={{ marginBottom: "1rem" }} />
                 <form onSubmit={submitQuestion} className={classes.root}>
                   {answerItems.map((answer: AnswerItem, index: number) => (
-                    <div key={answer.temp_uuid} style={{ marginTop: '3rem' }}>
+                    <div key={answer.temp_uuid} style={{ marginTop: "3rem" }}>
                       {answer.type === 1 && (
                         <div>
                           <Typography variant="h5">
@@ -367,7 +371,7 @@ export const AnswerMain: React.FC<Props> = props => {
                                 <FormControlLabel
                                   control={
                                     <Radio
-                                      style={{ color: '#ff9999' }}
+                                      style={{ color: "#ff9999" }}
                                       value={question}
                                     />
                                   }
@@ -386,7 +390,7 @@ export const AnswerMain: React.FC<Props> = props => {
                           <TextField
                             value={answer.answer[0]}
                             onChange={event => changeValue(event, index)}
-                            style={{ width: '100%', color: '#ff9999' }}
+                            style={{ width: "100%", color: "#ff9999" }}
                             required={answer.required}
                             label="Answer"
                           />
@@ -405,12 +409,12 @@ export const AnswerMain: React.FC<Props> = props => {
                                     value={question}
                                     onClick={() => checkKey(question, index)}
                                     style={{
-                                      color: '#ff9999'
+                                      color: "#ff9999"
                                     }}
                                   />
                                 }
                                 label={
-                                  <Typography style={{ fontSize: '14px' }}>
+                                  <Typography style={{ fontSize: "14px" }}>
                                     {question}
                                   </Typography>
                                 }
@@ -429,7 +433,7 @@ export const AnswerMain: React.FC<Props> = props => {
                             multiline
                             value={answer.answer[0]}
                             onChange={event => changeValue(event, index)}
-                            style={{ width: '100%', color: '#ff9999' }}
+                            style={{ width: "100%", color: "#ff9999" }}
                           />
                         </div>
                       )}
@@ -445,18 +449,18 @@ export const AnswerMain: React.FC<Props> = props => {
                           >
                             <FormControlLabel
                               value={true}
-                              control={<Radio style={{ color: '#ff9999' }} />}
+                              control={<Radio style={{ color: "#ff9999" }} />}
                               label={
-                                <Typography style={{ fontSize: '14px' }}>
+                                <Typography style={{ fontSize: "14px" }}>
                                   True
                                 </Typography>
                               }
                             />
                             <FormControlLabel
                               value={false}
-                              control={<Radio style={{ color: '#ff9999' }} />}
+                              control={<Radio style={{ color: "#ff9999" }} />}
                               label={
-                                <Typography style={{ fontSize: '14px' }}>
+                                <Typography style={{ fontSize: "14px" }}>
                                   False
                                 </Typography>
                               }
@@ -476,7 +480,7 @@ export const AnswerMain: React.FC<Props> = props => {
                             valueLabelDisplay="auto"
                             min={answer.min}
                             max={answer.max}
-                            style={{ color: '#ff9999' }}
+                            style={{ color: "#ff9999" }}
                           />
                         </div>
                       )}
@@ -488,9 +492,9 @@ export const AnswerMain: React.FC<Props> = props => {
                       <Button
                         variant="contained"
                         style={{
-                          marginTop: '3rem',
-                          color: 'white',
-                          backgroundColor: '#ff9999'
+                          marginTop: "3rem",
+                          color: "white",
+                          backgroundColor: "#ff9999"
                         }}
                         color="primary"
                         endIcon={<SendIcon />}
@@ -509,12 +513,12 @@ export const AnswerMain: React.FC<Props> = props => {
           </Paper>
           <div
             style={{
-              textAlign: 'center',
-              color: '#586069',
-              marginBottom: '5rem'
+              textAlign: "center",
+              color: "#586069",
+              marginBottom: "5rem"
             }}
           >
-            <Typography style={{ marginTop: '0', paddingTop: '0' }}>
+            <Typography style={{ marginTop: "0", paddingTop: "0" }}>
               Forms does not approve of this content.
             </Typography>
           </div>
