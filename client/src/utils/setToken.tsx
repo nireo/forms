@@ -6,6 +6,8 @@ import { setToken as setQuestionToken } from "../services/answer.service";
 const setTokens = (token: string) => {
   setUserToken(token);
   setFormToken(token);
+  setAnswerToken(token);
+  setQuestionToken(token);
 };
 
 export default setTokens;

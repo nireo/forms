@@ -168,13 +168,16 @@ const ManageMain: React.FC<Props> = ({
           </Link>
         </div>
       </div>
-
       <Typography variant="h3" style={{ marginTop: "8rem" }}>
         Your forms
       </Typography>
       <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
         {forms.map(form => (
-          <Card className={classes.card} style={{ marginBottom: "0.5rem" }}>
+          <Card
+            key={form.id}
+            className={classes.card}
+            style={{ marginBottom: "0.5rem" }}
+          >
             <CardContent>
               <Grid container>
                 <Grid item xs={11}>

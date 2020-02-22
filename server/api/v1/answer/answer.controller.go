@@ -166,7 +166,7 @@ func deleteAnswer(c *gin.Context) {
 	user := c.MustGet("user").(User)
 
 	var full Full
-	if err := db.Where("uuid = ", id).First(&full).Error; err != nil {
+	if err := db.Where("uuid = ?", id).First(&full).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}

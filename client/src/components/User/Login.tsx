@@ -32,6 +32,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  root: {
+    "& label.Mui-focused": {
+      color: "#ff9999"
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#ff9999"
+    }
   }
 }));
 
@@ -82,6 +90,7 @@ const Login: React.FC<Props> = props => {
             label="Username"
             name="username"
             autoComplete="username"
+            className={classes.root}
           />
           <TextField
             value={password}
@@ -92,8 +101,8 @@ const Login: React.FC<Props> = props => {
             name="password"
             label="Password"
             type="password"
-            id="password"
             autoComplete="current-password"
+            className={classes.root}
           />
           <FormControlLabel
             control={

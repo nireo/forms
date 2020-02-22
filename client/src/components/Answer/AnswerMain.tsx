@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   }
 }));
-
 interface AnswerItem {
   type: QuestionType;
   answer: string[];

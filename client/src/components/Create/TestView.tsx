@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, useCallback } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -74,10 +74,10 @@ const TestView: React.FC<Props> = props => {
   // used for initially loading all questions
   const [initial, setInitial] = useState<boolean>(false);
 
-  const loadForm = async () => {
+  const loadForm = useCallback(async () => {
     const form = await getForm(props.id);
     return form;
-  };
+  }, [props.id]);
 
   useEffect(() => {
     if (initial === false) {
@@ -96,7 +96,7 @@ const TestView: React.FC<Props> = props => {
         }
       });
     }
-  }, [initial, props]);
+  }, [initial, props, form, loadForm]);
 
   const newQuestion = () => {
     const uuid: string = uuidv4();
@@ -223,7 +223,7 @@ const TestView: React.FC<Props> = props => {
               )}
             </div>
             {props.create.map((q: Question) => (
-              <Grid container spacing={1}>
+              <Grid key={q.temp_uuid} container spacing={1}>
                 <Grid item xs={1}>
                   {q === selected && (
                     <IconButton
