@@ -89,7 +89,11 @@ const TestView: React.FC<Props> = props => {
       loadForm().then((response: any) => {
         setForm(response.form);
         setTitle(response.form.title);
-        setDescription(response.form.description);
+        if (response.form.description === " ") {
+          setDescription("");
+        } else {
+          setDescription(response.form.description);
+        }
       });
     }
   }, [initial, props]);
@@ -161,6 +165,7 @@ const TestView: React.FC<Props> = props => {
   const updateFormInfo = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (description === "") {
+      // for some odd reason gin doesn't accept empty string when validating
       setDescription(" ");
     }
     updateForm({ title, description }, props.id);

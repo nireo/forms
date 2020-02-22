@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: "#ff9999"
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -76,19 +76,16 @@ const Login: React.FC<Props> = props => {
           <TextField
             value={username}
             onChange={({ target }) => setUsername(target.value)}
-            variant="outlined"
             margin="normal"
             required
             fullWidth
             label="Username"
             name="username"
             autoComplete="username"
-            autoFocus
           />
           <TextField
             value={password}
             onChange={({ target }) => setPassword(target.value)}
-            variant="outlined"
             margin="normal"
             required
             fullWidth
@@ -103,7 +100,7 @@ const Login: React.FC<Props> = props => {
               <Checkbox
                 value={remember}
                 onClick={() => setRemember(!remember)}
-                color="primary"
+                style={{ color: "#ff9999" }}
               />
             }
             label="Remember me"
@@ -112,7 +109,7 @@ const Login: React.FC<Props> = props => {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            style={{ color: "white", backgroundColor: "#ff9999" }}
             className={classes.submit}
           >
             Sign In
@@ -124,6 +121,7 @@ const Login: React.FC<Props> = props => {
                 href="#"
                 variant="body2"
                 onClick={() => props.setShowRegister()}
+                style={{ color: "#ff9999" }}
               >
                 {"Don't have an account? Sign Up"}
               </Link>

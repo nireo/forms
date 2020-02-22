@@ -1,8 +1,6 @@
 package form
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/nireo/forms/server/database/models"
@@ -127,7 +125,6 @@ func updateForm(c *gin.Context) {
 	var body RequestBody
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatus(400)
-		fmt.Println(err)
 		return
 	}
 
