@@ -13,6 +13,7 @@ const getConfig = () => ({
 });
 
 export const createQuestion = async (id: string, question: Question) => {
+  console.log(getConfig());
   const response = await axios.post(`${baseUrl}/${id}`, question, getConfig());
   return response.data;
 };

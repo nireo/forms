@@ -62,6 +62,7 @@ func JWTMiddleware() gin.HandlerFunc {
 				c.Next()
 				return
 			}
+			fmt.Println(sp)
 			tokenString = sp[1]
 		}
 
