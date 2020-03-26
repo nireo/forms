@@ -144,6 +144,8 @@ export const ViewAnswer: React.FC<Props> = props => {
     return day + ' ' + monthNames[monthIndex] + ' ' + year;
   };
 
+  console.log(filtered);
+
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
@@ -183,6 +185,30 @@ export const ViewAnswer: React.FC<Props> = props => {
           <div>
             {filtered.map((item: AnswerItem) => (
               <div key={item.question_uuid} style={{ marginTop: '3rem' }}>
+                {item.type === 1 && (
+                  <div>
+                    <Typography variant="h5">{item.questionString}</Typography>
+                    <RadioGroup
+                      aria-label={item.questionString}
+                      name={item.questionString}
+                    >
+                      {item.questionAnswers.map((question: string) => (
+                        <div key={question}>
+                          <FormControlLabel
+                            control={
+                              <Radio
+                                style={{ color: '#ff9999' }}
+                                checked={question === item.questionAnswers[0]}
+                              />
+                            }
+                            disabled={true}
+                            label={question}
+                          />
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </div>
+                )}
                 {item.type === 2 && (
                   <div>
                     <Typography variant="h5">{item.questionString}</Typography>
