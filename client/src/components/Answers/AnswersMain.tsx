@@ -8,15 +8,11 @@ import {
   removeAnswer as serviceRemoveAnswer
 } from '../../services/answer.service';
 import { Loading } from '../Layout/Loading';
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { Link } from 'react-router-dom';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackwardIosIcon from '@material-ui/icons/ArrowBackIos';
 import { ViewAnswer } from './ViewAnswer';
+import { AllAnswers } from './AllAnswers';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -137,6 +133,7 @@ export const AnswersMain: React.FC<Props> = props => {
             )}
           </div>
         )}
+        <AllAnswers />
       </Paper>
     </Container>
   );

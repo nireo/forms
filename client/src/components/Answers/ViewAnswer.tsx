@@ -143,8 +143,6 @@ export const ViewAnswer: React.FC<Props> = props => {
     return day + ' ' + monthNames[monthIndex] + ' ' + year;
   };
 
-  console.log(props.id);
-
   return (
     <Container maxWidth="md">
       <div style={{ marginBottom: '1rem' }}>
