@@ -97,8 +97,6 @@ export const AnswersMain: React.FC<Props> = props => {
     }
   };
 
-  console.log(answers);
-
   return (
     <Container maxWidth="md">
       <Paper className={classes.paper}>
@@ -129,7 +127,13 @@ export const AnswersMain: React.FC<Props> = props => {
         ) : (
           <div>
             {answers.length > 0 && (
-              <ViewAnswer id={answers[selected - 1].uuid} />
+              <div>
+                {console.log(answers[selected - 1].uuid)}
+                <div>
+                  {console.log(answers[selected - 1].uuid)}
+                  <ViewAnswer id={answers[selected - 1].uuid} />
+                </div>
+              </div>
             )}
           </div>
         )}

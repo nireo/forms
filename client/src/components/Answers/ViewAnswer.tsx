@@ -49,7 +49,6 @@ type Props = {
 };
 
 export const ViewAnswer: React.FC<Props> = props => {
-  const classes = useStyles(props);
   const [loaded, setLoaded] = useState<boolean>(false);
   const [data, setData] = useState<any>([]);
   const [filtered, setFiltered] = useState<AnswerItem[]>([]);
@@ -144,153 +143,141 @@ export const ViewAnswer: React.FC<Props> = props => {
     return day + ' ' + monthNames[monthIndex] + ' ' + year;
   };
 
-  console.log(filtered);
+  console.log(props.id);
 
   return (
     <Container maxWidth="md">
-      <Paper className={classes.paper}>
-        <div style={{ marginBottom: '1rem' }}>
-          <Link to={`/${formID}/edit`}>
-            <IconButton
-              component="span"
-              aria-label="go-back"
-              style={{ color: '#ff9999' }}
-            >
-              <ArrayBackIcon />
-            </IconButton>
-          </Link>
-          <IconButton
-            component="span"
-            aria-label="delete-answer"
-            style={{ color: '#ff9999' }}
-            onClick={removeAnswer}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </div>
-        <Typography variant="h4">Answer {props.id}</Typography>
-        {otherInfo && (
-          <Typography>
-            Answered {returnSensibleDate(otherInfo.created_at)}
-          </Typography>
-        )}
-        {!filter ||
-          !loaded ||
-          (!formLoaded && (
-            <div style={{ marginTop: '3rem' }}>
-              <Loading />
-            </div>
-          ))}
-        {filter && filtered.length > 0 && (
-          <div>
-            {filtered.map((item: AnswerItem) => (
-              <div key={item.question_uuid} style={{ marginTop: '3rem' }}>
-                {item.type === 1 && (
-                  <div>
-                    <Typography variant="h5">{item.questionString}</Typography>
-                    <RadioGroup
-                      aria-label={item.questionString}
-                      name={item.questionString}
-                    >
-                      {item.questionAnswers.map((question: string) => (
-                        <div key={question}>
-                          <FormControlLabel
-                            control={
-                              <Radio
-                                style={{ color: '#ff9999' }}
-                                checked={question === item.questionAnswers[0]}
-                              />
-                            }
-                            disabled={true}
-                            label={question}
-                          />
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  </div>
-                )}
-                {item.type === 2 && (
-                  <div>
-                    <Typography variant="h5">{item.questionString}</Typography>
-                    <TextField
-                      id="standard-basic"
-                      value={item.answers[0]}
-                      style={{ width: '100%', marginTop: '1rem' }}
-                      disabled={true}
-                    />
-                  </div>
-                )}
-                {item.type === 3 && (
-                  <div>
-                    <Typography variant="h5">{item.questionString}</Typography>
-                    {item.questionAnswers.map((questionAnswer: string) => (
-                      <div>
+      <div style={{ marginBottom: '1rem' }}>
+        <IconButton
+          component="span"
+          aria-label="delete-answer"
+          style={{ color: '#ff9999' }}
+          onClick={removeAnswer}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </div>
+      {otherInfo && (
+        <Typography>
+          Answered {returnSensibleDate(otherInfo.created_at)}
+        </Typography>
+      )}
+      {!filter ||
+        !loaded ||
+        (!formLoaded && (
+          <div style={{ marginTop: '3rem' }}>
+            <Loading />
+          </div>
+        ))}
+      {filter && filtered.length > 0 && (
+        <div>
+          {filtered.map((item: AnswerItem) => (
+            <div key={item.question_uuid} style={{ marginTop: '3rem' }}>
+              {item.type === 1 && (
+                <div>
+                  <Typography variant="h5">{item.questionString}</Typography>
+                  <RadioGroup
+                    aria-label={item.questionString}
+                    name={item.questionString}
+                  >
+                    {item.questionAnswers.map((question: string) => (
+                      <div key={question}>
                         <FormControlLabel
-                          disabled
                           control={
-                            <Checkbox
-                              color="primary"
-                              value={questionAnswer}
-                              checked={item.answers.includes(questionAnswer)}
+                            <Radio
+                              style={{ color: '#ff9999' }}
+                              checked={question === item.questionAnswers[0]}
                             />
                           }
-                          label={questionAnswer}
+                          disabled={true}
+                          label={question}
                         />
                       </div>
                     ))}
-                  </div>
-                )}
-                {item.type === 4 && (
-                  <div>
-                    <Typography variant="h5">{item.questionString}</Typography>
-                    <TextField
-                      multiline
-                      value={item.answers[0]}
-                      style={{ width: '100%' }}
-                      disabled
-                    />
-                  </div>
-                )}
-                {item.type === 5 && (
-                  <div>
-                    <Typography variant="h5">{item.questionString}</Typography>
-                    <RadioGroup
-                      name={item.questionString}
-                      value={item.trueOrFalse}
-                    >
+                  </RadioGroup>
+                </div>
+              )}
+              {item.type === 2 && (
+                <div>
+                  <Typography variant="h5">{item.questionString}</Typography>
+                  <TextField
+                    id="standard-basic"
+                    value={item.answers[0]}
+                    style={{ width: '100%', marginTop: '1rem' }}
+                    disabled={true}
+                  />
+                </div>
+              )}
+              {item.type === 3 && (
+                <div>
+                  <Typography variant="h5">{item.questionString}</Typography>
+                  {item.questionAnswers.map((questionAnswer: string) => (
+                    <div>
                       <FormControlLabel
-                        label="True"
-                        control={<Radio />}
-                        value={true}
+                        disabled
+                        control={
+                          <Checkbox
+                            color="primary"
+                            value={questionAnswer}
+                            checked={item.answers.includes(questionAnswer)}
+                          />
+                        }
+                        label={questionAnswer}
                       />
-                      <FormControlLabel
-                        label="False"
-                        control={<Radio />}
-                        value={false}
-                      />
-                    </RadioGroup>
-                  </div>
-                )}
-                {item.type === 6 && (
-                  <div>
-                    <Typography variant="h5">{item.questionString}</Typography>
-                    <Slider
-                      max={item.max}
-                      min={item.min}
-                      marks
-                      step={1}
-                      aria-labelledby="answer-slider"
-                      valueLabelDisplay="auto"
-                      value={item.value}
-                      disabled={true}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {item.type === 4 && (
+                <div>
+                  <Typography variant="h5">{item.questionString}</Typography>
+                  <TextField
+                    multiline
+                    value={item.answers[0]}
+                    style={{ width: '100%' }}
+                    disabled
+                  />
+                </div>
+              )}
+              {item.type === 5 && (
+                <div>
+                  <Typography variant="h5">{item.questionString}</Typography>
+                  <RadioGroup
+                    name={item.questionString}
+                    value={item.trueOrFalse}
+                  >
+                    <FormControlLabel
+                      label="True"
+                      control={<Radio />}
+                      value={true}
                     />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </Paper>
+                    <FormControlLabel
+                      label="False"
+                      control={<Radio />}
+                      value={false}
+                    />
+                  </RadioGroup>
+                </div>
+              )}
+              {item.type === 6 && (
+                <div>
+                  <Typography variant="h5">{item.questionString}</Typography>
+                  <Slider
+                    max={item.max}
+                    min={item.min}
+                    marks
+                    step={1}
+                    aria-labelledby="answer-slider"
+                    valueLabelDisplay="auto"
+                    value={item.value}
+                    disabled={true}
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </Container>
   );
 };
