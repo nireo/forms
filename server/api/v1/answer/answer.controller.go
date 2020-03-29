@@ -1,6 +1,7 @@
 package answer
 
 import (
+	"net/http"
 	"strings"
 
 	"github.com/nireo/forms/server/lib/common"
@@ -76,6 +77,28 @@ func getSingleAnswer(c *gin.Context) {
 		"answers": answersSerialized,
 		"full":    full.Serialize(),
 	})
+}
+
+func getAllFull(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Param("id")
+
+	if id == "" {
+		c.AbortWithStatus(http.StatusBadRequest)
+	}
+
+	var full []Full
+	if err := db.Where("uuid = ?", id).Find(&full).Error; err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	fullSerialized := make([]common.JSON, len(full), len(full))
+	for index := range full {
+		fullSerialized[index] = full[index].Serialize()
+	}
+
+	c.JSON(http.StatusOK, fullSerialized)
 }
 
 func createAnswer(c *gin.Context) {
