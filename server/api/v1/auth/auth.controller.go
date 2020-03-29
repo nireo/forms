@@ -2,6 +2,7 @@ package auth
 
 import (
 	"io/ioutil"
+	"net/http"
 	"os"
 	"time"
 
@@ -54,19 +55,19 @@ func register(c *gin.Context) {
 
 	var body RequestBody
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	var exists User
 	if err := db.Where("username = ?", body.Username).First(&exists).Error; err == nil {
-		c.AbortWithStatus(409)
+		c.AbortWithStatus(http.StatusConflict)
 		return
 	}
 
 	hash, hashErr := hash(body.Password)
 	if hashErr != nil {
-		c.AbortWithStatus(500)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
@@ -82,11 +83,11 @@ func register(c *gin.Context) {
 	token, err := generateToken(serialized)
 
 	if err != nil {
-		c.AbortWithStatus(500)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
-	c.JSON(200, common.JSON{
+	c.JSON(http.StatusOK, common.JSON{
 		"user":  user.Serialize(),
 		"token": token,
 	})
@@ -102,13 +103,13 @@ func login(c *gin.Context) {
 
 	var body RequestBody
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	var user User
 	if err := db.Where("username = ?", body.Username).First(&user).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
@@ -116,11 +117,11 @@ func login(c *gin.Context) {
 	token, err := generateToken(serialized)
 
 	if err != nil {
-		c.AbortWithStatus(500)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
-	c.JSON(200, common.JSON{
+	c.JSON(http.StatusOK, common.JSON{
 		"user":  user.Serialize(),
 		"token": token,
 	})
@@ -131,14 +132,14 @@ func remove(c *gin.Context) {
 	userRaw, ok := c.Get("user")
 
 	if !ok {
-		c.AbortWithStatus(401)
+		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
 	user := userRaw.(User)
 
 	db.Delete(&user)
-	c.Status(204)
+	c.Status(http.StatusNoContent)
 }
 
 func changePassword(c *gin.Context) {
@@ -151,25 +152,25 @@ func changePassword(c *gin.Context) {
 
 	var body RequestBody
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	var user User
 	if err := db.Where("id = ?", userRaw.ID).First(&user).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	hash, hashErr := hash(body.Password)
 	if hashErr != nil {
-		c.AbortWithStatus(500)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
 	user.Password = hash
 	db.Save(&user)
-	c.JSON(200, common.JSON{
+	c.JSON(http.StatusOK, common.JSON{
 		"success": "Password has been updated",
 	})
 }
@@ -185,24 +186,24 @@ func updateUser(c *gin.Context) {
 
 	var body RequestBody
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	var user User
 	if err := db.Preload("User").Where("id = ?", userRaw.ID).First(&user).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	// check if that username already exists
 	var userCheck User
 	if err := db.Preload("User").Where("username = ?", body.Username).First(&userCheck).Error; err == nil {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusConflict)
 		return
 	}
 
 	user.Username = body.Username
 	db.Save(&user)
-	c.JSON(200, user.Serialize())
+	c.JSON(http.StatusOK, user.Serialize())
 }

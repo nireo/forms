@@ -2,6 +2,7 @@ package question
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -36,18 +37,18 @@ func createQuestion(c *gin.Context) {
 
 	var requestBody RequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	var form Form
 	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	if !(form.UserID == user.ID) {
-		c.AbortWithStatus(403)
+		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
@@ -71,7 +72,7 @@ func createQuestion(c *gin.Context) {
 
 	db.NewRecord(question)
 	db.Create(&question)
-	c.JSON(200, question.Serialize())
+	c.JSON(http.StatusOK, question.Serialize())
 }
 
 func deleteQuestion(c *gin.Context) {
@@ -81,24 +82,24 @@ func deleteQuestion(c *gin.Context) {
 
 	var question Question
 	if err := db.Where("uuid = ? ", id).First(&question).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	// check ownership
 	var form Form
 	if err := db.Where("id = ?", question.FormID).First(&form).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	if !(form.UserID == user.ID) {
-		c.AbortWithStatus(403)
+		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
 	db.Delete(&question)
-	c.Status(204)
+	c.Status(http.StatusNoContent)
 }
 
 func updateQuestion(c *gin.Context) {
@@ -118,14 +119,14 @@ func updateQuestion(c *gin.Context) {
 
 	var requestBody RequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		fmt.Println(err)
 		return
 	}
 
 	var question Question
 	if err := db.Where("uuid = ?", id).First(&question).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
@@ -148,5 +149,5 @@ func updateQuestion(c *gin.Context) {
 	question.UUID = requestBody.UUID
 
 	db.Save(&question)
-	c.JSON(200, question.Serialize())
+	c.JSON(http.StatusOK, question.Serialize())
 }

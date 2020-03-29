@@ -1,6 +1,8 @@
 package form
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/nireo/forms/server/database/models"
@@ -27,7 +29,7 @@ func create(c *gin.Context) {
 
 	var requestBody RequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
@@ -44,7 +46,7 @@ func create(c *gin.Context) {
 
 	db.NewRecord(form)
 	db.Create(&form)
-	c.JSON(200, form.Serialize())
+	c.JSON(http.StatusOK, form.Serialize())
 }
 
 func formFromID(c *gin.Context) {
@@ -53,13 +55,13 @@ func formFromID(c *gin.Context) {
 
 	var form Form
 	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	var questions []Question
 	if err := db.Model(&form).Related(&questions).Error; err != nil {
-		c.AbortWithStatus(500)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
@@ -69,7 +71,7 @@ func formFromID(c *gin.Context) {
 		questionsSerialized[index] = questions[index].Serialize()
 	}
 
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"form":      formSerialized,
 		"questions": questionsSerialized,
 	})
@@ -82,17 +84,17 @@ func removeForm(c *gin.Context) {
 
 	var form Form
 	if err := db.Where("id = ?", id).First(&form).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	if !(user.ID == form.UserID) {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
 	db.Delete(&form)
-	c.Status(204)
+	c.Status(http.StatusNoContent)
 }
 
 func getUserForms(c *gin.Context) {
@@ -101,7 +103,7 @@ func getUserForms(c *gin.Context) {
 	var forms []Form
 
 	if err := db.Model(&user).Related(&forms).Error; err != nil {
-		c.AbortWithStatus(500)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
@@ -109,7 +111,7 @@ func getUserForms(c *gin.Context) {
 	for index := range forms {
 		serialized[index] = forms[index].Serialize()
 	}
-	c.JSON(200, serialized)
+	c.JSON(http.StatusOK, serialized)
 }
 
 func updateForm(c *gin.Context) {
@@ -124,18 +126,18 @@ func updateForm(c *gin.Context) {
 
 	var body RequestBody
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	var form Form
 	if err := db.Where("unique_id = ?", id).First(&form).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	if form.UserID != user.ID {
-		c.AbortWithStatus(401)
+		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
@@ -143,5 +145,5 @@ func updateForm(c *gin.Context) {
 	form.Description = body.Description
 
 	db.Save(&form)
-	c.JSON(200, form.Serialize())
+	c.JSON(http.StatusOK, form.Serialize())
 }

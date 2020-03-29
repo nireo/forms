@@ -133,7 +133,7 @@ export const AnswersMain: React.FC<Props> = props => {
             )}
           </div>
         )}
-        <AllAnswers />
+        <AllAnswers answers={answers} />
       </Paper>
     </Container>
   );

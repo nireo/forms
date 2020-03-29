@@ -29,13 +29,13 @@ func getAnswer(c *gin.Context) {
 
 	var form Form
 	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	var answers []Full
 	if err := db.Model(&form).Related(&answers).Error; err != nil {
-		c.AbortWithStatus(500)
+		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
@@ -44,7 +44,7 @@ func getAnswer(c *gin.Context) {
 		serialized[index] = answers[index].Serialize()
 	}
 
-	c.JSON(200, serialized)
+	c.JSON(http.StatusOK, serialized)
 }
 
 func getSingleAnswer(c *gin.Context) {
@@ -52,19 +52,19 @@ func getSingleAnswer(c *gin.Context) {
 	id := c.Param("id")
 
 	if id == "" {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	var full Full
 	if err := db.Where("uuid = ?", id).First(&full).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	var answers []Answer
 	if err := db.Model(&full).Related(&answers).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
@@ -73,7 +73,7 @@ func getSingleAnswer(c *gin.Context) {
 		answersSerialized[index] = answers[index].Serialize()
 	}
 
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"answers": answersSerialized,
 		"full":    full.Serialize(),
 	})
@@ -107,7 +107,7 @@ func createAnswer(c *gin.Context) {
 
 	// validate id
 	if id == "" {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
@@ -127,13 +127,13 @@ func createAnswer(c *gin.Context) {
 
 	var requestBody RequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
-		c.AbortWithStatus(400)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	var form Form
 	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
@@ -179,7 +179,7 @@ func createAnswer(c *gin.Context) {
 		db.Save(&answersArray[index])
 	}
 
-	c.JSON(200, full.Serialize())
+	c.JSON(http.StatusOK, full.Serialize())
 }
 
 // since users don't sign up to answer only the form owner can delete answers
@@ -190,20 +190,20 @@ func deleteAnswer(c *gin.Context) {
 
 	var full Full
 	if err := db.Where("uuid = ?", id).First(&full).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	var form Form
 	if err := db.Where("id = ?", full.FormID).First(&form).Error; err != nil {
-		c.AbortWithStatus(404)
+		c.AbortWithStatus(http.StatusNotFound)
 	}
 
 	if !(form.UserID == user.ID) {
-		c.AbortWithStatus(403)
+		c.AbortWithStatus(http.StatusForbidden)
 		return
 	}
 
 	db.Delete(&full)
-	c.Status(204)
+	c.Status(http.StatusNoContent)
 }
