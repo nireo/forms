@@ -85,20 +85,35 @@ func getAllFull(c *gin.Context) {
 
 	if id == "" {
 		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
 
 	var full []Full
-	if err := db.Where("uuid = ?", id).Find(&full).Error; err != nil {
+	if err := db.Where("form_uuid = ?", id).Find(&full).Error; err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
-	fullSerialized := make([]common.JSON, len(full), len(full))
+	var allAnswers []Answer
 	for index := range full {
-		fullSerialized[index] = full[index].Serialize()
+		var answers []Answer
+		if err := db.Model(&full[index]).Related(&answers).Error; err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
+		}
+
+		for answerIndex := range answers {
+			allAnswers = append(allAnswers, answers[answerIndex])
+		}
 	}
 
-	c.JSON(http.StatusOK, fullSerialized)
+	serializedAnswers := make([]common.JSON, len(allAnswers), len(allAnswers))
+	// serialize answers
+	for index := range allAnswers {
+		serializedAnswers[index] = allAnswers[index].Serialize()
+	}
+
+	c.JSON(http.StatusOK, serializedAnswers)
 }
 
 func createAnswer(c *gin.Context) {

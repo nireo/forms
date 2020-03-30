@@ -13,5 +13,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		auth.POST("/answer/:id", createAnswer)
 		auth.DELETE("/:id", middlewares.Authorized, deleteAnswer)
 		auth.GET("/content/:id", getSingleAnswer)
+		auth.GET("/all/:id", getAllFull)
 	}
 }
