@@ -30,3 +30,8 @@ export const removeAnswer = async (id: string) => {
   const response = await axios.delete(`${baseUrl}/${id}`, getConfig());
   return response.data;
 };
+
+export const allAnswers = async (id: string) => {
+  const response = await axios.get(`${baseUrl}/all/${id}`, getConfig());
+  return response.data;
+};
