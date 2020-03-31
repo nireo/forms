@@ -25,8 +25,6 @@ export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
     }
   }, []);
 
-  console.log(data);
-
   return (
     <div>
       <PieChart
