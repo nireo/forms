@@ -14,6 +14,7 @@ export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
 
   const loadData = useCallback(async () => {
     const loadedData = await allAnswers(id);
+    console.log(loadedData);
     setData(loadedData);
   }, []);
 
