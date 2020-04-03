@@ -1,43 +1,44 @@
-import React, { useState, useEffect, ChangeEvent, useCallback } from "react";
-import Paper from "@material-ui/core/Paper";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { FormInput } from "./FormInput";
-import { NewQuestion } from "./NewQuestion";
-import { Question } from "../../interfaces/Question";
+import React, { useState, useEffect, ChangeEvent, useCallback } from 'react';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import { FormInput } from './FormInput';
+import { NewQuestion } from './NewQuestion';
+import { Question } from '../../interfaces/Question';
 import {
   addQuestion,
   removeQuestion,
   clearQuestions,
   updateQuestion,
   initQuestions
-} from "../../store/create/reducer";
-import { connect } from "react-redux";
-import { AppState } from "../../store";
-import uuidv4 from "uuid/v4";
-import Grid from "@material-ui/core/Grid";
-import EditIcon from "@material-ui/icons/Edit";
-import CloseIcon from "@material-ui/icons/Close";
-import IconButton from "@material-ui/core/IconButton";
-import EditQuestion from "./EditQuestion";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { setNotification } from "../../store/notification/reducer";
-import { Notification as NotificationInterface } from "../../interfaces/Notification";
-import { AnswerMain } from "../Answer/AnswerMain";
-import Notification from "../Layout/Notification";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { getForm, updateForm } from "../../services/form.service";
+} from '../../store/create/reducer';
+import { connect } from 'react-redux';
+import { AppState } from '../../store';
+import uuidv4 from 'uuid/v4';
+import Grid from '@material-ui/core/Grid';
+import EditIcon from '@material-ui/icons/Edit';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
+import EditQuestion from './EditQuestion';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import { setNotification } from '../../store/notification/reducer';
+import { Notification as NotificationInterface } from '../../interfaces/Notification';
+import { AnswerMain } from '../Answer/AnswerMain';
+import Notification from '../Layout/Notification';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { getForm, updateForm } from '../../services/form.service';
+import { setSelectedFromService } from '../../store/selectedForm/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
-    width: "auto",
+    width: 'auto',
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 600,
-      marginLeft: "auto",
-      marginRight: "auto"
+      marginLeft: 'auto',
+      marginRight: 'auto'
     }
   },
   paper: {
@@ -55,19 +56,21 @@ const useStyles = makeStyles((theme: Theme) => ({
 type Props = {
   id: string;
   create: Question[];
+  selected: any;
   addQuestion: (question: Question, id: string) => void;
   removeQuestion: (id: string) => void;
   clearQuestions: () => void;
   updateQuestion: (question: Question) => void;
   setNotification: (notification: NotificationInterface) => void;
   initQuestions: (id: string) => void;
+  setSelectedFromService: (id: string) => void;
 };
 
 const TestView: React.FC<Props> = props => {
   const classes = useStyles(props);
   const [form, setForm] = useState<any>(null);
-  const [title, setTitle] = useState<string>("Untitled Form");
-  const [description, setDescription] = useState<string>("");
+  const [title, setTitle] = useState<string>('Untitled Form');
+  const [description, setDescription] = useState<string>('');
   const [selected, setSelected] = useState<Question | null>(null);
   const [preview, setPreview] = useState<boolean>(false);
 
@@ -89,20 +92,25 @@ const TestView: React.FC<Props> = props => {
       loadForm().then((response: any) => {
         setForm(response.form);
         setTitle(response.form.title);
-        if (response.form.description === " ") {
-          setDescription("");
+        if (response.form.description === ' ') {
+          setDescription('');
         } else {
           setDescription(response.form.description);
         }
       });
     }
+
+    if (props.selected === null) {
+      props.setSelectedFromService(props.id);
+    }
   }, [initial, props, form, loadForm]);
+  console.log(props.selected);
 
   const newQuestion = () => {
     const uuid: string = uuidv4();
     const templateQuestion: Question = {
       required: false,
-      question: "untitled question",
+      question: 'untitled question',
       answerType: 2,
       answers: [],
       temp_uuid: uuid,
@@ -164,9 +172,9 @@ const TestView: React.FC<Props> = props => {
 
   const updateFormInfo = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (description === "") {
+    if (description === '') {
       // for some odd reason gin doesn't accept empty string when validating
-      setDescription(" ");
+      setDescription(' ');
     }
     updateForm({ title, description }, props.id);
   };
@@ -175,16 +183,16 @@ const TestView: React.FC<Props> = props => {
     <div>
       <Notification />
       {!preview && (
-        <Container maxWidth="md" style={{ marginTop: "0" }}>
+        <Container maxWidth="md" style={{ marginTop: '0' }}>
           <Paper className={classes.paper}>
             <input
               value={title}
               onChange={({ target }) => setTitle(target.value)}
               style={{
-                border: "none",
-                fontSize: "36px",
-                fontFamily: "Roboto",
-                width: "100%"
+                border: 'none',
+                fontSize: '36px',
+                fontFamily: 'Roboto',
+                width: '100%'
               }}
               placeholder="Title..."
               maxLength={50}
@@ -199,7 +207,7 @@ const TestView: React.FC<Props> = props => {
               <Button
                 onClick={() => setPreview(true)}
                 variant="contained"
-                style={{ color: "white", backgroundColor: "#ff9999" }}
+                style={{ color: 'white', backgroundColor: '#ff9999' }}
               >
                 Preview
               </Button>
@@ -210,9 +218,9 @@ const TestView: React.FC<Props> = props => {
                     <Button
                       variant="contained"
                       style={{
-                        color: "white",
-                        marginTop: "1rem",
-                        backgroundColor: "#ff9999"
+                        color: 'white',
+                        marginTop: '1rem',
+                        backgroundColor: '#ff9999'
                       }}
                       type="submit"
                     >
@@ -229,7 +237,7 @@ const TestView: React.FC<Props> = props => {
                     <IconButton
                       aria-label="close"
                       component="span"
-                      style={{ marginTop: "2rem", color: "#ff9999" }}
+                      style={{ marginTop: '2rem', color: '#ff9999' }}
                       onClick={() => setSelected(null)}
                     >
                       <CloseIcon />
@@ -239,7 +247,7 @@ const TestView: React.FC<Props> = props => {
                     <IconButton
                       aria-label="edit"
                       component="span"
-                      style={{ marginTop: "2rem", color: "#ff9999" }}
+                      style={{ marginTop: '2rem', color: '#ff9999' }}
                       onClick={() => findAndSetSelected(q.temp_uuid)}
                     >
                       <EditIcon />
@@ -248,7 +256,7 @@ const TestView: React.FC<Props> = props => {
                   <IconButton
                     aria-label="remove"
                     component="span"
-                    style={{ color: "#ff9999" }}
+                    style={{ color: '#ff9999' }}
                     onClick={() => removeQuestion(q.temp_uuid)}
                   >
                     <DeleteIcon />
@@ -264,20 +272,20 @@ const TestView: React.FC<Props> = props => {
                     </div>
                   )}
                   {selected !== q && (
-                    <div style={{ marginTop: "2rem" }}>
+                    <div style={{ marginTop: '2rem' }}>
                       <TextField
                         disabled
                         id="standard-disabled"
                         label="Question"
                         defaultValue={q.question}
-                        style={{ width: "100%" }}
+                        style={{ width: '100%' }}
                       />
                     </div>
                   )}
                 </Grid>
               </Grid>
             ))}
-            <div style={{ textAlign: "center", marginTop: "2rem" }}>
+            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
               <NewQuestion newQuestion={newQuestion} />
             </div>
           </Paper>
@@ -295,7 +303,8 @@ const TestView: React.FC<Props> = props => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  create: state.create
+  create: state.create,
+  selected: state.selected
 });
 
 export default connect(mapStateToProps, {
@@ -304,5 +313,6 @@ export default connect(mapStateToProps, {
   clearQuestions,
   updateQuestion,
   setNotification,
-  initQuestions
+  initQuestions,
+  setSelectedFromService
 })(TestView);
