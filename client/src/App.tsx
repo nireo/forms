@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { FormMain } from './components/Form/FormMain';
 import ManageMain from './components/Manage/ManageMain';
 import { Welcome } from './components/Welcome/Welcome';
 import { NotFound } from './components/Layout/NotFound';
@@ -32,7 +31,6 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
     <Router>
       <CssBaseline />
       <Switch>
-        <Route exact path="/view" render={() => <FormMain />} />
         <Route exact path="/main" render={() => <ManageMain />} />
         <Route exact path="/welcome" render={() => <Welcome />} />
         <Route exact path="/settings" render={() => <Settings />} />
@@ -60,7 +58,7 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  user: state.user
+  user: state.user,
 });
 
 export default connect(mapStateToProps, { checkLocalStorage })(App);

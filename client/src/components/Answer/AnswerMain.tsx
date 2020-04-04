@@ -1,7 +1,5 @@
 import React, { useState, ChangeEvent, useEffect, useCallback } from 'react';
 import { Question, QuestionType } from '../../interfaces/Question';
-import Paper from '@material-ui/core/Paper';
-import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -18,37 +16,20 @@ import { Loading } from '../Layout/Loading';
 import { createAnswer } from '../../services/answer.service';
 import Slider from '@material-ui/core/Slider';
 import { GoBack } from '../Layout/GoBack';
+import { ContainerWrapper } from '../Layout/ContainerWrapper';
+import { Container } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  layout: {
-    width: 'auto',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto'
-    }
-  },
-  paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      padding: theme.spacing(3)
-    }
-  },
   root: {
     '& label.Mui-focused': {
-      color: '#ff9999'
+      color: '#ff9999',
     },
     '& .MuiInput-underline:after': {
-      borderBottomColor: '#ff9999'
-    }
-  }
+      borderBottomColor: '#ff9999',
+    },
+  },
 }));
+
 interface AnswerItem {
   type: QuestionType;
   answer: string[];
@@ -70,7 +51,7 @@ type Props = {
   demo?: boolean;
 };
 
-export const AnswerMain: React.FC<Props> = props => {
+export const AnswerMain: React.FC<Props> = (props) => {
   const classes = useStyles(props);
   const [finished, setFinished] = useState<boolean>(false);
   const [data, setData] = useState<Question[] | null>(null);
@@ -86,7 +67,7 @@ export const AnswerMain: React.FC<Props> = props => {
       question: 'This is a small written question',
       required: true,
       step: 1,
-      temp_uuid: '02a5715f-2396-45b3-84fc-257c4bd02a08'
+      temp_uuid: '02a5715f-2396-45b3-84fc-257c4bd02a08',
     },
     {
       answerType: 3,
@@ -96,7 +77,7 @@ export const AnswerMain: React.FC<Props> = props => {
       question: 'Multiple answer question',
       required: false,
       step: 1,
-      temp_uuid: '4fc0942a-21d8-429b-9ce2-d97cc23a7dfe'
+      temp_uuid: '4fc0942a-21d8-429b-9ce2-d97cc23a7dfe',
     },
     {
       answerType: 5,
@@ -106,7 +87,7 @@ export const AnswerMain: React.FC<Props> = props => {
       question: 'True or false question',
       required: false,
       step: 1,
-      temp_uuid: '3396d1c3-54e0-4786-8282-e0caf8e002ce'
+      temp_uuid: '3396d1c3-54e0-4786-8282-e0caf8e002ce',
     },
     {
       answerType: 6,
@@ -116,8 +97,8 @@ export const AnswerMain: React.FC<Props> = props => {
       question: 'Slider question',
       required: false,
       step: 1,
-      temp_uuid: '4844c6e1-a005-416a-bc22-1206ed076b5d'
-    }
+      temp_uuid: '4844c6e1-a005-416a-bc22-1206ed076b5d',
+    },
   ]);
 
   const loadData = useCallback(async () => {
@@ -142,7 +123,7 @@ export const AnswerMain: React.FC<Props> = props => {
           trueOrFalse: false,
           step: q.step,
           max: q.max,
-          min: q.min
+          min: q.min,
         };
 
         return answer;
@@ -171,7 +152,7 @@ export const AnswerMain: React.FC<Props> = props => {
             trueOrFalse: false,
             step: q.step,
             min: q.min,
-            max: q.max
+            max: q.max,
           };
           return answer;
         })
@@ -192,7 +173,7 @@ export const AnswerMain: React.FC<Props> = props => {
             trueOrFalse: false,
             step: q.step,
             min: q.min,
-            max: q.max
+            max: q.max,
           };
           return answer;
         })
@@ -209,7 +190,7 @@ export const AnswerMain: React.FC<Props> = props => {
     props.preview,
     props.previewData,
     demoData,
-    props.demo
+    props.demo,
   ]);
 
   const submitQuestion = async (event: ChangeEvent<HTMLFormElement>) => {
@@ -228,7 +209,7 @@ export const AnswerMain: React.FC<Props> = props => {
         temp_uuid: a.temp_uuid,
         slider_value: 0,
         slider_min: 0,
-        trueOrFalse: trueOrFalse
+        trueOrFalse: trueOrFalse,
       };
       return filtered;
     });
@@ -256,7 +237,7 @@ export const AnswerMain: React.FC<Props> = props => {
       answer.answer[0] = event.target.value;
     }
     setAnswerItem(
-      answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
+      answerItems.map((a) => (a.temp_uuid === answer.temp_uuid ? answer : a))
     );
   };
 
@@ -270,14 +251,14 @@ export const AnswerMain: React.FC<Props> = props => {
       // remove item
       answer.answer = answer.answer.filter((a: string) => a !== question);
       setAnswerItem(
-        answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
+        answerItems.map((a) => (a.temp_uuid === answer.temp_uuid ? answer : a))
       );
       return;
     }
     // add item
     answer.answer = answer.answer.concat(question);
     setAnswerItem(
-      answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
+      answerItems.map((a) => (a.temp_uuid === answer.temp_uuid ? answer : a))
     );
     return;
   };
@@ -294,7 +275,7 @@ export const AnswerMain: React.FC<Props> = props => {
       answer.trueOrFalse = false;
     }
     setAnswerItem(
-      answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
+      answerItems.map((a) => (a.temp_uuid === answer.temp_uuid ? answer : a))
     );
   };
 
@@ -305,216 +286,200 @@ export const AnswerMain: React.FC<Props> = props => {
     const answer = answerItems[index];
     answer.answer[0] = (event.target as HTMLInputElement).value;
     setAnswerItem(
-      answerItems.map(a => (a.temp_uuid === answer.temp_uuid ? answer : a))
+      answerItems.map((a) => (a.temp_uuid === answer.temp_uuid ? answer : a))
     );
   };
 
   return (
-    <Container maxWidth="md">
+    <div>
       {finished ? (
         <Ending />
       ) : (
         <div>
-          <Paper className={classes.paper} style={{ marginBottom: '0' }}>
-            {data === null &&
-            props.preview === undefined &&
-            props.demo === undefined ? (
-              <Loading />
-            ) : (
-              <div>
-                {props.demo === undefined ? (
-                  <Typography variant="h4">{formName}</Typography>
-                ) : (
-                  <div>
-                    <GoBack />
-                    <Typography variant="h4">Demo form</Typography>
-                  </div>
-                )}
-                {props.demo === undefined ? (
-                  <Typography>{formDescription}</Typography>
-                ) : (
-                  <Typography>
-                    This form displays a few of the features you can use when
-                    making forms.
-                  </Typography>
-                )}
-                {props.hidePreview !== undefined && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      if (props.hidePreview !== undefined) {
-                        props.hidePreview();
-                      }
-                    }}
-                  >
-                    Hide preview
-                  </Button>
-                )}
-                <hr style={{ marginBottom: '1rem' }} />
-                <form onSubmit={submitQuestion} className={classes.root}>
-                  {answerItems.map((answer: AnswerItem, index: number) => (
-                    <div key={answer.temp_uuid} style={{ marginTop: '3rem' }}>
-                      {answer.type === 1 && (
-                        <div>
-                          <Typography variant="h5">
-                            {answer.question}
-                          </Typography>
-                          <RadioGroup
-                            aria-label={answer.question}
-                            name={answer.question}
-                            onChange={event => handleRadioChange(event, index)}
-                          >
-                            {answer.questionAnswers.map((question: string) => (
-                              <div>
-                                <FormControlLabel
-                                  control={
-                                    <Radio
-                                      style={{ color: '#ff9999' }}
-                                      value={question}
-                                    />
-                                  }
-                                  label={question}
-                                />
-                              </div>
-                            ))}
-                          </RadioGroup>
-                        </div>
-                      )}
-                      {answer.type === 2 && (
-                        <div>
-                          <Typography variant="h5">
-                            {answer.question}
-                          </Typography>
-                          <TextField
-                            value={answer.answer[0]}
-                            onChange={event => changeValue(event, index)}
-                            style={{ width: '100%', color: '#ff9999' }}
-                            required={answer.required}
-                            label="Answer"
-                          />
-                        </div>
-                      )}
-                      {answer.type === 3 && (
-                        <div>
-                          <Typography variant="h5">
-                            {answer.question}
-                          </Typography>
+          {data === null &&
+          props.preview === undefined &&
+          props.demo === undefined ? (
+            <Loading />
+          ) : (
+            <ContainerWrapper>
+              {props.demo === undefined ? (
+                <Typography variant="h4">{formName}</Typography>
+              ) : (
+                <div>
+                  <GoBack />
+                  <Typography variant="h4">Demo form</Typography>
+                </div>
+              )}
+              {props.demo === undefined ? (
+                <Typography>{formDescription}</Typography>
+              ) : (
+                <Typography>
+                  This form displays a few of the features you can use when
+                  making forms.
+                </Typography>
+              )}
+              {props.hidePreview !== undefined && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    if (props.hidePreview !== undefined) {
+                      props.hidePreview();
+                    }
+                  }}
+                >
+                  Hide preview
+                </Button>
+              )}
+              <hr style={{ marginBottom: '1rem' }} />
+              <form onSubmit={submitQuestion} className={classes.root}>
+                {answerItems.map((answer: AnswerItem, index: number) => (
+                  <div key={answer.temp_uuid} style={{ marginTop: '3rem' }}>
+                    {answer.type === 1 && (
+                      <div>
+                        <Typography variant="h5">{answer.question}</Typography>
+                        <RadioGroup
+                          aria-label={answer.question}
+                          name={answer.question}
+                          onChange={(event) => handleRadioChange(event, index)}
+                        >
                           {answer.questionAnswers.map((question: string) => (
                             <div>
                               <FormControlLabel
                                 control={
-                                  <Checkbox
+                                  <Radio
+                                    style={{ color: '#ff9999' }}
                                     value={question}
-                                    onClick={() => checkKey(question, index)}
-                                    style={{
-                                      color: '#ff9999'
-                                    }}
                                   />
                                 }
-                                label={
-                                  <Typography style={{ fontSize: '14px' }}>
-                                    {question}
-                                  </Typography>
-                                }
+                                label={question}
                               />
                             </div>
                           ))}
-                        </div>
-                      )}
-                      {answer.type === 4 && (
-                        <div>
-                          <Typography variant="h5">
-                            {answer.question}
-                          </Typography>
-                          <TextField
-                            label="Answer"
-                            multiline
-                            value={answer.answer[0]}
-                            onChange={event => changeValue(event, index)}
-                            style={{ width: '100%', color: '#ff9999' }}
-                          />
-                        </div>
-                      )}
-                      {answer.type === 5 && (
-                        <div>
-                          <Typography variant="h5">
-                            {answer.question}
-                          </Typography>
-                          <RadioGroup
-                            name={answer.question}
-                            value={answer.trueOrFalse}
-                            onChange={event => handleChange(event, index)}
-                          >
+                        </RadioGroup>
+                      </div>
+                    )}
+                    {answer.type === 2 && (
+                      <div>
+                        <Typography variant="h5">{answer.question}</Typography>
+                        <TextField
+                          value={answer.answer[0]}
+                          onChange={(event) => changeValue(event, index)}
+                          style={{ width: '100%', color: '#ff9999' }}
+                          required={answer.required}
+                          label="Answer"
+                        />
+                      </div>
+                    )}
+                    {answer.type === 3 && (
+                      <div>
+                        <Typography variant="h5">{answer.question}</Typography>
+                        {answer.questionAnswers.map((question: string) => (
+                          <div>
                             <FormControlLabel
-                              value={true}
-                              control={<Radio style={{ color: '#ff9999' }} />}
+                              control={
+                                <Checkbox
+                                  value={question}
+                                  onClick={() => checkKey(question, index)}
+                                  style={{
+                                    color: '#ff9999',
+                                  }}
+                                />
+                              }
                               label={
                                 <Typography style={{ fontSize: '14px' }}>
-                                  True
+                                  {question}
                                 </Typography>
                               }
                             />
-                            <FormControlLabel
-                              value={false}
-                              control={<Radio style={{ color: '#ff9999' }} />}
-                              label={
-                                <Typography style={{ fontSize: '14px' }}>
-                                  False
-                                </Typography>
-                              }
-                            />
-                          </RadioGroup>
-                        </div>
-                      )}
-                      {answer.type === 6 && (
-                        <div>
-                          <Typography variant="h5">
-                            {answer.question}
-                          </Typography>
-                          <Slider
-                            defaultValue={answer.min}
-                            step={answer.step}
-                            marks
-                            valueLabelDisplay="auto"
-                            min={answer.min}
-                            max={answer.max}
-                            style={{ color: '#ff9999' }}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {answer.type === 4 && (
+                      <div>
+                        <Typography variant="h5">{answer.question}</Typography>
+                        <TextField
+                          label="Answer"
+                          multiline
+                          value={answer.answer[0]}
+                          onChange={(event) => changeValue(event, index)}
+                          style={{ width: '100%', color: '#ff9999' }}
+                        />
+                      </div>
+                    )}
+                    {answer.type === 5 && (
+                      <div>
+                        <Typography variant="h5">{answer.question}</Typography>
+                        <RadioGroup
+                          name={answer.question}
+                          value={answer.trueOrFalse}
+                          onChange={(event) => handleChange(event, index)}
+                        >
+                          <FormControlLabel
+                            value={true}
+                            control={<Radio style={{ color: '#ff9999' }} />}
+                            label={
+                              <Typography style={{ fontSize: '14px' }}>
+                                True
+                              </Typography>
+                            }
                           />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  <Grid container spacing={3}>
-                    <Grid item xs={10}></Grid>
-                    <Grid item xs={2}>
-                      <Button
-                        variant="contained"
-                        style={{
-                          marginTop: '3rem',
-                          color: 'white',
-                          backgroundColor: '#ff9999'
-                        }}
-                        color="primary"
-                        endIcon={<SendIcon />}
-                        disabled={
-                          props.previewData === undefined ? false : true
-                        }
-                        type="submit"
-                      >
-                        Send
-                      </Button>
-                    </Grid>
+                          <FormControlLabel
+                            value={false}
+                            control={<Radio style={{ color: '#ff9999' }} />}
+                            label={
+                              <Typography style={{ fontSize: '14px' }}>
+                                False
+                              </Typography>
+                            }
+                          />
+                        </RadioGroup>
+                      </div>
+                    )}
+                    {answer.type === 6 && (
+                      <div>
+                        <Typography variant="h5">{answer.question}</Typography>
+                        <Slider
+                          defaultValue={answer.min}
+                          step={answer.step}
+                          marks
+                          valueLabelDisplay="auto"
+                          min={answer.min}
+                          max={answer.max}
+                          style={{ color: '#ff9999' }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+                <Grid container spacing={3}>
+                  <Grid item xs={10}></Grid>
+                  <Grid item xs={2}>
+                    <Button
+                      variant="contained"
+                      style={{
+                        marginTop: '3rem',
+                        color: 'white',
+                        backgroundColor: '#ff9999',
+                      }}
+                      color="primary"
+                      endIcon={<SendIcon />}
+                      disabled={props.previewData === undefined ? false : true}
+                      type="submit"
+                    >
+                      Send
+                    </Button>
                   </Grid>
-                </form>
-              </div>
-            )}
-          </Paper>
+                </Grid>
+              </form>
+            </ContainerWrapper>
+          )}
           <div
             style={{
               textAlign: 'center',
               color: '#586069',
-              marginBottom: '5rem'
+              marginBottom: '5rem',
             }}
           >
             <Typography style={{ marginTop: '0', paddingTop: '0' }}>
@@ -523,6 +488,6 @@ export const AnswerMain: React.FC<Props> = props => {
           </div>
         </div>
       )}
-    </Container>
+    </div>
   );
 };

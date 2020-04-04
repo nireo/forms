@@ -1,26 +1,26 @@
-import React, { useState, ChangeEvent } from "react";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import { makeStyles } from "@material-ui/core/styles";
-import { AnswersMain } from "../Answers/AnswersMain";
-import Container from "@material-ui/core/Container";
-import TestView from "../Create/TestView";
-import IconButton from "@material-ui/core/IconButton";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { Link } from "react-router-dom";
+import React, { useState, ChangeEvent } from 'react';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import { makeStyles } from '@material-ui/core/styles';
+import { AnswersMain } from '../Answers/AnswersMain';
+import Container from '@material-ui/core/Container';
+import TestView from '../Create/TestView';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 });
 
 type Props = {
   id: string;
 };
 
-export const MainView: React.FC<Props> = props => {
+export const MainView: React.FC<Props> = (props) => {
   const classes = useStyles(props);
   const [page, setPage] = useState<number>(0);
 
@@ -30,7 +30,7 @@ export const MainView: React.FC<Props> = props => {
 
   return (
     <div>
-      <Container maxWidth="md" style={{ marginTop: "2rem", marginBottom: "0" }}>
+      <Container maxWidth="md" style={{ marginTop: '2rem', marginBottom: '0' }}>
         <Paper className={classes.root}>
           <div>
             <Link to="/main">
@@ -42,17 +42,17 @@ export const MainView: React.FC<Props> = props => {
               value={page}
               onChange={handleChange}
               indicatorColor="default"
-              style={{ color: "#ff9999" }}
+              style={{ color: '#ff9999' }}
               centered
             >
               <Tab
                 color="default"
-                style={{ color: "#ff9999" }}
+                style={{ color: '#ff9999' }}
                 label="Questions"
               />
               <Tab
                 color="default"
-                style={{ color: "#ff9999" }}
+                style={{ color: '#ff9999' }}
                 label="Answers"
               />
             </Tabs>

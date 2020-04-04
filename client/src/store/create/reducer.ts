@@ -1,6 +1,5 @@
 import { Dispatch } from 'redux';
 import { Question } from './../../interfaces/Question';
-import { getForm } from '../../services/form.service';
 import {
   createQuestion,
   updateQuestion as serviceUpdateQuestion,

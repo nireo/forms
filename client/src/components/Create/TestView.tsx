@@ -1,8 +1,4 @@
-import React, { useState, useEffect, ChangeEvent, useCallback } from 'react';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { FormInput } from './FormInput';
+import React, { useState, useEffect, useCallback } from 'react';
 import { NewQuestion } from './NewQuestion';
 import { Question } from '../../interfaces/Question';
 import {
@@ -31,29 +27,7 @@ import { getForm, updateForm } from '../../services/form.service';
 import { setSelectedFromService } from '../../store/selectedForm/index';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { EditFormInfo } from './EditFormInfo';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  layout: {
-    width: 'auto',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
-  paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      padding: theme.spacing(3),
-    },
-  },
-}));
+import { ContainerWrapper } from '../Layout/ContainerWrapper';
 
 type Props = {
   id: string;
@@ -69,7 +43,6 @@ type Props = {
 };
 
 const TestView: React.FC<Props> = (props) => {
-  const classes = useStyles(props);
   const [form, setForm] = useState<any>(null);
   const [title, setTitle] = useState<string>('Untitled Form');
   const [description, setDescription] = useState<string>('');
@@ -184,82 +157,80 @@ const TestView: React.FC<Props> = (props) => {
       <Notification />
       {props.selected === null && <CircularProgress />}
       {!preview && props.selected !== null && (
-        <Container maxWidth="md" style={{ marginTop: '0' }}>
-          <Paper className={classes.paper}>
-            <EditFormInfo
-              updateFormInfo={updateFormInfo}
-              title={title}
-              description={description}
-            />
-            <div>
-              <Button
-                onClick={() => setPreview(true)}
-                variant="contained"
-                style={{ color: 'white', backgroundColor: '#ff9999' }}
-              >
-                Preview
-              </Button>
-            </div>
-            {props.create.map((q: Question) => (
-              <Grid key={q.temp_uuid} container spacing={1}>
-                <Grid item xs={1}>
-                  {q === selected && (
-                    <IconButton
-                      aria-label="close"
-                      component="span"
-                      style={{ marginTop: '2rem', color: '#ff9999' }}
-                      onClick={() => setSelected(null)}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  )}
-                  {q !== selected && (
-                    <IconButton
-                      aria-label="edit"
-                      component="span"
-                      style={{ marginTop: '2rem', color: '#ff9999' }}
-                      onClick={() => findAndSetSelected(q.temp_uuid)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  )}
+        <ContainerWrapper>
+          <EditFormInfo
+            updateFormInfo={updateFormInfo}
+            title={title}
+            description={description}
+          />
+          <div>
+            <Button
+              onClick={() => setPreview(true)}
+              variant="contained"
+              style={{ color: 'white', backgroundColor: '#ff9999' }}
+            >
+              Preview
+            </Button>
+          </div>
+          {props.create.map((q: Question) => (
+            <Grid key={q.temp_uuid} container spacing={1}>
+              <Grid item xs={1}>
+                {q === selected && (
                   <IconButton
-                    aria-label="remove"
+                    aria-label="close"
                     component="span"
-                    style={{ color: '#ff9999' }}
-                    onClick={() => removeQuestion(q.temp_uuid)}
+                    style={{ marginTop: '2rem', color: '#ff9999' }}
+                    onClick={() => setSelected(null)}
                   >
-                    <DeleteIcon />
+                    <CloseIcon />
                   </IconButton>
-                </Grid>
-                <Grid item xs={11}>
-                  {selected !== null && q === selected && (
-                    <div>
-                      <EditQuestion
-                        updateWithNewInfo={updateWithNewInfo}
-                        question={selected}
-                      />
-                    </div>
-                  )}
-                  {selected !== q && (
-                    <div style={{ marginTop: '2rem' }}>
-                      <TextField
-                        disabled
-                        id="standard-disabled"
-                        label="Question"
-                        defaultValue={q.question}
-                        style={{ width: '100%' }}
-                      />
-                    </div>
-                  )}
-                </Grid>
+                )}
+                {q !== selected && (
+                  <IconButton
+                    aria-label="edit"
+                    component="span"
+                    style={{ marginTop: '2rem', color: '#ff9999' }}
+                    onClick={() => findAndSetSelected(q.temp_uuid)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                )}
+                <IconButton
+                  aria-label="remove"
+                  component="span"
+                  style={{ color: '#ff9999' }}
+                  onClick={() => removeQuestion(q.temp_uuid)}
+                >
+                  <DeleteIcon />
+                </IconButton>
               </Grid>
-            ))}
-            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-              <NewQuestion newQuestion={newQuestion} />
-            </div>
-          </Paper>
-        </Container>
+              <Grid item xs={11}>
+                {selected !== null && q === selected && (
+                  <div>
+                    <EditQuestion
+                      updateWithNewInfo={updateWithNewInfo}
+                      question={selected}
+                    />
+                  </div>
+                )}
+                {selected !== q && (
+                  <div style={{ marginTop: '2rem' }}>
+                    <TextField
+                      disabled
+                      id="standard-disabled"
+                      label="Question"
+                      defaultValue={q.question}
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+                )}
+              </Grid>
+            </Grid>
+          ))}
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+            <NewQuestion newQuestion={newQuestion} />
+          </div>
+        </ContainerWrapper>
       )}
       {preview && (
         <AnswerMain
