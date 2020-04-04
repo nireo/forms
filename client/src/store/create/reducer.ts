@@ -4,7 +4,7 @@ import { getForm } from '../../services/form.service';
 import {
   createQuestion,
   updateQuestion as serviceUpdateQuestion,
-  deleteQuestion
+  deleteQuestion,
 } from '../../services/question.service';
 
 const reducer = (state: Question[] = [], action: any) => {
@@ -19,7 +19,7 @@ const reducer = (state: Question[] = [], action: any) => {
       return action.data;
     case 'UPDATE_QUESTION':
       const question: Question = action.data;
-      return state.map(q =>
+      return state.map((q) =>
         q.temp_uuid === question.temp_uuid ? question : q
       );
     default:
@@ -31,20 +31,11 @@ const turnAnswersToArray = (answers: string): string[] => {
   return answers.split('|');
 };
 
-export const initQuestions = (id: string) => {
+export const setQuestionData = (questions: Question[]) => {
   return async (dispatch: Dispatch) => {
-    const response: any = await getForm(id);
-
-    // answer array is stored as a string so here we parse it
-    for (let i = 0; i < response.questions.length; i++) {
-      response.questions[i].answers = turnAnswersToArray(
-        response.questions[i].answers
-      );
-    }
-
     dispatch({
       type: 'SET_FULL',
-      data: response.questions
+      data: questions,
     });
   };
 };
@@ -58,7 +49,7 @@ export const removeQuestion = (id: string) => {
     await deleteQuestion(id);
     dispatch({
       type: 'REMOVE_QUESTION',
-      id: id
+      id: id,
     });
   };
 };
@@ -77,7 +68,7 @@ export const addQuestion = (question: Question, id: string) => {
 
     dispatch({
       type: 'ADD_QUESTION',
-      data: newQuestion
+      data: newQuestion,
     });
   };
 };
@@ -85,7 +76,7 @@ export const addQuestion = (question: Question, id: string) => {
 export const setQuestionFully = (questions: Question[]) => {
   return {
     type: 'SET_FULL',
-    data: questions
+    data: questions,
   };
 };
 
@@ -102,7 +93,7 @@ export const updateQuestion = (question: Question) => {
     newQuestion.answers = turnAnswersToArray(newQuestion.answers);
     dispatch({
       type: 'UPDATE_QUESTION',
-      data: question
+      data: question,
     });
   };
 };

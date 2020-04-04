@@ -10,7 +10,7 @@ import {
   removeQuestion,
   clearQuestions,
   updateQuestion,
-  initQuestions,
+  setQuestionData,
 } from '../../store/create/reducer';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
@@ -63,8 +63,8 @@ type Props = {
   clearQuestions: () => void;
   updateQuestion: (question: Question) => void;
   setNotification: (notification: NotificationInterface) => void;
-  initQuestions: (id: string) => void;
   setSelectedFromService: (id: string) => void;
+  setQuestionData: (questions: Question[]) => void;
 };
 
 const TestView: React.FC<Props> = (props) => {
@@ -84,11 +84,6 @@ const TestView: React.FC<Props> = (props) => {
   }, [props.id]);
 
   useEffect(() => {
-    //if (initial === false) {
-    //   props.initQuestions(props.id);
-    //   setInitial(true);
-    // }
-
     // if (form === null) {
     //   loadForm().then((response: any) => {
     //     setForm(response.form);
@@ -110,9 +105,10 @@ const TestView: React.FC<Props> = (props) => {
       setForm(props.selected);
       setTitle(props.selected.form.title);
       setDescription(props.selected.form.description);
+
+      props.setQuestionData(props.selected.questions);
     }
   }, [initial, props, form, loadForm]);
-  console.log(props.selected);
 
   const newQuestion = () => {
     const uuid: string = uuidv4();
@@ -239,7 +235,7 @@ const TestView: React.FC<Props> = (props) => {
                 </form>
               )}
             </div>
-            {props.selected.questions.map((q: Question) => (
+            {props.create.map((q: Question) => (
               <Grid key={q.temp_uuid} container spacing={1}>
                 <Grid item xs={1}>
                   {q === selected && (
@@ -322,6 +318,6 @@ export default connect(mapStateToProps, {
   clearQuestions,
   updateQuestion,
   setNotification,
-  initQuestions,
   setSelectedFromService,
+  setQuestionData,
 })(TestView);
