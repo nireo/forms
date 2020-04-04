@@ -30,6 +30,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { getForm, updateForm } from '../../services/form.service';
 import { setSelectedFromService } from '../../store/selectedForm/index';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { EditFormInfo } from './EditFormInfo';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -84,18 +85,6 @@ const TestView: React.FC<Props> = (props) => {
   }, [props.id]);
 
   useEffect(() => {
-    // if (form === null) {
-    //   loadForm().then((response: any) => {
-    //     setForm(response.form);
-    //     setTitle(response.form.title);
-    //     if (response.form.description === ' ') {
-    //       setDescription('');
-    //     } else {
-    //       setDescription(response.form.description);
-    //     }
-    //   });
-    // }
-
     if (props.selected === null) {
       props.setSelectedFromService(props.id);
       setForm(props.selected);
@@ -174,12 +163,17 @@ const TestView: React.FC<Props> = (props) => {
     // props.setNotification(notification);
   };
 
-  const updateFormInfo = (event: ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const updateFormInfo = (newTitle: string, newDescription: string) => {
+    // the description can be empty but the title can't
+    if (title === '') {
+      return;
+    }
+
     if (description === '') {
       // for some odd reason gin doesn't accept empty string when validating
       setDescription(' ');
     }
+
     updateForm({ title, description }, props.id);
   };
 
@@ -190,23 +184,10 @@ const TestView: React.FC<Props> = (props) => {
       {!preview && props.selected !== null && (
         <Container maxWidth="md" style={{ marginTop: '0' }}>
           <Paper className={classes.paper}>
-            <input
-              value={title}
-              onChange={({ target }) => setTitle(target.value)}
-              style={{
-                border: 'none',
-                fontSize: '36px',
-                fontFamily: 'Roboto',
-                width: '100%',
-              }}
-              placeholder="Title..."
-              maxLength={50}
-            />
-            <FormInput
-              placeholder="Form description"
-              fontSize={24}
-              value={description}
-              setValue={setDescription}
+            <EditFormInfo
+              updateFormInfo={updateFormInfo}
+              title={title}
+              description={description}
             />
             <div>
               <Button
@@ -216,24 +197,6 @@ const TestView: React.FC<Props> = (props) => {
               >
                 Preview
               </Button>
-              {form !== null && (
-                <form onSubmit={updateFormInfo}>
-                  {(form.title !== title ||
-                    form.description !== description) && (
-                    <Button
-                      variant="contained"
-                      style={{
-                        color: 'white',
-                        marginTop: '1rem',
-                        backgroundColor: '#ff9999',
-                      }}
-                      type="submit"
-                    >
-                      Save
-                    </Button>
-                  )}
-                </form>
-              )}
             </div>
             {props.create.map((q: Question) => (
               <Grid key={q.temp_uuid} container spacing={1}>
