@@ -10,7 +10,7 @@ import {
   removeQuestion,
   clearQuestions,
   updateQuestion,
-  initQuestions
+  initQuestions,
 } from '../../store/create/reducer';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
@@ -29,6 +29,7 @@ import Notification from '../Layout/Notification';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { getForm, updateForm } from '../../services/form.service';
 import { setSelectedFromService } from '../../store/selectedForm/index';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -38,8 +39,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 600,
       marginLeft: 'auto',
-      marginRight: 'auto'
-    }
+      marginRight: 'auto',
+    },
   },
   paper: {
     marginTop: theme.spacing(3),
@@ -48,9 +49,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
       marginTop: theme.spacing(6),
       marginBottom: theme.spacing(6),
-      padding: theme.spacing(3)
-    }
-  }
+      padding: theme.spacing(3),
+    },
+  },
 }));
 
 type Props = {
@@ -66,7 +67,7 @@ type Props = {
   setSelectedFromService: (id: string) => void;
 };
 
-const TestView: React.FC<Props> = props => {
+const TestView: React.FC<Props> = (props) => {
   const classes = useStyles(props);
   const [form, setForm] = useState<any>(null);
   const [title, setTitle] = useState<string>('Untitled Form');
@@ -83,25 +84,32 @@ const TestView: React.FC<Props> = props => {
   }, [props.id]);
 
   useEffect(() => {
-    if (initial === false) {
-      props.initQuestions(props.id);
-      setInitial(true);
-    }
+    //if (initial === false) {
+    //   props.initQuestions(props.id);
+    //   setInitial(true);
+    // }
 
-    if (form === null) {
-      loadForm().then((response: any) => {
-        setForm(response.form);
-        setTitle(response.form.title);
-        if (response.form.description === ' ') {
-          setDescription('');
-        } else {
-          setDescription(response.form.description);
-        }
-      });
-    }
+    // if (form === null) {
+    //   loadForm().then((response: any) => {
+    //     setForm(response.form);
+    //     setTitle(response.form.title);
+    //     if (response.form.description === ' ') {
+    //       setDescription('');
+    //     } else {
+    //       setDescription(response.form.description);
+    //     }
+    //   });
+    // }
 
     if (props.selected === null) {
       props.setSelectedFromService(props.id);
+      setForm(props.selected);
+    }
+
+    if (props.selected !== null && form === null) {
+      setForm(props.selected);
+      setTitle(props.selected.form.title);
+      setDescription(props.selected.form.description);
     }
   }, [initial, props, form, loadForm]);
   console.log(props.selected);
@@ -116,7 +124,7 @@ const TestView: React.FC<Props> = props => {
       temp_uuid: uuid,
       step: 1,
       min: 1,
-      max: 10
+      max: 10,
     };
 
     props.addQuestion(templateQuestion, props.id);
@@ -147,7 +155,7 @@ const TestView: React.FC<Props> = props => {
 
   const findAndSetSelected = (id: string): void => {
     const question: Question | undefined = props.create.find(
-      q => q.temp_uuid === id
+      (q) => q.temp_uuid === id
     );
 
     if (!question) {
@@ -182,7 +190,8 @@ const TestView: React.FC<Props> = props => {
   return (
     <div>
       <Notification />
-      {!preview && (
+      {props.selected === null && <CircularProgress />}
+      {!preview && props.selected !== null && (
         <Container maxWidth="md" style={{ marginTop: '0' }}>
           <Paper className={classes.paper}>
             <input
@@ -192,7 +201,7 @@ const TestView: React.FC<Props> = props => {
                 border: 'none',
                 fontSize: '36px',
                 fontFamily: 'Roboto',
-                width: '100%'
+                width: '100%',
               }}
               placeholder="Title..."
               maxLength={50}
@@ -220,7 +229,7 @@ const TestView: React.FC<Props> = props => {
                       style={{
                         color: 'white',
                         marginTop: '1rem',
-                        backgroundColor: '#ff9999'
+                        backgroundColor: '#ff9999',
                       }}
                       type="submit"
                     >
@@ -230,7 +239,7 @@ const TestView: React.FC<Props> = props => {
                 </form>
               )}
             </div>
-            {props.create.map((q: Question) => (
+            {props.selected.questions.map((q: Question) => (
               <Grid key={q.temp_uuid} container spacing={1}>
                 <Grid item xs={1}>
                   {q === selected && (
@@ -304,7 +313,7 @@ const TestView: React.FC<Props> = props => {
 
 const mapStateToProps = (state: AppState) => ({
   create: state.create,
-  selected: state.selected
+  selected: state.selected,
 });
 
 export default connect(mapStateToProps, {
@@ -314,5 +323,5 @@ export default connect(mapStateToProps, {
   updateQuestion,
   setNotification,
   initQuestions,
-  setSelectedFromService
+  setSelectedFromService,
 })(TestView);
