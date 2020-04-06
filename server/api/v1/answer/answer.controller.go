@@ -23,6 +23,9 @@ type Full = models.Full
 // User alias for model
 type User = models.User
 
+// Question alias for model
+type Question = models.Question
+
 func getAnswer(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	id := c.Param("id")
@@ -107,13 +110,38 @@ func getAllFull(c *gin.Context) {
 		}
 	}
 
+	var questionsLoaded []string
+	var questions []Question
+	for index := range allAnswers {
+		if common.Contains(questionsLoaded, allAnswers[index].QuestionTempUUID) {
+			continue
+		} else {
+			var question Question
+			if err := db.Where("uuid = ?", allAnswers[index].QuestionTempUUID).First(&question).Error; err != nil {
+				c.AbortWithStatus(http.StatusInternalServerError)
+				return
+			}
+
+			questionsLoaded = append(questionsLoaded, question.UUID)
+			questions = append(questions, question)
+		}
+	}
+
 	serializedAnswers := make([]common.JSON, len(allAnswers), len(allAnswers))
 	// serialize answers
 	for index := range allAnswers {
 		serializedAnswers[index] = allAnswers[index].Serialize()
 	}
 
-	c.JSON(http.StatusOK, serializedAnswers)
+	serializedQuestions := make([]common.JSON, len(questions), len(questions))
+	for index := range questions {
+		serializedQuestions[index] = questions[index].Serialize()
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"questions": serializedQuestions,
+		"answers":   serializedAnswers,
+	})
 }
 
 func createAnswer(c *gin.Context) {
