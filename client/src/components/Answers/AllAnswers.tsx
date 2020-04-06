@@ -7,10 +7,15 @@ type Props = {
   id: string;
 };
 
+interface ItemPercentage {
+  amount: number;
+  label: string;
+}
+
 export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
-  const [percentages, setPercentages] = useState<number[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<any>([]);
+  const [percentages, setPercentages] = useState<ItemPercentage[]>([]);
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [data, setData] = useState<any[]>([]);
 
   const loadData = useCallback(async () => {
     const loadedData = await allAnswers(id);
@@ -18,21 +23,34 @@ export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
     setData(loadedData);
   }, []);
 
-  useEffect(() => {
-    if (data === [] && !loading) {
-      setLoading(true);
-      loadData();
-      setLoading(false);
+  const formatData = () => {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].type === 2) {
+        let foundPercentage = percentages.find(
+          (percentage: ItemPercentage) => percentage.label === data[i].answers
+        );
+        if (foundPercentage) {
+        } else {
+          setPercentages(
+            percentages.concat({ amount: 1, label: data[i].answers })
+          );
+        }
+      }
     }
-  }, []);
+  };
 
-  return (
-    <div>
-      <PieChart
-        numberData={[25, 25, 25, 25]}
-        labels={['1', '2', '3', '4']}
-        label="% of answers"
-      />
-    </div>
-  );
+  console.log(percentages);
+
+  useEffect(() => {
+    if (loaded === false) {
+      loadData();
+      setLoaded(true);
+    }
+
+    if (data.length > 0) {
+      formatData();
+    }
+  }, [data]);
+
+  return <div></div>;
 };

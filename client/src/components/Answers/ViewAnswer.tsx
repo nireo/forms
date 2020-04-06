@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Loading } from '../Layout/Loading';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import { getAnswerData } from '../../services/answer.service';
 import { QuestionType } from '../../interfaces/Question';
 import TextField from '@material-ui/core/TextField';
@@ -16,21 +14,6 @@ import Slider from '@material-ui/core/Slider';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ArrayBackIcon from '@material-ui/icons/ArrowBack';
-import { Link } from 'react-router-dom';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      padding: theme.spacing(3)
-    }
-  }
-}));
 
 interface AnswerItem {
   type: QuestionType;
@@ -48,7 +31,7 @@ type Props = {
   id: string;
 };
 
-export const ViewAnswer: React.FC<Props> = props => {
+export const ViewAnswer: React.FC<Props> = (props) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [data, setData] = useState<any>([]);
   const [filtered, setFiltered] = useState<AnswerItem[]>([]);
@@ -89,7 +72,7 @@ export const ViewAnswer: React.FC<Props> = props => {
             max: item.max,
             min: item.min,
             questionString: formQuestions[index].question,
-            questionAnswers: formQuestions[index].answers.split('|')
+            questionAnswers: formQuestions[index].answers.split('|'),
           };
 
           return answer;
@@ -110,7 +93,7 @@ export const ViewAnswer: React.FC<Props> = props => {
     formID,
     getQuestionData,
     getQuestions,
-    loaded
+    loaded,
   ]);
 
   const removeAnswer = async () => {
@@ -133,7 +116,7 @@ export const ViewAnswer: React.FC<Props> = props => {
       'Sep',
       'Oct',
       'Nov',
-      'Dec'
+      'Dec',
     ];
 
     var day = date.getDate();
