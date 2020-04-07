@@ -56,7 +56,7 @@ export const WrittenListDisplay: React.FC<Props> = ({ answers }) => {
         </div>
       ))}
       {checked.length > 0 && (
-        <button variant="contained">Delete selected</button>
+        <Button variant="contained">Delete selected</Button>
       )}
     </List>
   );

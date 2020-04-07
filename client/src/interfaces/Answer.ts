@@ -16,3 +16,12 @@ export interface Answer {
   answer: string[];
   answerType: QuestionType;
 }
+
+export interface NewAnswer {
+  answers: string;
+  max: number;
+  question_uuid: string;
+  trueOrFalse: boolean;
+  type: number;
+  value: number;
+}
