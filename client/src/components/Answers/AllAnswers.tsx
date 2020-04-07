@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { PieChart } from './PieChart';
 import { allAnswers } from '../../services/answer.service';
+import { Question } from '../../interfaces/Question';
+import { Typography } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 
 type Props = {
   answers: any;
@@ -12,34 +15,69 @@ interface ItemPercentage {
   label: string;
 }
 
+interface QuestionWithAnswers {
+  questionID: string;
+  type: number;
+  question: string;
+  answers: string[];
+}
+
+interface Answer {
+  answers: string;
+  max: number;
+  min: number;
+  question_uuid: string;
+  trueOrFalse: boolean;
+  type: number;
+  value: number;
+}
+
+interface Data {
+  questions: Question[];
+  answers: Answer[];
+}
+
 export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
   const [percentages, setPercentages] = useState<ItemPercentage[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Data | null>(null);
+  const [questionsWithAnswers, setQuestionsWithAnswers] = useState<
+    QuestionWithAnswers[]
+  >([]);
 
   const loadData = useCallback(async () => {
     const loadedData = await allAnswers(id);
-    console.log(loadedData);
     setData(loadedData);
   }, []);
 
   const formatData = () => {
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].type === 2) {
-        let foundPercentage = percentages.find(
-          (percentage: ItemPercentage) => percentage.label === data[i].answers
-        );
-        if (foundPercentage) {
-        } else {
-          setPercentages(
-            percentages.concat({ amount: 1, label: data[i].answers })
-          );
-        }
-      }
-    }
-  };
+    data?.questions.forEach((question: Question) => {
+      if (question.answerType === 2) {
+        let newQuestionWithAnswers: QuestionWithAnswers = {
+          questionID: question.temp_uuid,
+          type: question.answerType,
+          question: question.question,
+          answers: [],
+        };
 
-  console.log(percentages);
+        data?.answers.forEach((answer: Answer) => {
+          if (
+            answer.type === 2 &&
+            answer.question_uuid === question.temp_uuid
+          ) {
+            newQuestionWithAnswers.answers = newQuestionWithAnswers.answers.concat(
+              answer.answers
+            );
+          }
+        });
+
+        let withNewQuestion = questionsWithAnswers.concat(
+          newQuestionWithAnswers
+        );
+        setQuestionsWithAnswers(withNewQuestion);
+      }
+    });
+  };
 
   useEffect(() => {
     if (loaded === false) {
@@ -47,10 +85,27 @@ export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
       setLoaded(true);
     }
 
-    if (data.length > 0) {
+    if (data !== null) {
       formatData();
     }
   }, [data]);
 
-  return <div></div>;
+  return (
+    <Container maxWidth="md">
+      {questionsWithAnswers !== null && (
+        <div>
+          {questionsWithAnswers.map((question: QuestionWithAnswers) => (
+            <div>
+              <Typography variant="h5">{question.question}</Typography>
+              {question.answers.map((answer: string) => (
+                <div>
+                  <Typography variant="body1">{answer}</Typography>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+    </Container>
+  );
 };
