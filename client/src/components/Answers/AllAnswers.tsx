@@ -4,6 +4,7 @@ import { allAnswers } from '../../services/answer.service';
 import { Question } from '../../interfaces/Question';
 import { Typography } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
+import { WrittenListDisplay } from './WrittenListDisplay';
 
 type Props = {
   answers: any;
@@ -97,11 +98,7 @@ export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
           {questionsWithAnswers.map((question: QuestionWithAnswers) => (
             <div>
               <Typography variant="h5">{question.question}</Typography>
-              {question.answers.map((answer: string) => (
-                <div>
-                  <Typography variant="body1">{answer}</Typography>
-                </div>
-              ))}
+              <WrittenListDisplay answers={question.answers} />
             </div>
           ))}
         </div>
