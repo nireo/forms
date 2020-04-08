@@ -8,14 +8,8 @@ import { WrittenListDisplay } from './WrittenListDisplay';
 import formatData from '../../utils/FormatAllAsnwerData';
 
 type Props = {
-  answers: any;
   id: string;
 };
-
-interface ItemPercentage {
-  amount: number;
-  label: string;
-}
 
 export interface QuestionWithAnswers {
   questionID: string;
@@ -23,6 +17,7 @@ export interface QuestionWithAnswers {
   question: string;
   answers?: string[];
   amounts?: number[];
+  labels?: string[];
 }
 
 export interface Answer {
@@ -40,8 +35,7 @@ export interface Data {
   answers: Answer[];
 }
 
-export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
-  const [percentages, setPercentages] = useState<ItemPercentage[]>([]);
+export const AllAnswers: React.FC<Props> = ({ id }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [data, setData] = useState<Data | null>(null);
   const [questionsWithAnswers, setQuestionsWithAnswers] = useState<
@@ -71,9 +65,10 @@ export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
           {questionsWithAnswers.map((question: QuestionWithAnswers) => (
             <div>
               <Typography variant="h5">{question.question}</Typography>
-              {question.answers !== undefined && (
+              {question.type === 2 && question.answers !== undefined && (
                 <WrittenListDisplay answers={question.answers} />
               )}
+              {question.type === 5 && question.amounts && <div></div>}
             </div>
           ))}
         </div>

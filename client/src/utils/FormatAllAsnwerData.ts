@@ -31,6 +31,43 @@ const formatData = (data: DataInterface): QuestionWithAnswers[] => {
       questionsWithAnswers = questionsWithAnswers.concat(
         newQuestionWithAnswers
       );
+    } else if (question.answerType === 3) {
+      const newQuestionWithAnswers: QuestionWithAnswers = {
+        questionID: question.temp_uuid,
+        type: question.answerType,
+        question: question.question,
+        amounts: [],
+        labels: [],
+      };
+
+      data.answers.forEach((answer: Answer) => {
+        if (
+          answer.answers.includes('|') &&
+          newQuestionWithAnswers.amounts !== undefined
+        ) {
+          answer.answers.split('|').forEach((a: string) => {
+            let index = newQuestionWithAnswers.labels?.indexOf(a);
+            if (
+              index !== -1 &&
+              newQuestionWithAnswers.amounts !== undefined &&
+              index !== undefined
+            ) {
+              newQuestionWithAnswers.amounts[index] += 1;
+            } else {
+              newQuestionWithAnswers.labels = newQuestionWithAnswers.labels?.concat(
+                a
+              );
+              newQuestionWithAnswers.amounts = newQuestionWithAnswers.amounts?.concat(
+                1
+              );
+            }
+          });
+        }
+      });
+
+      questionsWithAnswers = questionsWithAnswers.concat(
+        newQuestionWithAnswers
+      );
     } else if (question.answerType === 5) {
       // 0 index is false and 1 index is true
       const newQuestionWithAnswers: QuestionWithAnswers = {
