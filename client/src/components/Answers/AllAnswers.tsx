@@ -5,6 +5,7 @@ import { Question } from '../../interfaces/Question';
 import { Typography } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import { WrittenListDisplay } from './WrittenListDisplay';
+import formatData from '../../utils/FormatAllAsnwerData';
 
 type Props = {
   answers: any;
@@ -16,7 +17,7 @@ interface ItemPercentage {
   label: string;
 }
 
-interface QuestionWithAnswers {
+export interface QuestionWithAnswers {
   questionID: string;
   type: number;
   question: string;
@@ -24,7 +25,7 @@ interface QuestionWithAnswers {
   amounts?: number[];
 }
 
-interface Answer {
+export interface Answer {
   answers: string;
   max: number;
   min: number;
@@ -34,7 +35,7 @@ interface Answer {
   value: number;
 }
 
-interface Data {
+export interface Data {
   questions: Question[];
   answers: Answer[];
 }
@@ -52,62 +53,6 @@ export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
     setData(loadedData);
   }, []);
 
-  const formatData = () => {
-    data?.questions.forEach((question: Question) => {
-      if (question.answerType === 2) {
-        let newQuestionWithAnswers: QuestionWithAnswers = {
-          questionID: question.temp_uuid,
-          type: question.answerType,
-          question: question.question,
-          answers: [],
-        };
-
-        data?.answers.forEach((answer: Answer) => {
-          if (
-            answer.type === 2 &&
-            answer.question_uuid === question.temp_uuid &&
-            newQuestionWithAnswers.answers !== undefined
-          ) {
-            newQuestionWithAnswers.answers = newQuestionWithAnswers.answers.concat(
-              answer.answers
-            );
-          }
-        });
-
-        let withNewQuestion = questionsWithAnswers.concat(
-          newQuestionWithAnswers
-        );
-        setQuestionsWithAnswers(withNewQuestion);
-      } else if (question.answerType === 5) {
-        // 0 index is false and 1 index is true
-        const newQuestionWithAnswers: QuestionWithAnswers = {
-          questionID: question.temp_uuid,
-          type: question.answerType,
-          question: question.question,
-          amounts: [0, 0],
-        };
-
-        data?.answers.forEach((answer: Answer) => {
-          if (
-            (answer.type === 5 && answer.question_uuid === question.temp_uuid,
-            newQuestionWithAnswers.amounts !== undefined)
-          ) {
-            if (!answer.trueOrFalse) {
-              newQuestionWithAnswers.amounts[0] += 1;
-            } else {
-              newQuestionWithAnswers.amounts[1] += 1;
-            }
-          }
-        });
-
-        let withNewQuestion = questionsWithAnswers.concat(
-          newQuestionWithAnswers
-        );
-        setQuestionsWithAnswers(withNewQuestion);
-      }
-    });
-  };
-
   useEffect(() => {
     if (loaded === false) {
       loadData();
@@ -115,7 +60,7 @@ export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
     }
 
     if (data !== null) {
-      formatData();
+      setQuestionsWithAnswers(formatData(data));
     }
   }, [data]);
 
@@ -126,7 +71,9 @@ export const AllAnswers: React.FC<Props> = ({ answers, id }) => {
           {questionsWithAnswers.map((question: QuestionWithAnswers) => (
             <div>
               <Typography variant="h5">{question.question}</Typography>
-              <WrittenListDisplay answers={question.answers} />
+              {question.answers !== undefined && (
+                <WrittenListDisplay answers={question.answers} />
+              )}
             </div>
           ))}
         </div>
