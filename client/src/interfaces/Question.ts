@@ -45,5 +45,14 @@ export enum QuestionType {
   ManyAnswers = 3,
   Paragraph = 4,
   TrueOrFalse = 5,
-  Slider = 6
+  Slider = 6,
+}
+
+export interface QuestionWithAnswers {
+  questionID: string;
+  type: number;
+  question: string;
+  answers?: string[];
+  amounts?: number[];
+  labels?: string[];
 }
