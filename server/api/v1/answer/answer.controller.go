@@ -29,10 +29,16 @@ type Question = models.Question
 func getAnswer(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	id := c.Param("id")
+	user := c.MustGet("user").(User)
 
 	var form Form
 	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	if form.UserID != user.ID {
+		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
@@ -128,7 +134,6 @@ func getAllFull(c *gin.Context) {
 	}
 
 	serializedAnswers := make([]common.JSON, len(allAnswers), len(allAnswers))
-	// serialize answers
 	for index := range allAnswers {
 		serializedAnswers[index] = allAnswers[index].Serialize()
 	}
@@ -148,7 +153,6 @@ func createAnswer(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	id := c.Param("id")
 
-	// validate id
 	if id == "" {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
@@ -254,9 +258,22 @@ func deleteAnswer(c *gin.Context) {
 func deleteAllAnswers(c *gin.Context) {
 	id := c.Param("id")
 	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
 
 	if id == "" {
 		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	// check user ownership of form
+	var form Form
+	if err := db.Where("unique_id = ?", id).First(&form).Error; err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	if form.UserID != user.ID {
+		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 

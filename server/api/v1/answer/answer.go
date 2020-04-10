@@ -9,11 +9,11 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	auth := r.Group("/answer")
 	{
-		auth.GET("/form/:id", getAnswer)
+		auth.GET("/form/:id", middlewares.Authorized, getAnswer)
 		auth.POST("/answer/:id", createAnswer)
 		auth.DELETE("/:id", middlewares.Authorized, deleteAnswer)
 		auth.GET("/content/:id", getSingleAnswer)
 		auth.GET("/all/:id", getAllFull)
-		auth.DELETE("/form/:id", deleteAllAnswers)
+		auth.DELETE("/form/:id", middlewares.Authorized, deleteAllAnswers)
 	}
 }
