@@ -13,6 +13,7 @@ import { checkLocalStorage } from './store/user/reducer';
 import { MainView } from './components/Form/MainView';
 import Settings from './components/User/Settings';
 import { ChooseAction } from './components/Welcome/ChooseAction';
+import Navbar from './components/Layout/Navbar';
 
 type Props = {
   user: User;
@@ -29,6 +30,7 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
   return (
     <Router>
       <CssBaseline />
+      <Navbar />
       <Switch>
         <Route exact path="/main" render={() => <ManageMain />} />
         <Route exact path="/welcome" render={() => <Welcome />} />
