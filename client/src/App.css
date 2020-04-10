@@ -84,3 +84,10 @@
 ::-moz-selection {
   background: #ff9999; /* Gecko Browsers */
 }
+
+.link-button {
+  border: none;
+  background: none;
+  color: #ff9999;
+  cursor: pointer;
+}

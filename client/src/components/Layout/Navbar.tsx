@@ -10,7 +10,7 @@ import { User } from '../../interfaces/User';
 import Button from '@material-ui/core/Button';
 import { logout } from '../../store/user/reducer';
 import Popover from '@material-ui/core/Popover';
-import { NavbarFormsLogin } from './NavbarForms';
+import { ConnectedFormsLogin, ConnectedFormsRegister } from './NavbarForms';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,6 +48,7 @@ type Props = {
 
 const Navbar: React.FC<Props> = ({ user, logout }) => {
   const classes = useStyles();
+  const [form, setForm] = useState<string>('login');
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -127,7 +128,29 @@ const Navbar: React.FC<Props> = ({ user, logout }) => {
             }}
           >
             <div className={classes.container}>
-              <NavbarFormsLogin />
+              {form === 'login' ? (
+                <div>
+                  <ConnectedFormsLogin />
+                  <button
+                    className="link-button"
+                    style={{ marginTop: '0.25rem' }}
+                    onClick={() => setForm('register')}
+                  >
+                    Don't have an account?
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <ConnectedFormsRegister />
+                  <button
+                    className="link-button"
+                    style={{ marginTop: '0.25rem' }}
+                    onClick={() => setForm('login')}
+                  >
+                    Already have an account?
+                  </button>
+                </div>
+              )}
             </div>
           </Popover>
         </nav>
