@@ -250,3 +250,25 @@ func deleteAnswer(c *gin.Context) {
 	db.Delete(&full)
 	c.Status(http.StatusNoContent)
 }
+
+func deleteAllAnswers(c *gin.Context) {
+	id := c.Param("id")
+	db := c.MustGet("db").(*gorm.DB)
+
+	if id == "" {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	var full []Full
+	if err := db.Where("form_uuid = ?", id).Find(&full).Error; err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	for index := range full {
+		db.Delete(&full[index])
+	}
+
+	c.Status(http.StatusNoContent)
+}

@@ -14,5 +14,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		auth.DELETE("/:id", middlewares.Authorized, deleteAnswer)
 		auth.GET("/content/:id", getSingleAnswer)
 		auth.GET("/all/:id", getAllFull)
+		auth.DELETE("/form/:id", deleteAllAnswers)
 	}
 }
