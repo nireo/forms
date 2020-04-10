@@ -71,16 +71,17 @@ export const AnswersMain: React.FC<Props> = (props) => {
         <div>
           {answers.length > 0 && (
             <div>
-              {console.log(answers[selected - 1].uuid)}
               <div>
-                {console.log(answers[selected - 1].uuid)}
-                <ViewAnswer id={answers[selected - 1].uuid} />
+                <ViewAnswer
+                  answer={answers[selected - 1]}
+                  id={answers[selected - 1].uuid}
+                />
               </div>
             </div>
           )}
         </div>
       )}
-      <AllAnswers answers={answers} id={props.id} />
+      <AllAnswers id={props.id} />
     </ContainerWrapper>
   );
 };

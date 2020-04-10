@@ -12,7 +12,6 @@ import { User } from './interfaces/User';
 import { checkLocalStorage } from './store/user/reducer';
 import { MainView } from './components/Form/MainView';
 import Settings from './components/User/Settings';
-import { ViewAnswer } from './components/Answers/ViewAnswer';
 import { ChooseAction } from './components/Welcome/ChooseAction';
 
 type Props = {
@@ -36,11 +35,6 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
         <Route exact path="/settings" render={() => <Settings />} />
         <Route exact path="/" render={() => <ChooseAction />} />
         <Route exact path="/demo" render={() => <AnswerMain demo={true} />} />
-        <Route
-          exact
-          path="/answer/:id"
-          render={({ match }) => <ViewAnswer id={match.params.id} />}
-        />
         <Route
           exact
           path="/:id/edit"

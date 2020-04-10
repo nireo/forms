@@ -14,6 +14,7 @@ import Slider from '@material-ui/core/Slider';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import formatDate from '../../utils/FormatDate';
 
 interface AnswerItem {
   type: QuestionType;
@@ -29,6 +30,7 @@ interface AnswerItem {
 
 type Props = {
   id: string;
+  answer: any;
 };
 
 export const ViewAnswer: React.FC<Props> = (props) => {
@@ -96,34 +98,12 @@ export const ViewAnswer: React.FC<Props> = (props) => {
     loaded,
   ]);
 
+  console.log(data);
+
   const removeAnswer = async () => {
     if (window.confirm('Are you sure you want delete the form?')) {
       await axios.delete(`/api/answer/${props.id}`);
     }
-  };
-
-  const returnSensibleDate = (dateString: string) => {
-    const date = new Date(dateString);
-    var monthNames = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-
-    var day = date.getDate();
-    var monthIndex = date.getMonth();
-    var year = date.getFullYear();
-
-    return day + ' ' + monthNames[monthIndex] + ' ' + year;
   };
 
   return (
@@ -139,9 +119,10 @@ export const ViewAnswer: React.FC<Props> = (props) => {
         </IconButton>
       </div>
       {otherInfo && (
-        <Typography>
-          Answered {returnSensibleDate(otherInfo.created_at)}
-        </Typography>
+        <div>
+          <Typography>Answered {formatDate(otherInfo.created_at)}</Typography>
+          {props.id}
+        </div>
       )}
       {!filter ||
         !loaded ||
