@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, ChangeEvent } from 'react';
 import Typography from '@material-ui/core/Typography';
 import {
   getAnswer,
@@ -11,8 +11,28 @@ import ArrowBackwardIosIcon from '@material-ui/icons/ArrowBackIos';
 import { ViewAnswer } from './ViewAnswer';
 import { AllAnswers } from './AllAnswers';
 import { ContainerWrapper } from '../Layout/ContainerWrapper';
-import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import { Paper, Container } from '@material-ui/core';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      marginTop: theme.spacing(3),
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
+      paddingTop: theme.spacing(2),
+      [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+        marginTop: theme.spacing(6),
+        marginBottom: theme.spacing(6),
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
+        paddingTop: theme.spacing(3),
+      },
+    },
+  })
+);
 
 type Props = {
   id: string;
@@ -22,7 +42,8 @@ export const AnswersMain: React.FC<Props> = (props) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [answers, setAnswers] = useState<any>([]);
   const [selected, setSelected] = useState<number>(1);
-  const [page, setPage] = useState<string>('all');
+  const [tab, setTab] = useState<number>(0);
+  const classes = useStyles();
 
   const getAnswers = useCallback(async () => {
     const data: any = await getAnswer(props.id);
@@ -43,64 +64,74 @@ export const AnswersMain: React.FC<Props> = (props) => {
     }
   };
 
+  const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
+    setTab(newValue);
+  };
+
   return (
-    <ContainerWrapper>
-      <Typography variant="h4">Answers</Typography>
-      <Divider />
-      {page === 'single' ? (
-        <Button variant="contained" onClick={() => setPage('all')}>
-          Show all answers
-        </Button>
-      ) : (
-        <Button variant="contained" onClick={() => setPage('single')}>
-          Show single answers
-        </Button>
-      )}
-      {page === 'single' && (
-        <div style={{ display: 'flex' }}>
-          {selected !== 1 && (
-            <IconButton onClick={() => setSelected(selected - 1)}>
-              <ArrowBackwardIosIcon />
-            </IconButton>
-          )}
-          <Typography
-            style={{
-              marginTop: '0.8rem',
-              marginLeft: '0.8rem',
-              marginRight: '0.8rem',
-            }}
+    <div>
+      <Container maxWidth="md">
+        <Paper className={classes.paper}>
+          <Typography variant="h4">{answers.length} answers</Typography>
+          <Tabs
+            value={tab}
+            onChange={handleTabChange}
+            indicatorColor="primary"
+            textColor="primary"
+            centered
           >
-            {selected}/{answers.length}
-          </Typography>
-          {selected !== answers.length && (
-            <IconButton onClick={() => setSelected(selected + 1)}>
-              <ArrowForwardIosIcon />
-            </IconButton>
-          )}
-        </div>
-      )}
-      {loaded === false ? (
-        <Loading />
-      ) : (
-        <div>
-          {page === 'single' ? (
-            <div>
-              {answers.length > 0 && (
-                <div>
+            <Tab label="Summary" />
+            <Tab label="Question" />
+            <Tab label="Person" />
+          </Tabs>
+        </Paper>
+      </Container>
+      <ContainerWrapper>
+        {tab === 2 && (
+          <div style={{ display: 'flex' }}>
+            {selected !== 1 && (
+              <IconButton onClick={() => setSelected(selected - 1)}>
+                <ArrowBackwardIosIcon />
+              </IconButton>
+            )}
+            <Typography
+              style={{
+                marginTop: '0.8rem',
+                marginLeft: '0.8rem',
+                marginRight: '0.8rem',
+              }}
+            >
+              {selected}/{answers.length}
+            </Typography>
+            {selected !== answers.length && (
+              <IconButton onClick={() => setSelected(selected + 1)}>
+                <ArrowForwardIosIcon />
+              </IconButton>
+            )}
+          </div>
+        )}
+        {loaded === false ? (
+          <Loading />
+        ) : (
+          <div>
+            {tab === 2 && (
+              <div>
+                {answers.length > 0 && (
                   <div>
-                    <ViewAnswer
-                      answer={answers[selected - 1]}
-                      id={answers[selected - 1].uuid}
-                    />
+                    <div>
+                      <ViewAnswer
+                        answer={answers[selected - 1]}
+                        id={answers[selected - 1].uuid}
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <AllAnswers id={props.id} />
-          )}
-        </div>
-      )}
-    </ContainerWrapper>
+                )}
+              </div>
+            )}
+            {tab === 0 && <AllAnswers id={props.id} />}
+          </div>
+        )}
+      </ContainerWrapper>
+    </div>
   );
 };
