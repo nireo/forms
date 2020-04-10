@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,6 +9,8 @@ import { AppState } from '../../store/index';
 import { User } from '../../interfaces/User';
 import Button from '@material-ui/core/Button';
 import { logout } from '../../store/user/reducer';
+import Popover from '@material-ui/core/Popover';
+import { NavbarFormsLogin } from './NavbarForms';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) =>
       color: 'black',
       textDecoration: 'none',
     },
+    container: {
+      padding: theme.spacing(4),
+    },
   })
 );
 
@@ -43,10 +48,25 @@ type Props = {
 
 const Navbar: React.FC<Props> = ({ user, logout }) => {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
   const handleLogout = () => {
     logout();
     return <Redirect to="/bye" />;
   };
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   return (
     <AppBar
@@ -84,6 +104,34 @@ const Navbar: React.FC<Props> = ({ user, logout }) => {
               Logout
             </Button>
           )}
+          {user === null && (
+            <Button
+              aria-describedby={id}
+              variant="contained"
+              color="primary"
+              onClick={handleClick}
+              style={{ color: 'white', backgroundColor: '#ff9999' }}
+            >
+              Login
+            </Button>
+          )}
+          <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+          >
+            <div className={classes.container}>
+              <NavbarFormsLogin />
+            </div>
+          </Popover>
         </nav>
       </Toolbar>
     </AppBar>

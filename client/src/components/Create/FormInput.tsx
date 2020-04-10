@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 type Props = {
   fontSize?: number;
   placeholder?: string;
+  type?: string;
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
 };
@@ -12,19 +13,19 @@ type Props = {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& label.Mui-focused': {
-      color: '#ff9999'
+      color: '#ff9999',
     },
     '& .MuiInput-underline:after': {
-      borderBottomColor: '#ff9999'
-    }
+      borderBottomColor: '#ff9999',
+    },
   },
   formBig: {
     height: 40,
-    fontSize: 40
-  }
+    fontSize: 40,
+  },
 }));
 
-export const FormInput: React.FC<Props> = props => {
+export const FormInput: React.FC<Props> = (props) => {
   const classes = useStyles(props);
 
   return (
@@ -36,6 +37,7 @@ export const FormInput: React.FC<Props> = props => {
         value={props.value}
         onChange={({ target }) => props.setValue(target.value)}
         style={{ color: '#ff9999' }}
+        type={`${props.type !== undefined ? props.type : 'text'}`}
       />
     </div>
   );
