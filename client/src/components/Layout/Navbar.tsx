@@ -66,7 +66,6 @@ const Navbar: React.FC<Props> = ({ user, logout }) => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
 
   return (
     <AppBar
@@ -106,7 +105,6 @@ const Navbar: React.FC<Props> = ({ user, logout }) => {
           )}
           {user === null && (
             <Button
-              aria-describedby={id}
               variant="contained"
               color="primary"
               onClick={handleClick}
