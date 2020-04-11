@@ -14,6 +14,7 @@ import { MainView } from './components/Form/MainView';
 import Settings from './components/User/Settings';
 import { ChooseAction } from './components/Welcome/ChooseAction';
 import Navbar from './components/Layout/Navbar';
+import { Bye } from './components/Layout/Bye';
 
 type Props = {
   user: User;
@@ -37,6 +38,7 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
         <Route exact path="/settings" render={() => <Settings />} />
         <Route exact path="/" render={() => <ChooseAction />} />
         <Route exact path="/demo" render={() => <AnswerMain demo={true} />} />
+        <Route exact path="/bye" render={() => <Bye />} />
         <Route
           exact
           path="/:id/edit"
