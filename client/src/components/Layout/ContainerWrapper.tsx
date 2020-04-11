@@ -16,12 +16,12 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     paper: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(3),
+      marginTop: theme.spacing(1.5),
+      marginBottom: theme.spacing(1.5),
       padding: theme.spacing(2),
       [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-        marginTop: theme.spacing(6),
-        marginBottom: theme.spacing(6),
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
         padding: theme.spacing(3),
       },
     },

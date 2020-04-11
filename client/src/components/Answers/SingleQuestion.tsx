@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import Select from '@material-ui/core/Select';
-import { NewAnswer as Answer } from '../../interfaces/Answer';
+import { NewAnswer as Answer, NewAnswer } from '../../interfaces/Answer';
 import { Data as DataInterface } from '../../interfaces/Data';
 import { Question } from '../../interfaces/Question';
 import { allAnswers } from '../../services/answer.service';
@@ -9,6 +9,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBackwardIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 type Props = {
   id: string;
@@ -64,7 +67,35 @@ export const SingleQuestion: React.FC<Props> = ({ id }) => {
           </div>
         )}
       </ContainerWrapper>
-      {selected !== '' && <ContainerWrapper>hello</ContainerWrapper>}
+      {selected !== '' && data !== null && (
+        <div>
+          {data.answers
+            .filter(
+              (answers: NewAnswer) =>
+                answers.question_uuid === selected && answers.answers !== ''
+            )
+            .map((answer: NewAnswer) => (
+              <ContainerWrapper>
+                <Typography style={{ fontSize: '16px' }}>
+                  {answer.answers}
+                </Typography>
+              </ContainerWrapper>
+            ))}
+        </div>
+      )}
+      <ContainerWrapper>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div></div>
+          <div>
+            <IconButton>
+              <ArrowBackwardIosIcon />
+            </IconButton>
+            <IconButton>
+              <ArrowForwardIosIcon />
+            </IconButton>
+          </div>
+        </div>
+      </ContainerWrapper>
     </div>
   );
 };
