@@ -15,6 +15,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import formatDate from '../../utils/FormatDate';
+import { ContainerWrapper } from '../Layout/ContainerWrapper';
 
 interface AnswerItem {
   type: QuestionType;
@@ -107,7 +108,7 @@ export const ViewAnswer: React.FC<Props> = (props) => {
   };
 
   return (
-    <Container maxWidth="md">
+    <ContainerWrapper>
       <div style={{ marginBottom: '1rem' }}>
         <IconButton
           component="span"
@@ -240,6 +241,6 @@ export const ViewAnswer: React.FC<Props> = (props) => {
           ))}
         </div>
       )}
-    </Container>
+    </ContainerWrapper>
   );
 };

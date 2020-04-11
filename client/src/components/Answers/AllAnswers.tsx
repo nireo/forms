@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import { WrittenListDisplay } from './WrittenListDisplay';
 import formatData from '../../utils/FormatAllAsnwerData';
 import { Data as DataInterface } from '../../interfaces/Data';
+import { ContainerWrapper } from '../Layout/ContainerWrapper';
 
 type Props = {
   id: string;
@@ -46,7 +47,7 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
   }, [data]);
 
   return (
-    <Container maxWidth="md">
+    <ContainerWrapper>
       {questionsWithAnswers !== null && (
         <div>
           {questionsWithAnswers.map((question: QuestionWithAnswers) => (
@@ -60,6 +61,6 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
           ))}
         </div>
       )}
-    </Container>
+    </ContainerWrapper>
   );
 };

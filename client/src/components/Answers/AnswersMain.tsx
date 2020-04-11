@@ -15,6 +15,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Paper, Container } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { SingleQuestion } from './SingleQuestion';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -86,8 +87,8 @@ export const AnswersMain: React.FC<Props> = (props) => {
           </Tabs>
         </Paper>
       </Container>
-      <ContainerWrapper>
-        {tab === 2 && (
+      {tab === 2 && (
+        <ContainerWrapper>
           <div style={{ display: 'flex' }}>
             {selected !== 1 && (
               <IconButton onClick={() => setSelected(selected - 1)}>
@@ -109,29 +110,30 @@ export const AnswersMain: React.FC<Props> = (props) => {
               </IconButton>
             )}
           </div>
-        )}
-        {loaded === false ? (
-          <Loading />
-        ) : (
-          <div>
-            {tab === 2 && (
-              <div>
-                {answers.length > 0 && (
+        </ContainerWrapper>
+      )}
+      {loaded === false ? (
+        <Loading />
+      ) : (
+        <div>
+          {tab === 2 && (
+            <div>
+              {answers.length > 0 && (
+                <div>
                   <div>
-                    <div>
-                      <ViewAnswer
-                        answer={answers[selected - 1]}
-                        id={answers[selected - 1].uuid}
-                      />
-                    </div>
+                    <ViewAnswer
+                      answer={answers[selected - 1]}
+                      id={answers[selected - 1].uuid}
+                    />
                   </div>
-                )}
-              </div>
-            )}
-            {tab === 0 && <AllAnswers id={props.id} />}
-          </div>
-        )}
-      </ContainerWrapper>
+                </div>
+              )}
+            </div>
+          )}
+          {tab === 1 && <SingleQuestion id={props.id} />}
+          {tab === 0 && <AllAnswers id={props.id} />}
+        </div>
+      )}
     </div>
   );
 };
