@@ -3,7 +3,7 @@ import { User, UserAction, UserWithToken } from './../../interfaces/User';
 import {
   login as log_in,
   register as registerUser,
-  remove
+  remove,
 } from '../../services/user.service';
 import setToken from '../../utils/setToken';
 
@@ -28,7 +28,7 @@ export const removeUser = () => {
     await remove();
     localStorage.clear();
     dispatch({
-      type: 'LOG_OUT'
+      type: 'LOG_OUT',
     });
   };
 };
@@ -42,7 +42,7 @@ export const login = (credentials: UserAction, remember: boolean) => {
     setToken(user.token);
     dispatch({
       type: 'LOG_IN',
-      data: user.user
+      data: user.user,
     });
   };
 };
@@ -54,7 +54,7 @@ export const register = (credentials: UserAction) => {
     setToken(user.token);
     dispatch({
       type: 'LOG_IN',
-      data: user.user
+      data: user.user,
     });
   };
 };
@@ -67,7 +67,7 @@ export const checkLocalStorage = () => {
       setToken(userInfoJSON.token);
       dispatch({
         type: 'LOG_IN',
-        data: userInfoJSON.user
+        data: userInfoJSON.user,
       });
     }
   };

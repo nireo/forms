@@ -130,7 +130,7 @@ const Navbar: React.FC<Props> = ({ user, logout }) => {
             <div className={classes.container}>
               {form === 'login' ? (
                 <div>
-                  <ConnectedFormsLogin />
+                  <ConnectedFormsLogin setOpen={setAnchorEl} />
                   <button
                     className="link-button"
                     style={{ marginTop: '0.25rem' }}
@@ -141,7 +141,7 @@ const Navbar: React.FC<Props> = ({ user, logout }) => {
                 </div>
               ) : (
                 <div>
-                  <ConnectedFormsRegister />
+                  <ConnectedFormsRegister setOpen={setAnchorEl} />
                   <button
                     className="link-button"
                     style={{ marginTop: '0.25rem' }}

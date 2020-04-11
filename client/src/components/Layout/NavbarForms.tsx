@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, SetStateAction, Dispatch } from 'react';
 import { FormInput } from '../Create/FormInput';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
@@ -20,9 +20,10 @@ const ColoredCheckbox = withStyles({
 
 type LoginProps = {
   login: (credentials: UserAction, remember: boolean) => void;
+  setOpen: Dispatch<SetStateAction<HTMLButtonElement | null>>;
 };
 
-const NavbarFormsLogin: React.FC<LoginProps> = ({ login }) => {
+const NavbarFormsLogin: React.FC<LoginProps> = ({ login, setOpen }) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [remember, setRemember] = useState<boolean>(false);
@@ -30,11 +31,14 @@ const NavbarFormsLogin: React.FC<LoginProps> = ({ login }) => {
   const handleLogin = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (username !== '' || password !== '') {
+    if (username === '' || password === '') {
       return;
     }
 
     login({ username, password }, remember);
+
+    // close the popover
+    setOpen(null);
   };
 
   return (
@@ -77,9 +81,13 @@ export const ConnectedFormsLogin = connect(null, { login })(NavbarFormsLogin);
 
 type RegisterProps = {
   register: (credentials: UserAction) => void;
+  setOpen: Dispatch<SetStateAction<HTMLButtonElement | null>>;
 };
 
-const NavbarFormsRegister: React.FC<RegisterProps> = ({ register }) => {
+const NavbarFormsRegister: React.FC<RegisterProps> = ({
+  register,
+  setOpen,
+}) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -87,11 +95,12 @@ const NavbarFormsRegister: React.FC<RegisterProps> = ({ register }) => {
   const handleRegister = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (username !== '' || password !== '' || password !== confirmPassword) {
+    if (username === '' || password === '' || password !== confirmPassword) {
       return;
     }
 
     register({ username, password });
+    setOpen(null);
   };
 
   return (
