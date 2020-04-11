@@ -8,7 +8,7 @@ export const setToken = (newToken: string) => {
 };
 
 const getConfig = () => ({
-  headers: { Authorization: token }
+  headers: { Authorization: token },
 });
 
 export const createAnswer = async (answer: any, id: string) => {
@@ -17,12 +17,12 @@ export const createAnswer = async (answer: any, id: string) => {
 };
 
 export const getAnswer = async (id: string) => {
-  const response = await axios.get(`${baseUrl}/form/${id}`);
+  const response = await axios.get(`${baseUrl}/form/${id}`, getConfig());
   return response.data;
 };
 
 export const getAnswerData = async (id: string) => {
-  const response = await axios.get(`${baseUrl}/content/${id}`);
+  const response = await axios.get(`${baseUrl}/content/${id}`, getConfig());
   return response.data;
 };
 
