@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackwardIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import Tooltip from '@material-ui/core/Tooltip';
 
 type Props = {
   id: string;
@@ -41,6 +42,46 @@ export const SingleQuestion: React.FC<Props> = ({ id }) => {
 
   const handleQuestionChange = (event: ChangeEvent<{ value: unknown }>) => {
     setSelected(event.target.value as string);
+  };
+
+  const gotoNextQuestion = () => {
+    const selectedQuestion = data?.questions.find(
+      (question: Question) => question.temp_uuid === selected
+    );
+
+    if (selectedQuestion === undefined) {
+      return;
+    }
+
+    const nextQuestion =
+      data?.questions[data?.questions.indexOf(selectedQuestion) + 1];
+
+    if (nextQuestion === undefined) {
+      return;
+    }
+
+    setSelected(nextQuestion.temp_uuid);
+    return;
+  };
+
+  const gotoPreviousQuestion = () => {
+    const selectedQuestion = data?.questions.find(
+      (question: Question) => question.temp_uuid === selected
+    );
+
+    if (selectedQuestion === undefined) {
+      return;
+    }
+
+    const previousQuestion =
+      data?.questions[data?.questions.indexOf(selectedQuestion) - 1];
+
+    if (previousQuestion === undefined) {
+      return;
+    }
+
+    setSelected(previousQuestion.temp_uuid);
+    return;
   };
 
   return (
@@ -87,12 +128,25 @@ export const SingleQuestion: React.FC<Props> = ({ id }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div></div>
           <div>
-            <IconButton>
-              <ArrowBackwardIosIcon />
-            </IconButton>
-            <IconButton>
-              <ArrowForwardIosIcon />
-            </IconButton>
+            <Tooltip title="Previous question">
+              <IconButton
+                disabled={selected === data?.questions[0].temp_uuid}
+                onClick={() => gotoPreviousQuestion()}
+              >
+                <ArrowBackwardIosIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Next question">
+              <IconButton
+                disabled={
+                  selected ===
+                  data?.questions[data.questions.length - 1].temp_uuid
+                }
+                onClick={() => gotoNextQuestion()}
+              >
+                <ArrowForwardIosIcon />
+              </IconButton>
+            </Tooltip>
           </div>
         </div>
       </ContainerWrapper>
