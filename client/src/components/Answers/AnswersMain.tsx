@@ -77,8 +77,8 @@ export const AnswersMain: React.FC<Props> = (props) => {
           <Tabs
             value={tab}
             onChange={handleTabChange}
-            indicatorColor="primary"
-            textColor="primary"
+            indicatorColor="#ff9999"
+            textColor="#ff9999"
             centered
           >
             <Tab label="Summary" />

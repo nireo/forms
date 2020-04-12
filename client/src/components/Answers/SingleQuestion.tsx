@@ -13,12 +13,27 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBackwardIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import Tooltip from '@material-ui/core/Tooltip';
+import { makeStyles, Theme, createStyles } from '@material-ui/core';
 
 type Props = {
   id: string;
 };
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    select: {
+      '&:before': {
+        borderColor: '#ff9999',
+      },
+      '&:after': {
+        borderColor: '#ff9999',
+      },
+    },
+  })
+);
+
 export const SingleQuestion: React.FC<Props> = ({ id }) => {
+  const classes = useStyles();
   const [loaded, setLoaded] = useState<boolean>(false);
   const [data, setData] = useState<DataInterface | null>(null);
   const [selected, setSelected] = useState<string>('');
@@ -91,12 +106,13 @@ export const SingleQuestion: React.FC<Props> = ({ id }) => {
         {data !== null && (
           <div>
             <Typography variant="h6">Select question</Typography>
-            <FormControl variant="outlined">
+            <FormControl variant="outlined" style={{ borderColor: '#ff9999' }}>
               <Select
                 labelId="demo-simple-select-outlined-label"
                 value={selected}
                 onChange={handleQuestionChange}
-                style={{ width: '400px' }}
+                style={{ width: '400px', borderColor: '#ff9999' }}
+                className={classes.select}
               >
                 {data.questions.map((question: Question) => (
                   <MenuItem value={question.temp_uuid}>
@@ -107,6 +123,15 @@ export const SingleQuestion: React.FC<Props> = ({ id }) => {
             </FormControl>
           </div>
         )}
+      </ContainerWrapper>
+      <ContainerWrapper>
+        <Typography variant="h4">
+          {
+            data?.questions.find(
+              (question: Question) => question.temp_uuid === selected
+            )?.question
+          }
+        </Typography>
       </ContainerWrapper>
       {selected !== '' && data !== null && (
         <div>

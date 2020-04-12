@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { PieChart } from './PieChart';
 import { allAnswers } from '../../services/answer.service';
 import { Question, QuestionWithAnswers } from '../../interfaces/Question';
 import { Typography } from '@material-ui/core';
@@ -47,20 +46,21 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
   }, [data]);
 
   return (
-    <ContainerWrapper>
+    <div>
       {questionsWithAnswers !== null && (
         <div>
           {questionsWithAnswers.map((question: QuestionWithAnswers) => (
-            <div>
+            <ContainerWrapper>
               <Typography variant="h5">{question.question}</Typography>
+              <Typography></Typography>
               {question.type === 2 && question.answers !== undefined && (
                 <WrittenListDisplay answers={question.answers} />
               )}
               {question.type === 5 && question.amounts && <div></div>}
-            </div>
+            </ContainerWrapper>
           ))}
         </div>
       )}
-    </ContainerWrapper>
+    </div>
   );
 };
