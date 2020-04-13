@@ -150,8 +150,6 @@ const TestView: React.FC<Props> = (props) => {
     updateForm({ title, description }, props.id);
   };
 
-  console.log(props.create);
-
   return (
     <div>
       <Notification />

@@ -14,12 +14,12 @@ export const EditFormInfo: React.FC<Props> = (props) => {
   const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!loaded) {
+    if (!loaded && props.title !== 'Untitled Form') {
       setTitle(props.title);
       setDescription(props.description);
       setLoaded(true);
     }
-  }, []);
+  }, [props]);
 
   const handleFormInfoUpdate = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
