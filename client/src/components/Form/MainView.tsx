@@ -32,31 +32,20 @@ export const MainView: React.FC<Props> = (props) => {
     <div>
       <Container maxWidth="md" style={{ marginTop: '2rem', marginBottom: '0' }}>
         <Paper className={classes.root}>
-          <div>
-            <Link to="/main">
-              <IconButton component="span" aria-label="go-back">
-                <ArrowBackIcon />
-              </IconButton>
-            </Link>
-            <Tabs
-              value={page}
-              onChange={handleChange}
-              indicatorColor="default"
+          <Tabs
+            value={page}
+            onChange={handleChange}
+            indicatorColor="default"
+            style={{ color: '#ff9999' }}
+            centered
+          >
+            <Tab
+              color="default"
               style={{ color: '#ff9999' }}
-              centered
-            >
-              <Tab
-                color="default"
-                style={{ color: '#ff9999' }}
-                label="Questions"
-              />
-              <Tab
-                color="default"
-                style={{ color: '#ff9999' }}
-                label="Answers"
-              />
-            </Tabs>
-          </div>
+              label="Questions"
+            />
+            <Tab color="default" style={{ color: '#ff9999' }} label="Answers" />
+          </Tabs>
         </Paper>
       </Container>
       {page === 1 && <AnswersMain id={props.id} />}
