@@ -13,9 +13,10 @@ import { AllAnswers } from './AllAnswers';
 import { ContainerWrapper } from '../Layout/ContainerWrapper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { Paper, Container } from '@material-ui/core';
+import { Paper, Container, Button } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { SingleQuestion } from './SingleQuestion';
+import { removeAllAnswers } from '../../services/answer.service';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -69,11 +70,29 @@ export const AnswersMain: React.FC<Props> = (props) => {
     setTab(newValue);
   };
 
+  const handleAllAnswerRemove = () => {
+    if (window.confirm('Are you sure you want to delete all the answers?')) {
+      removeAllAnswers(props.id);
+      return;
+    }
+  };
+
   return (
     <div>
       <Container maxWidth="md">
         <Paper className={classes.paper}>
           <Typography variant="h4">{answers.length} answers</Typography>
+          <Button
+            variant="contained"
+            style={{
+              color: 'white',
+              backgroundColor: '#ff9999',
+              marginTop: '1rem',
+            }}
+            onClick={() => handleAllAnswerRemove()}
+          >
+            Delete all answers
+          </Button>
           <Tabs
             value={tab}
             onChange={handleTabChange}

@@ -36,3 +36,8 @@ export const allAnswers = async (id: string) => {
   console.log(response.data);
   return response.data;
 };
+
+export const removeAllAnswers = async (id: string) => {
+  const response = await axios.delete(`${baseUrl}/form/${id}`, getConfig());
+  return response.data;
+};
