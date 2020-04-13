@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { allAnswers } from '../../services/answer.service';
-import { Question, QuestionWithAnswers } from '../../interfaces/Question';
+import { QuestionWithAnswers } from '../../interfaces/Question';
 import { Typography } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
 import { WrittenListDisplay } from './WrittenListDisplay';
 import formatData from '../../utils/FormatAllAsnwerData';
 import { Data as DataInterface } from '../../interfaces/Data';
@@ -32,7 +31,7 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
   const loadData = useCallback(async () => {
     const loadedData = await allAnswers(id);
     setData(loadedData);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (loaded === false) {
@@ -43,7 +42,7 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
     if (data !== null) {
       setQuestionsWithAnswers(formatData(data));
     }
-  }, [data]);
+  }, [data, loadData, loaded]);
 
   return (
     <div>

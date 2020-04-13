@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, ChangeEvent } from 'react';
 import Typography from '@material-ui/core/Typography';
 import {
   getAnswer,
-  removeAnswer as serviceRemoveAnswer,
+  // removeAnswer as serviceRemoveAnswer,
 } from '../../services/answer.service';
 import { Loading } from '../Layout/Loading';
 import IconButton from '@material-ui/core/IconButton';
@@ -59,12 +59,11 @@ export const AnswersMain: React.FC<Props> = (props) => {
     }
   }, [getAnswers, loaded]);
 
-  const removeAnswer = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete the answer?')) {
-      await serviceRemoveAnswer(id);
-      setAnswers(answers.filter((item: any) => item.uuid !== id));
-    }
-  };
+  // const removeAnswer = async (id: string) => {
+  //   if (window.confirm('Are you sure you want to delete the answer?')) {
+  //     await serviceRemoveAnswer(id);
+  //     setAnswers(answers.filter((item: any) => item.uuid !== id));
+  //   }
 
   const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);

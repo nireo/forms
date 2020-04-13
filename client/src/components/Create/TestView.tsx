@@ -49,9 +49,6 @@ const TestView: React.FC<Props> = (props) => {
   const [selected, setSelected] = useState<Question | null>(null);
   const [preview, setPreview] = useState<boolean>(false);
 
-  // used for initially loading all questions
-  const [initial, setInitial] = useState<boolean>(false);
-
   const loadForm = useCallback(async () => {
     const form = await getForm(props.id);
     return form;
@@ -70,7 +67,7 @@ const TestView: React.FC<Props> = (props) => {
 
       props.setQuestionData(props.selected.questions);
     }
-  }, [initial, props, form, loadForm]);
+  }, [props, form, loadForm]);
 
   const newQuestion = () => {
     const uuid: string = uuidv4();

@@ -6,9 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AnswersMain } from '../Answers/AnswersMain';
 import Container from '@material-ui/core/Container';
 import TestView from '../Create/TestView';
-import IconButton from '@material-ui/core/IconButton';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import Select from '@material-ui/core/Select';
-import { NewAnswer as Answer, NewAnswer } from '../../interfaces/Answer';
+import { NewAnswer } from '../../interfaces/Answer';
 import { Data as DataInterface } from '../../interfaces/Data';
 import { Question } from '../../interfaces/Question';
 import { allAnswers } from '../../services/answer.service';
@@ -41,7 +41,7 @@ export const SingleQuestion: React.FC<Props> = ({ id }) => {
   const loadData = useCallback(async () => {
     const loadedData = await allAnswers(id);
     setData(loadedData);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (data === null && loaded === false) {
@@ -53,7 +53,7 @@ export const SingleQuestion: React.FC<Props> = ({ id }) => {
     if (data !== null && selected === '' && data.questions.length > 0) {
       setSelected(data.questions[0].temp_uuid);
     }
-  }, [data, loaded]);
+  }, [data, loaded, loadData, selected]);
 
   const handleQuestionChange = (event: ChangeEvent<{ value: unknown }>) => {
     setSelected(event.target.value as string);

@@ -17,7 +17,6 @@ import { createAnswer } from '../../services/answer.service';
 import Slider from '@material-ui/core/Slider';
 import { GoBack } from '../Layout/GoBack';
 import { ContainerWrapper } from '../Layout/ContainerWrapper';
-import { Container } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {

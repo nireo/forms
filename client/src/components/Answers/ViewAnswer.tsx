@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import { Loading } from '../Layout/Loading';
 import { getAnswerData } from '../../services/answer.service';

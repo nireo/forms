@@ -34,9 +34,7 @@ export const setQuestionData = (questions: Question[]) => {
   return async (dispatch: Dispatch) => {
     // change answers from strings to arrays.
     let filtered = questions.map((question: any) => {
-      if (typeof question.answers === 'string') {
-        return { ...question, answers: question.answers.split('|') };
-      }
+      return { ...question, answers: question.answers.split('|') };
     });
 
     dispatch({

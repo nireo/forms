@@ -19,7 +19,7 @@ export const EditFormInfo: React.FC<Props> = (props) => {
       setDescription(props.description);
       setLoaded(true);
     }
-  }, [props]);
+  }, [props, loaded]);
 
   const handleFormInfoUpdate = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
