@@ -111,7 +111,37 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
                     }}
                   />
                 )}
-              {question.type === 5 && question.amounts && <div></div>}
+              {question.type === 4 && question.answers !== undefined && (
+                <div>
+                  <WrittenListDisplay answers={question.answers} />
+                </div>
+              )}
+              {question.type === 5 && question.amounts && (
+                <div>
+                  <Pie
+                    data={{
+                      labels: ['False', 'True'],
+                      datasets: [
+                        {
+                          data: question.amounts,
+                          backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            '#ff9999',
+                            '#0779e4',
+                            '#8ec6c5',
+                            '#ff6363',
+                            '#f4e04d',
+                            '#61d4b3',
+                          ],
+                        },
+                      ],
+                    }}
+                  />
+                </div>
+              )}
             </ContainerWrapper>
           ))}
         </div>
