@@ -7,7 +7,7 @@ import formatData from '../../utils/FormatAllAsnwerData';
 import { Data as DataInterface } from '../../interfaces/Data';
 import { ContainerWrapper } from '../Layout/ContainerWrapper';
 import { PieChart } from './PieChart';
-import { Pie } from 'react-chartjs-2';
+import { Pie, Bar } from 'react-chartjs-2';
 
 type Props = {
   id: string;
@@ -47,8 +47,6 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
     }
   }, [data, loadData, loaded]);
 
-  console.log(questionsWithAnswers);
-
   return (
     <div>
       {questionsWithAnswers !== null && (
@@ -59,21 +57,60 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
               {question.type === 1 &&
                 question.amounts !== undefined &&
                 question.labels !== undefined && (
-                  <Pie
+                  <div>
+                    <Pie
+                      data={{
+                        labels: question.labels,
+                        datasets: [
+                          {
+                            data: question.amounts,
+                            backgroundColor: [
+                              'rgba(255, 99, 132, 0.6)',
+                              'rgba(54, 162, 235, 0.6)',
+                              'rgba(255, 206, 86, 0.6)',
+                              'rgba(75, 192, 192, 0.6)',
+                              '#ff9999',
+                              '#0779e4',
+                              '#8ec6c5',
+                              '#ff6363',
+                              '#f4e04d',
+                              '#61d4b3',
+                            ],
+                          },
+                        ],
+                      }}
+                    />
+                  </div>
+                )}
+              {question.type === 2 && question.answers !== undefined && (
+                <WrittenListDisplay answers={question.answers} />
+              )}
+              {question.type === 3 &&
+                question.amounts !== undefined &&
+                question.labels !== undefined && (
+                  <Bar
                     data={{
                       labels: question.labels,
                       datasets: [
                         {
                           data: question.amounts,
-                          backgroundColor: ['red', 'green', 'blue'],
+                          backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            '#ff9999',
+                            '#0779e4',
+                            '#8ec6c5',
+                            '#ff6363',
+                            '#f4e04d',
+                            '#61d4b3',
+                          ],
                         },
                       ],
                     }}
                   />
                 )}
-              {question.type === 2 && question.answers !== undefined && (
-                <WrittenListDisplay answers={question.answers} />
-              )}
               {question.type === 5 && question.amounts && <div></div>}
             </ContainerWrapper>
           ))}

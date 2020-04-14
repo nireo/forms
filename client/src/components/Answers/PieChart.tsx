@@ -10,7 +10,7 @@ type Props = {
 export const PieChart: React.FC<Props> = ({ numberData, labels, label }) => {
   const [data, setData] = useState({});
   useEffect(() => {
-    if (!data) {
+    if (data === {}) {
       setData({
         labels,
         datasets: [
@@ -29,6 +29,7 @@ export const PieChart: React.FC<Props> = ({ numberData, labels, label }) => {
     }
   });
 
+  console.log(data);
   return (
     <div>
       <Pie data={data} />
