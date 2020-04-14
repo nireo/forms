@@ -6,6 +6,8 @@ import { WrittenListDisplay } from './WrittenListDisplay';
 import formatData from '../../utils/FormatAllAsnwerData';
 import { Data as DataInterface } from '../../interfaces/Data';
 import { ContainerWrapper } from '../Layout/ContainerWrapper';
+import { PieChart } from './PieChart';
+import { Pie } from 'react-chartjs-2';
 
 type Props = {
   id: string;
@@ -54,7 +56,21 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
           {questionsWithAnswers.map((question: QuestionWithAnswers) => (
             <ContainerWrapper>
               <Typography variant="h5">{question.question}</Typography>
-              <Typography>{question.answers?.length} answers</Typography>
+              {question.type === 1 &&
+                question.amounts !== undefined &&
+                question.labels !== undefined && (
+                  <Pie
+                    data={{
+                      labels: question.labels,
+                      datasets: [
+                        {
+                          data: question.amounts,
+                          backgroundColor: ['red', 'green', 'blue'],
+                        },
+                      ],
+                    }}
+                  />
+                )}
               {question.type === 2 && question.answers !== undefined && (
                 <WrittenListDisplay answers={question.answers} />
               )}
