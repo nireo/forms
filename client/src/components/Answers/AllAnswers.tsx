@@ -30,6 +30,7 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
 
   const loadData = useCallback(async () => {
     const loadedData = await allAnswers(id);
+    console.log(loadedData);
     setData(loadedData);
   }, [id]);
 
@@ -44,6 +45,8 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
     }
   }, [data, loadData, loaded]);
 
+  console.log(questionsWithAnswers);
+
   return (
     <div>
       {questionsWithAnswers !== null && (
@@ -51,7 +54,7 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
           {questionsWithAnswers.map((question: QuestionWithAnswers) => (
             <ContainerWrapper>
               <Typography variant="h5">{question.question}</Typography>
-              <Typography></Typography>
+              <Typography>{question.answers?.length} answers</Typography>
               {question.type === 2 && question.answers !== undefined && (
                 <WrittenListDisplay answers={question.answers} />
               )}

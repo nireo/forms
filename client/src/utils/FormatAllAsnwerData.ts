@@ -19,10 +19,14 @@ const formatData = (data: DataInterface): QuestionWithAnswers[] => {
         if (
           index !== -1 &&
           index !== undefined &&
-          newQuestionWithAnswers.amounts !== undefined
+          newQuestionWithAnswers.amounts !== undefined &&
+          newQuestionWithAnswers.questionID === answer.question_uuid
         ) {
           newQuestionWithAnswers.amounts[index] += 1;
-        } else if (index !== undefined) {
+        } else if (
+          index !== undefined &&
+          newQuestionWithAnswers.questionID === answer.question_uuid
+        ) {
           newQuestionWithAnswers.labels = newQuestionWithAnswers.labels?.concat(
             answer.answers
           );

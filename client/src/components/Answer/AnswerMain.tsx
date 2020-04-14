@@ -320,7 +320,7 @@ export const AnswerMain: React.FC<Props> = (props) => {
               {props.hidePreview !== undefined && (
                 <Button
                   variant="contained"
-                  color="primary"
+                  style={{ color: 'white', backgroundColor: '#ff9999' }}
                   onClick={() => {
                     if (props.hidePreview !== undefined) {
                       props.hidePreview();
