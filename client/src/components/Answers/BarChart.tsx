@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pie } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 
 type Props = {
   numberData: number[];
@@ -7,9 +7,10 @@ type Props = {
   label: string;
 };
 
-export const PieChart: React.FC<Props> = ({ numberData, labels, label }) => {
+export const BarChart: React.FC<Props> = ({ numberData, label, labels }) => {
   const [data, setData] = useState({});
   const [loaded, setLoaded] = useState<boolean>(false);
+
   useEffect(() => {
     if (!loaded && numberData && labels && label) {
       setData({
@@ -37,18 +38,19 @@ export const PieChart: React.FC<Props> = ({ numberData, labels, label }) => {
     }
   }, []);
 
+  console.log(numberData);
+  console.log(labels);
+
   return (
     <div>
-      {loaded && (
-        <Pie
-          data={data}
-          options={{
-            legend: {
-              display: false,
-            },
-          }}
-        />
-      )}
+      <Bar
+        data={data}
+        options={{
+          legend: {
+            position: 'bottom',
+          },
+        }}
+      />
     </div>
   );
 };
