@@ -93,6 +93,23 @@ const formatData = (data: DataInterface): QuestionWithAnswers[] => {
               );
             }
           });
+        } else if (answer.answers !== '') {
+          // if the user had only a single answer
+          let index = newQuestionWithAnswers.labels?.indexOf(answer.answers);
+          if (
+            index !== 1 &&
+            newQuestionWithAnswers.amounts !== undefined &&
+            index !== undefined
+          ) {
+            newQuestionWithAnswers.amounts[index] += 1;
+          } else {
+            newQuestionWithAnswers.labels = newQuestionWithAnswers.labels?.concat(
+              answer.answers
+            );
+            newQuestionWithAnswers.amounts = newQuestionWithAnswers.amounts?.concat(
+              1
+            );
+          }
         }
       });
 

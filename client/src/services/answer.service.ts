@@ -33,7 +33,6 @@ export const removeAnswer = async (id: string) => {
 
 export const allAnswers = async (id: string) => {
   const response = await axios.get(`${baseUrl}/all/${id}`, getConfig());
-  console.log(response.data);
   return response.data;
 };
 
