@@ -69,12 +69,7 @@ const Navbar: React.FC<Props> = ({ user, logout }) => {
   const open = Boolean(anchorEl);
 
   return (
-    <AppBar
-      position="static"
-      color="default"
-      elevation={0}
-      className={classes.appBar}
-    >
+    <AppBar position="static" color="default" elevation={0}>
       <Toolbar className={classes.toolbar}>
         <Typography
           variant="h6"
@@ -82,7 +77,9 @@ const Navbar: React.FC<Props> = ({ user, logout }) => {
           noWrap
           className={classes.toolbarTitle}
         >
-          forms
+          <Link style={{ color: 'black', textDecoration: 'none' }} to="/">
+            forms
+          </Link>
         </Typography>
         <nav>
           {user !== null && (

@@ -36,7 +36,9 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
       <Switch>
         <Route exact path="/main" render={() => <ManageMain />} />
         <Route exact path="/welcome" render={() => <Welcome />} />
-        <Route exact path="/settings" render={() => <Settings />} />
+        <PrivateRoute exact={true} path="/settings" user={user}>
+          <Settings />
+        </PrivateRoute>
         <Route exact path="/" render={() => <ChooseAction />} />
         <Route exact path="/demo" render={() => <AnswerMain demo={true} />} />
         <Route exact path="/bye" render={() => <Bye />} />

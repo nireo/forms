@@ -1,24 +1,26 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { AppState } from '../../store';
 import { User } from '../../interfaces/User';
 
 type Props = {
-  user: User | null;
+  user?: User | null;
+  exact?: boolean;
+  path?: string;
 };
 
-const PrivateRoute: React.FC<Props> = ({ children, user, ...rest }) => {
+const PrivateRoute: React.FC<Props> = ({ children, user, exact, path }) => {
+  console.log(user);
   return (
     <Route
-      {...rest}
+      exact={exact === undefined ? false : true}
+      path={path}
       render={({ location }) =>
         user !== null ? (
           children
         ) : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/',
               state: { from: location },
             }}
           />
@@ -28,8 +30,4 @@ const PrivateRoute: React.FC<Props> = ({ children, user, ...rest }) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  user: state.user,
-});
-
-export default connect(mapStateToProps)(PrivateRoute);
+export default PrivateRoute;
