@@ -15,6 +15,7 @@ import Settings from './components/User/Settings';
 import { ChooseAction } from './components/Welcome/ChooseAction';
 import Navbar from './components/Layout/Navbar';
 import { Bye } from './components/Layout/Bye';
+import PrivateRoute from './components/Layout/PrivateRoute';
 
 type Props = {
   user: User;
