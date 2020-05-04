@@ -36,7 +36,7 @@ export const BarChart: React.FC<Props> = ({ numberData, label, labels }) => {
       });
       setLoaded(true);
     }
-  }, []);
+  }, [label, labels, loaded, numberData]);
 
   return (
     <div>

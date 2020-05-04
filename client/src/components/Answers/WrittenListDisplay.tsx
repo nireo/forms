@@ -40,7 +40,7 @@ export const WrittenListDisplay: React.FC<Props> = ({ answers }) => {
   return (
     <List dense className={classes.root}>
       {answers.map((answer: string) => (
-        <div>
+        <div key={answer}>
           {answer !== '' && (
             <ListItem key={answer} button>
               <ListItemText id={answer} primary={answer} />

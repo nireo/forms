@@ -35,7 +35,7 @@ export const PieChart: React.FC<Props> = ({ numberData, labels, label }) => {
       });
       setLoaded(true);
     }
-  }, []);
+  }, [label, labels, loaded, numberData]);
 
   return (
     <div>

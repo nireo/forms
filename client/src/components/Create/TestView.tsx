@@ -212,7 +212,6 @@ const TestView: React.FC<Props> = (props) => {
                   <div style={{ marginTop: '2rem' }}>
                     <TextField
                       disabled
-                      id="standard-disabled"
                       label="Question"
                       defaultValue={q.question}
                       style={{ width: '100%' }}

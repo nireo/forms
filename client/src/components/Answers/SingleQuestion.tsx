@@ -115,7 +115,7 @@ export const SingleQuestion: React.FC<Props> = ({ id }) => {
                 className={classes.select}
               >
                 {data.questions.map((question: Question) => (
-                  <MenuItem value={question.temp_uuid}>
+                  <MenuItem key={question.temp_uuid} value={question.temp_uuid}>
                     {question.question}
                   </MenuItem>
                 ))}
@@ -141,7 +141,7 @@ export const SingleQuestion: React.FC<Props> = ({ id }) => {
                 answers.question_uuid === selected && answers.answers !== ''
             )
             .map((answer: NewAnswer) => (
-              <ContainerWrapper>
+              <ContainerWrapper key={answer.answers}>
                 <Typography style={{ fontSize: '16px' }}>
                   {answer.answers}
                 </Typography>

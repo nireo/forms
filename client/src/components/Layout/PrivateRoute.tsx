@@ -9,7 +9,6 @@ type Props = {
 };
 
 const PrivateRoute: React.FC<Props> = ({ children, user, exact, path }) => {
-  console.log(user);
   return (
     <Route
       exact={exact === undefined ? false : true}

@@ -32,16 +32,11 @@ export const MainView: React.FC<Props> = (props) => {
           <Tabs
             value={page}
             onChange={handleChange}
-            indicatorColor="default"
-            style={{ color: '#ff9999' }}
+            indicatorColor="secondary"
             centered
           >
-            <Tab
-              color="default"
-              style={{ color: '#ff9999' }}
-              label="Questions"
-            />
-            <Tab color="default" style={{ color: '#ff9999' }} label="Answers" />
+            <Tab color="secondary" label="Questions" />
+            <Tab color="secondary" label="Answers" />
           </Tabs>
         </Paper>
       </Container>

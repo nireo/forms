@@ -159,7 +159,6 @@ export const AnswerMain: React.FC<Props> = (props) => {
     }
 
     if (props.demo !== undefined && props.id === undefined) {
-      console.log('demo mode');
       setAnswerItem(
         demoData.map((q: Question) => {
           const answer: AnswerItem = {
@@ -343,7 +342,7 @@ export const AnswerMain: React.FC<Props> = (props) => {
                           onChange={(event) => handleRadioChange(event, index)}
                         >
                           {answer.questionAnswers.map((question: string) => (
-                            <div>
+                            <div key={question}>
                               <FormControlLabel
                                 control={
                                   <Radio
@@ -374,7 +373,7 @@ export const AnswerMain: React.FC<Props> = (props) => {
                       <div>
                         <Typography variant="h5">{answer.question}</Typography>
                         {answer.questionAnswers.map((question: string) => (
-                          <div>
+                          <div key={question}>
                             <FormControlLabel
                               control={
                                 <Checkbox

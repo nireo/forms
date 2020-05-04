@@ -92,13 +92,7 @@ export const AnswersMain: React.FC<Props> = (props) => {
           >
             Delete all answers
           </Button>
-          <Tabs
-            value={tab}
-            onChange={handleTabChange}
-            indicatorColor="#ff9999"
-            textColor="#ff9999"
-            centered
-          >
+          <Tabs value={tab} onChange={handleTabChange} centered>
             <Tab label="Summary" />
             <Tab label="Question" />
             <Tab label="Person" />

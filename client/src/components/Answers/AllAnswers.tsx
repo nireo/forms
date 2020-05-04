@@ -7,7 +7,6 @@ import formatData from '../../utils/FormatAllAsnwerData';
 import { Data as DataInterface } from '../../interfaces/Data';
 import { ContainerWrapper } from '../Layout/ContainerWrapper';
 import { PieChart } from './PieChart';
-import { Pie, Bar } from 'react-chartjs-2';
 import { BarChart } from './BarChart';
 
 type Props = {
@@ -33,7 +32,6 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
 
   const loadData = useCallback(async () => {
     const loadedData = await allAnswers(id);
-    console.log(loadedData);
     setData(loadedData);
   }, [id]);
 
@@ -53,7 +51,7 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
       {questionsWithAnswers !== null && (
         <div>
           {questionsWithAnswers.map((question: QuestionWithAnswers) => (
-            <ContainerWrapper>
+            <ContainerWrapper key={question.question}>
               <Typography variant="h5">{question.question}</Typography>
               {question.type === 1 &&
                 question.amounts !== undefined &&
