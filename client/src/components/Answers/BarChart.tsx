@@ -44,7 +44,7 @@ export const BarChart: React.FC<Props> = ({ numberData, label, labels }) => {
         data={data}
         options={{
           legend: {
-            position: 'bottom',
+            display: false,
           },
         }}
       />

@@ -44,7 +44,8 @@ export const PieChart: React.FC<Props> = ({ numberData, labels, label }) => {
           data={data}
           options={{
             legend: {
-              display: false,
+              display: true,
+              position: 'left',
             },
           }}
         />

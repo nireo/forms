@@ -1,52 +1,52 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
-import { connect } from "react-redux";
-import { AppState } from "../../store/index";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import { Form } from "../../interfaces/Question";
-import CardContent from "@material-ui/core/CardContent";
-import { NewQuestion } from "../Create/NewQuestion";
+import React, { useState, ChangeEvent, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { AppState } from '../../store/index';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Form } from '../../interfaces/Question';
+import CardContent from '@material-ui/core/CardContent';
+import { NewQuestion } from '../Create/NewQuestion';
 import {
   createForm,
   getUserForms,
-  deleteForm
-} from "../../store/forms/reducer";
-import { Modal } from "../Layout/Modal";
-import { TextField, Button } from "@material-ui/core";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Grid from "@material-ui/core/Grid";
-import { User } from "../../interfaces/User";
-import { UserMain } from "../User/UserMain";
-import { Link } from "react-router-dom";
-import { logout } from "../../store/user/reducer";
-import { GoBack } from "../Layout/GoBack";
+  deleteForm,
+} from '../../store/forms/reducer';
+import { Modal } from '../Layout/Modal';
+import { TextField, Button } from '@material-ui/core';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Grid from '@material-ui/core/Grid';
+import { User } from '../../interfaces/User';
+import { UserMain } from '../User/UserMain';
+import { Link } from 'react-router-dom';
+import { logout } from '../../store/user/reducer';
+import { GoBack } from '../Layout/GoBack';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
-    minWidth: 240
+    minWidth: 240,
   },
   paper: {
-    position: "absolute",
+    position: 'absolute',
     width: 500,
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: '2px solid #000',
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3)
+    padding: theme.spacing(2, 4, 3),
   },
   root: {
-    "& label.Mui-focused": {
-      color: "#ff9999"
+    '& label.Mui-focused': {
+      color: '#ff9999',
     },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#ff9999"
-    }
-  }
+    '& .MuiInput-underline:after': {
+      borderBottomColor: '#ff9999',
+    },
+  },
 }));
 
 type Props = {
@@ -64,10 +64,10 @@ const ManageMain: React.FC<Props> = ({
   user,
   getUserForms,
   deleteForm,
-  logout
+  logout,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>("Untitled form");
+  const [title, setTitle] = useState<string>('Untitled form');
   const [loaded, setLoaded] = useState<boolean>(false);
   const classes = useStyles();
 
@@ -102,8 +102,8 @@ const ManageMain: React.FC<Props> = ({
     event.preventDefault();
     const newForm: Form = {
       title,
-      description: "No description added.",
-      questions: []
+      description: 'No description added.',
+      questions: [],
     };
 
     createForm(newForm);
@@ -112,7 +112,7 @@ const ManageMain: React.FC<Props> = ({
   };
 
   const removeForm = (id: string): void => {
-    if (window.confirm("Are you sure you want to delete the form?")) {
+    if (window.confirm('Are you sure you want to delete the form?')) {
       deleteForm(id);
     }
   };
@@ -120,47 +120,47 @@ const ManageMain: React.FC<Props> = ({
   const returnSensibleDate = (dateString: string) => {
     const date = new Date(dateString);
     var monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec"
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
 
     var day = date.getDate();
     var monthIndex = date.getMonth();
     var year = date.getFullYear();
 
-    return day + " " + monthNames[monthIndex] + " " + year;
+    return day + ' ' + monthNames[monthIndex] + ' ' + year;
   };
 
   return (
-    <Container maxWidth="md" style={{ marginTop: "2rem" }}>
+    <Container maxWidth="md" style={{ marginTop: '2rem' }}>
       <GoBack />
       <div>
         <Typography variant="h3">Welcome {user.username}</Typography>
-        <div style={{ marginTop: "1rem" }}>
+        <div style={{ marginTop: '1rem' }}>
           <Button
             variant="contained"
-            style={{ color: "white", backgroundColor: "#ff9999" }}
+            style={{ color: 'white', backgroundColor: '#ff9999' }}
             onClick={() => logout()}
           >
             Logout
           </Button>
-          <Link to="/settings" style={{ textDecoration: "none" }}>
+          <Link to="/settings" style={{ textDecoration: 'none' }}>
             <Button
               variant="contained"
               style={{
-                color: "white",
-                backgroundColor: "#ff9999",
-                marginLeft: "1rem"
+                color: 'white',
+                backgroundColor: '#ff9999',
+                marginLeft: '1rem',
               }}
             >
               Settings
@@ -168,15 +168,15 @@ const ManageMain: React.FC<Props> = ({
           </Link>
         </div>
       </div>
-      <Typography variant="h3" style={{ marginTop: "8rem" }}>
+      <Typography variant="h3" style={{ marginTop: '8rem' }}>
         Your forms
       </Typography>
-      <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-        {forms.map(form => (
+      <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
+        {forms.map((form) => (
           <Card
             key={form.id}
             className={classes.card}
-            style={{ marginBottom: "0.5rem" }}
+            style={{ marginBottom: '0.5rem' }}
           >
             <CardContent>
               <Grid container>
@@ -202,21 +202,21 @@ const ManageMain: React.FC<Props> = ({
                 <Grid item xs={1}>
                   <Link
                     to={`/${
-                      form.uuid === undefined ? "" : `${form.uuid}`
+                      form.uuid === undefined ? '' : `${form.uuid}`
                     }/edit`}
                   >
                     <IconButton
-                      style={{ color: "#ff9999" }}
+                      style={{ color: '#ff9999' }}
                       aria-label="edit-form"
                       component="span"
                     >
                       <EditIcon />
                     </IconButton>
                     <IconButton
-                      style={{ color: "#ff9999" }}
+                      style={{ color: '#ff9999' }}
                       component="span"
                       onClick={() =>
-                        removeForm(form.uuid === undefined ? "" : form.uuid)
+                        removeForm(form.uuid === undefined ? '' : form.uuid)
                       }
                     >
                       <DeleteIcon />
@@ -229,7 +229,7 @@ const ManageMain: React.FC<Props> = ({
         ))}
       </div>
       <div
-        style={{ textAlign: "center", marginTop: "2px", marginBottom: "4rem" }}
+        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '4rem' }}
       >
         <NewQuestion newQuestion={handleOpen} />
       </div>
@@ -242,12 +242,12 @@ const ManageMain: React.FC<Props> = ({
               label="Title"
               className={classes.root}
               style={{
-                width: "100%"
+                width: '100%',
               }}
             />
-            <div style={{ textAlign: "center", marginTop: "1rem" }}>
+            <div style={{ textAlign: 'center', marginTop: '1rem' }}>
               <Fab
-                style={{ backgroundColor: "#ff9999", color: "white" }}
+                style={{ backgroundColor: '#ff9999', color: 'white' }}
                 aria-label="add"
                 type="submit"
               >
@@ -263,12 +263,12 @@ const ManageMain: React.FC<Props> = ({
 
 const mapStateToProps = (state: AppState) => ({
   forms: state.forms,
-  user: state.user
+  user: state.user,
 });
 
 export default connect(mapStateToProps, {
   createForm,
   getUserForms,
   deleteForm,
-  logout
+  logout,
 })(ManageMain);
