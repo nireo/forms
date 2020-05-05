@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormInput } from './FormInput';
 import Button from '@material-ui/core/Button';
 
@@ -21,7 +21,7 @@ export const EditFormInfo: React.FC<Props> = (props) => {
     }
   }, [props, loaded]);
 
-  const handleFormInfoUpdate = (event: ChangeEvent<HTMLFormElement>) => {
+  const handleFormInfoUpdate = (event: any) => {
     event.preventDefault();
     props.updateFormInfo(title, description);
   };
@@ -39,27 +39,13 @@ export const EditFormInfo: React.FC<Props> = (props) => {
         }}
         placeholder="Title..."
         maxLength={50}
+        onBlur={handleFormInfoUpdate}
       />
       <FormInput
         placeholder="Form description"
         value={description}
         setValue={setDescription}
       />
-
-      <form onSubmit={handleFormInfoUpdate}>
-        <Button
-          variant="contained"
-          style={{
-            color: 'white',
-            marginTop: '1rem',
-            marginBottom: '1rem',
-            backgroundColor: '#ff9999',
-          }}
-          type="submit"
-        >
-          Save
-        </Button>
-      </form>
     </div>
   );
 };
