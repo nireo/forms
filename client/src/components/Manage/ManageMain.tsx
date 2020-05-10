@@ -31,6 +31,7 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Settings from '../User/Settings';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -132,7 +133,7 @@ const ManageMain: React.FC<Props> = ({
   };
 
   return (
-    <Container maxWidth="md" style={{ marginTop: '2rem' }}>
+    <Container maxWidth="lg" style={{ marginTop: '1rem' }}>
       <Drawer
         open={openDrawer}
         className={classes.drawer}
@@ -144,102 +145,92 @@ const ManageMain: React.FC<Props> = ({
       >
         <List>
           {pages.map((p) => (
-            <ListItem button key={p}>
+            <ListItem button onClick={() => setPage(p)} key={p}>
               <ListItemText primary={p} />
             </ListItem>
           ))}
         </List>
       </Drawer>
-      <GoBack />
-      <div>
-        <Typography variant="h3">Welcome {user.username}</Typography>
-        <div style={{ marginTop: '1rem' }}>
-          <Button
-            variant="contained"
-            style={{ color: 'white', backgroundColor: '#ff9999' }}
-            onClick={() => logout()}
+      {page === 'Forms' && (
+        <section>
+          <Typography variant="h3" style={{ marginTop: '2rem' }}>
+            Your forms
+          </Typography>
+          <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
+            {forms.map((form) => (
+              <Card
+                key={form.id}
+                className={classes.card}
+                style={{ marginBottom: '0.5rem' }}
+              >
+                <CardContent>
+                  <Grid container>
+                    <Grid item xs={11}>
+                      <Typography variant="h6" gutterBottom>
+                        {form.title}
+                      </Typography>
+                      {form.description.length === 0 ? (
+                        <div>
+                          <Typography>No Description.</Typography>
+                        </div>
+                      ) : (
+                        <div>
+                          <Typography>
+                            {form.description.slice(0, 50)}
+                          </Typography>
+                        </div>
+                      )}
+                      {form.created_at !== undefined && (
+                        <Typography>
+                          Created {formatDate(form.created_at)}
+                        </Typography>
+                      )}
+                    </Grid>
+                    <Grid item xs={1}>
+                      <Link
+                        to={`/${
+                          form.uuid === undefined ? '' : `${form.uuid}`
+                        }/edit`}
+                      >
+                        <IconButton
+                          style={{ color: '#ff9999' }}
+                          aria-label="edit-form"
+                          component="span"
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          style={{ color: '#ff9999' }}
+                          component="span"
+                          onClick={() =>
+                            removeForm(form.uuid === undefined ? '' : form.uuid)
+                          }
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Link>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <div
+            style={{
+              textAlign: 'center',
+              marginTop: '2px',
+              marginBottom: '4rem',
+            }}
           >
-            Logout
-          </Button>
-          <Link to="/settings" style={{ textDecoration: 'none' }}>
-            <Button
-              variant="contained"
-              style={{
-                color: 'white',
-                backgroundColor: '#ff9999',
-                marginLeft: '1rem',
-              }}
-            >
-              Settings
-            </Button>
-          </Link>
+            <NewQuestion newQuestion={handleOpen} />
+          </div>
+        </section>
+      )}
+      {page === 'Settings' && (
+        <div>
+          <Settings />
         </div>
-      </div>
-      <Typography variant="h3" style={{ marginTop: '8rem' }}>
-        Your forms
-      </Typography>
-      <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
-        {forms.map((form) => (
-          <Card
-            key={form.id}
-            className={classes.card}
-            style={{ marginBottom: '0.5rem' }}
-          >
-            <CardContent>
-              <Grid container>
-                <Grid item xs={11}>
-                  <Typography variant="h6" gutterBottom>
-                    {form.title}
-                  </Typography>
-                  {form.description.length === 0 ? (
-                    <div>
-                      <Typography>No Description.</Typography>
-                    </div>
-                  ) : (
-                    <div>
-                      <Typography>{form.description.slice(0, 50)}</Typography>
-                    </div>
-                  )}
-                  {form.created_at !== undefined && (
-                    <Typography>
-                      Created {formatDate(form.created_at)}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={1}>
-                  <Link
-                    to={`/${
-                      form.uuid === undefined ? '' : `${form.uuid}`
-                    }/edit`}
-                  >
-                    <IconButton
-                      style={{ color: '#ff9999' }}
-                      aria-label="edit-form"
-                      component="span"
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      style={{ color: '#ff9999' }}
-                      component="span"
-                      onClick={() =>
-                        removeForm(form.uuid === undefined ? '' : form.uuid)
-                      }
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Link>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      <div
-        style={{ textAlign: 'center', marginTop: '2px', marginBottom: '4rem' }}
-      >
-        <NewQuestion newQuestion={handleOpen} />
-      </div>
+      )}
       <Modal show={open} handleClose={handleClose}>
         <Container maxWidth="md">
           <form onSubmit={createNewForm}>
