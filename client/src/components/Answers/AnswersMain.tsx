@@ -76,6 +76,8 @@ export const AnswersMain: React.FC<Props> = (props) => {
     }
   };
 
+  console.log(answers);
+
   return (
     <div>
       <Container maxWidth="md">

@@ -20,7 +20,6 @@ interface AnswerItem {
   type: QuestionType;
   answers: string[];
   question_uuid: string;
-  value: number;
   trueOrFalse: boolean;
   min: number;
   max: number;
@@ -61,27 +60,29 @@ export const ViewAnswer: React.FC<Props> = (props) => {
       setLoaded(true);
     }
 
-    if (!filter && data.length > 0 && formQuestions.length > 0) {
+    if (!filter && formQuestions.length > 0) {
       setFiltered(
-        data.map((item: any, index: number) => {
-          let answerArray = item.answers.split('|');
+        props.answer.answers.map((item: any, index: number) => {
+          let answerArray = item.QuestionAnswers.split('|');
           const answer: AnswerItem = {
-            type: item.type,
+            type: item.Type,
             answers: answerArray,
-            value: item.value,
-            trueOrFalse: item.trueOrFalse,
-            question_uuid: item.question_uuid,
-            max: item.max,
-            min: item.min,
+            trueOrFalse: item.TrueOrFalse,
+            question_uuid: item.QuestionTempUUID,
+            max: item.SliderMax,
+            min: item.SliderMin,
             questionString: formQuestions[index].question,
             questionAnswers: formQuestions[index].answers.split('|'),
           };
+          console.log(answer);
 
           return answer;
         })
       );
       setFilter(true);
     }
+
+    console.log(filtered);
 
     if (formQuestions.length === 0 && !formLoaded && formID !== '') {
       getQuestions();
@@ -97,8 +98,6 @@ export const ViewAnswer: React.FC<Props> = (props) => {
     getQuestions,
     loaded,
   ]);
-
-  console.log(data);
 
   const removeAnswer = async () => {
     if (window.confirm('Are you sure you want delete the form?')) {
@@ -221,7 +220,7 @@ export const ViewAnswer: React.FC<Props> = (props) => {
                   </RadioGroup>
                 </div>
               )}
-              {item.type === 6 && (
+              {/*item.type === 6 && (
                 <div>
                   <Typography variant="h5">{item.questionString}</Typography>
                   <Slider
@@ -231,11 +230,11 @@ export const ViewAnswer: React.FC<Props> = (props) => {
                     step={1}
                     aria-labelledby="answer-slider"
                     valueLabelDisplay="auto"
-                    value={item.value}
                     disabled={true}
                   />
                 </div>
-              )}
+              )
+              */}
             </div>
           ))}
         </div>
