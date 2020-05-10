@@ -26,6 +26,11 @@ import { UserMain } from '../User/UserMain';
 import { Link } from 'react-router-dom';
 import { logout } from '../../store/user/reducer';
 import { GoBack } from '../Layout/GoBack';
+import formatDate from '../../utils/FormatDate';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -46,6 +51,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& .MuiInput-underline:after': {
       borderBottomColor: '#ff9999',
     },
+  },
+  drawer: {
+    width: 240,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: 240,
   },
 }));
 
@@ -69,6 +81,9 @@ const ManageMain: React.FC<Props> = ({
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('Untitled form');
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [openDrawer, setOpenDrawer] = useState<boolean>(true);
+  const [page, setPage] = useState<string>('Forms');
+  const [pages] = useState<string[]>(['Forms', 'Settings']);
   const classes = useStyles();
 
   useEffect(() => {
@@ -107,7 +122,6 @@ const ManageMain: React.FC<Props> = ({
     };
 
     createForm(newForm);
-    // hide the modal just for a better experience
     setOpen(false);
   };
 
@@ -117,32 +131,25 @@ const ManageMain: React.FC<Props> = ({
     }
   };
 
-  const returnSensibleDate = (dateString: string) => {
-    const date = new Date(dateString);
-    var monthNames = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-
-    var day = date.getDate();
-    var monthIndex = date.getMonth();
-    var year = date.getFullYear();
-
-    return day + ' ' + monthNames[monthIndex] + ' ' + year;
-  };
-
   return (
     <Container maxWidth="md" style={{ marginTop: '2rem' }}>
+      <Drawer
+        open={openDrawer}
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <List>
+          {pages.map((p) => (
+            <ListItem button key={p}>
+              <ListItemText primary={p} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
       <GoBack />
       <div>
         <Typography variant="h3">Welcome {user.username}</Typography>
@@ -195,7 +202,7 @@ const ManageMain: React.FC<Props> = ({
                   )}
                   {form.created_at !== undefined && (
                     <Typography>
-                      Created {returnSensibleDate(form.created_at)}
+                      Created {formatDate(form.created_at)}
                     </Typography>
                   )}
                 </Grid>

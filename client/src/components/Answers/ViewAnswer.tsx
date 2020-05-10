@@ -74,15 +74,12 @@ export const ViewAnswer: React.FC<Props> = (props) => {
             questionString: formQuestions[index].question,
             questionAnswers: formQuestions[index].answers.split('|'),
           };
-          console.log(answer);
 
           return answer;
         })
       );
       setFilter(true);
     }
-
-    console.log(filtered);
 
     if (formQuestions.length === 0 && !formLoaded && formID !== '') {
       getQuestions();
