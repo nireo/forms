@@ -48,6 +48,16 @@ func getAnswer(c *gin.Context) {
 		return
 	}
 
+	for index := range answers {
+		var relatedAnswers []Answer
+		if err := db.Model(&answers[index]).Related(&relatedAnswers).Error; err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
+		}
+
+		answers[index].Answers = relatedAnswers
+	}
+
 	serialized := make([]common.JSON, len(answers), len(answers))
 	for index := range answers {
 		serialized[index] = answers[index].Serialize()
