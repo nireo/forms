@@ -8,8 +8,9 @@ import Button from '@material-ui/core/Button';
 import { removeUser } from '../../store/user/reducer';
 import TextField from '@material-ui/core/TextField';
 import { updatePassword as s_updatePassword } from '../../services/user.service';
-import { GoBack } from '../Layout/GoBack';
 import { ContainerWrapper } from '../Layout/ContainerWrapper';
+import Container from '@material-ui/core/Container';
+import { Divider } from '@material-ui/core';
 
 type Props = {
   user: User;
@@ -57,9 +58,8 @@ const Settings: React.FC<Props> = ({ user, removeUser }) => {
   };
 
   return (
-    <ContainerWrapper>
-      <GoBack goMain={true} />
-      <Typography variant="h4">Settings</Typography>
+    <Container maxWidth="lg">
+      <Typography variant="h3">Settings</Typography>
       <hr />
       <div style={{ marginTop: '2rem' }}>
         <Typography variant="h5">Change password</Typography>
@@ -94,6 +94,7 @@ const Settings: React.FC<Props> = ({ user, removeUser }) => {
           </Button>
         </form>
       </div>
+      <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
       <div style={{ marginTop: '2rem' }}>
         <Typography variant="h5">Delete account</Typography>
         <Typography>
@@ -107,7 +108,7 @@ const Settings: React.FC<Props> = ({ user, removeUser }) => {
           Delete
         </Button>
       </div>
-    </ContainerWrapper>
+    </Container>
   );
 };
 
