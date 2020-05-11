@@ -42,3 +42,21 @@ func deleteNotification(c *gin.Context) {
 	db.Delete(&notification)
 	c.Status(http.StatusNoContent)
 }
+
+func getNotifications(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
+
+	var notifications []Notification
+	if err := db.Model(&user).Related(&notifications).Limit(20).Error; err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	serializedNotifications := make([]JSON, len(notifications), len(notifications))
+	for index := range notifications {
+		serializedNotifications[index] = notifications[index].Serialize()
+	}
+
+	c.JSON(http.StatusOK, serializedNotifications)
+}

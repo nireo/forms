@@ -11,7 +11,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 
 	// notifications are created in other endpoints so no need for post route
 	{
-		notification.GET("/")
+		notification.GET("/", middlewares.Authorized, getNotifications)
 		notification.DELETE("/:id", middlewares.Authorized, deleteNotification)
 	}
 }
