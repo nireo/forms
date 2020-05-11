@@ -88,7 +88,7 @@ const Navbar: React.FC<Props> = ({ user, logout }) => {
               className={classes.link}
               style={{ marginRight: '3rem' }}
             >
-              Your forms
+              Dashboard
             </Link>
           )}
           {user !== null && (

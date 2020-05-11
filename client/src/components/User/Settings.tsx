@@ -59,7 +59,9 @@ const Settings: React.FC<Props> = ({ user, removeUser }) => {
 
   return (
     <Container maxWidth="lg">
-      <Typography variant="h3">Settings</Typography>
+      <Typography variant="h3" style={{ marginTop: '2rem' }}>
+        Settings
+      </Typography>
       <hr />
       <div style={{ marginTop: '2rem' }}>
         <Typography variant="h5">Change password</Typography>
