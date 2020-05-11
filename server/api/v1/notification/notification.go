@@ -1,6 +1,9 @@
 package notification
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/nireo/forms/server/lib/middlewares"
+)
 
 // ApplyRoutes to gin engine
 func ApplyRoutes(r *gin.RouterGroup) {
@@ -9,6 +12,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	// notifications are created in other endpoints so no need for post route
 	{
 		notification.GET("/")
-		notification.DELETE("/:id")
+		notification.DELETE("/:id", middlewares.Authorized, deleteNotification)
 	}
 }

@@ -9,7 +9,7 @@ import (
 type Notification struct {
 	gorm.Model
 	Title   string
-	UserID  int
+	UserID  uint
 	User    User
 	Content string
 	UUID    string
