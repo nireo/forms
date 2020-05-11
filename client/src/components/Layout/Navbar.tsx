@@ -83,11 +83,6 @@ const Navbar: React.FC<Props> = ({ user, logout }) => {
         </Typography>
         <nav>
           {user !== null && (
-            <Link to="/settings" className={classes.link}>
-              Settings
-            </Link>
-          )}
-          {user !== null && (
             <Link
               to="/main"
               className={classes.link}

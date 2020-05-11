@@ -14,7 +14,7 @@ import {
   deleteForm,
 } from '../../store/forms/reducer';
 import { Modal } from '../Layout/Modal';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Divider } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -25,13 +25,18 @@ import { User } from '../../interfaces/User';
 import { UserMain } from '../User/UserMain';
 import { Link } from 'react-router-dom';
 import { logout } from '../../store/user/reducer';
-import { GoBack } from '../Layout/GoBack';
 import formatDate from '../../utils/FormatDate';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Settings from '../User/Settings';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import MenuIcon from '@material-ui/icons/Menu';
+import Tooltip from '@material-ui/core/Tooltip';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -60,6 +65,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   drawerPaper: {
     width: 240,
   },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  },
 }));
 
 type Props = {
@@ -82,7 +94,7 @@ const ManageMain: React.FC<Props> = ({
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('Untitled form');
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [openDrawer, setOpenDrawer] = useState<boolean>(true);
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [page, setPage] = useState<string>('Forms');
   const [pages] = useState<string[]>(['Forms', 'Settings']);
   const classes = useStyles();
@@ -132,6 +144,14 @@ const ManageMain: React.FC<Props> = ({
     }
   };
 
+  const handleDrawerClose = () => {
+    setOpenDrawer(false);
+  };
+
+  const handleDrawerOpen = () => {
+    setOpenDrawer(true);
+  };
+
   return (
     <Container maxWidth="lg" style={{ marginTop: '1rem' }}>
       <Drawer
@@ -143,14 +163,36 @@ const ManageMain: React.FC<Props> = ({
           paper: classes.drawerPaper,
         }}
       >
+        <div className={classes.drawerHeader}>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
         <List>
           {pages.map((p) => (
             <ListItem button onClick={() => setPage(p)} key={p}>
+              <ListItemIcon>
+                <div>
+                  {p === 'Forms' && <TextFieldsIcon />}
+                  {p === 'Settings' && <SettingsIcon />}
+                </div>
+              </ListItemIcon>
               <ListItemText primary={p} />
             </ListItem>
           ))}
         </List>
       </Drawer>
+      <Tooltip title="Open sidebar">
+        <IconButton
+          color="inherit"
+          aria-label="open-drawer"
+          onClick={handleDrawerOpen}
+          edge="start"
+        >
+          <MenuIcon />
+        </IconButton>
+      </Tooltip>
       {page === 'Forms' && (
         <section>
           <Typography variant="h3" style={{ marginTop: '2rem' }}>

@@ -11,11 +11,9 @@ import { AppState } from './store';
 import { User } from './interfaces/User';
 import { checkLocalStorage } from './store/user/reducer';
 import { MainView } from './components/Form/MainView';
-import Settings from './components/User/Settings';
 import { ChooseAction } from './components/Welcome/ChooseAction';
 import Navbar from './components/Layout/Navbar';
 import { Bye } from './components/Layout/Bye';
-import PrivateRoute from './components/Layout/PrivateRoute';
 
 type Props = {
   user: User;
@@ -36,9 +34,6 @@ const App: React.FC<Props> = ({ user, checkLocalStorage }) => {
       <Switch>
         <Route exact path="/main" render={() => <ManageMain />} />
         <Route exact path="/welcome" render={() => <Welcome />} />
-        <PrivateRoute exact={true} path="/settings" user={user}>
-          <Settings />
-        </PrivateRoute>
         <Route exact path="/" render={() => <ChooseAction />} />
         <Route exact path="/demo" render={() => <AnswerMain demo={true} />} />
         <Route exact path="/bye" render={() => <Bye />} />
