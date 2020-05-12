@@ -16,6 +16,33 @@ type Notification struct {
 	Read    bool
 }
 
+// CreateNotification creates a notification from given parameters
+func CreateNotification(title string, user User, content string, db *gorm.DB) {
+	uuid := common.GenerateUUID()
+
+	newNotification := Notification{
+		Title:   title,
+		UserID:  user.ID,
+		User:    user,
+		UUID:    uuid,
+		Content: content,
+		Read:    false,
+	}
+
+	db.NewRecord(newNotification)
+	db.Create(&newNotification)
+}
+
+// GetNotificationWithID finds a notification with an id and returns the ok status
+func GetNotificationWithID(uuid string, db *gorm.DB) (Notification, bool) {
+	var notification Notification
+	if err := db.Where("uuid = ?", uuid).First(&notification).Error; err != nil {
+		return notification, false
+	}
+
+	return notification, true
+}
+
 // Serialize notification model to JSON format
 func (notification *Notification) Serialize() common.JSON {
 	return common.JSON{

@@ -28,8 +28,8 @@ func deleteNotification(c *gin.Context) {
 		return
 	}
 
-	var notification Notification
-	if err := db.Where("uuid = ?", id).First(&notification).Error; err != nil {
+	notification, ok := models.GetNotificationWithID(id, db)
+	if !ok {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
