@@ -60,3 +60,25 @@ func getNotifications(c *gin.Context) {
 
 	c.JSON(http.StatusOK, serializedNotifications)
 }
+
+func updateReadStatus(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
+	id := c.Param("id")
+
+	var notification Notification
+	if err := db.Where("uuid = ?", id).First(&notification).Error; err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	if notification.UserID != user.ID {
+		c.AbortWithStatus(http.StatusForbidden)
+		return
+	}
+
+	notification.Read = true
+
+	db.Save(&notification)
+	c.JSON(http.StatusOK, notification.Serialize())
+}
