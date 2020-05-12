@@ -66,8 +66,8 @@ func updateReadStatus(c *gin.Context) {
 	user := c.MustGet("user").(User)
 	id := c.Param("id")
 
-	var notification Notification
-	if err := db.Where("uuid = ?", id).First(&notification).Error; err != nil {
+	notification, ok := models.GetNotificationWithID(id, db)
+	if !ok {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
