@@ -39,6 +39,7 @@ import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsIcon from '@material-ui/icons/Settings';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { NotificationPreview } from '../Notifications/NotificationPreview';
+import { getNotificationsAction } from '../../store/notifications';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -83,6 +84,8 @@ type Props = {
   getUserForms: () => void;
   deleteForm: (id: string) => void;
   logout: () => void;
+  notifications: Notification[];
+  getNotificationsAction: () => void;
 };
 
 const ManageMain: React.FC<Props> = ({
@@ -92,6 +95,8 @@ const ManageMain: React.FC<Props> = ({
   getUserForms,
   deleteForm,
   logout,
+  notifications,
+  getNotificationsAction,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('Untitled form');
@@ -99,12 +104,20 @@ const ManageMain: React.FC<Props> = ({
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [page, setPage] = useState<string>('Forms');
   const [pages] = useState<string[]>(['Forms', 'Settings', 'Notifications']);
+  const [notificationsLoaded, setNotificationsLoaded] = useState<boolean>(
+    false
+  );
   const classes = useStyles();
 
   useEffect(() => {
     if (loaded === false && user !== null) {
       getUserForms();
       setLoaded(true);
+    }
+
+    if (!notificationsLoaded && notifications.length === 0) {
+      getNotificationsAction();
+      setNotificationsLoaded(true);
     }
   }, [getUserForms, loaded, user]);
 
@@ -139,8 +152,6 @@ const ManageMain: React.FC<Props> = ({
     createForm(newForm);
     setOpen(false);
   };
-
-  const handleInitialNotificationLoad = () => {};
 
   const removeForm = (id: string): void => {
     if (window.confirm('Are you sure you want to delete the form?')) {
@@ -314,6 +325,7 @@ const ManageMain: React.FC<Props> = ({
 const mapStateToProps = (state: AppState) => ({
   forms: state.forms,
   user: state.user,
+  notifications: state.notifications,
 });
 
 export default connect(mapStateToProps, {
@@ -321,4 +333,5 @@ export default connect(mapStateToProps, {
   getUserForms,
   deleteForm,
   logout,
+  getNotificationsAction,
 })(ManageMain);

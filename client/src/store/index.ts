@@ -4,6 +4,7 @@ import formReducer from './forms/reducer';
 import userReducer from './user/reducer';
 import selectedReducer from './selectedForm';
 import notificationReducer from './notification/reducer';
+import notificationsReducer from './notifications/index';
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
@@ -11,7 +12,8 @@ const rootReducer = combineReducers({
   forms: formReducer,
   user: userReducer,
   notification: notificationReducer,
-  selected: selectedReducer
+  selected: selectedReducer,
+  notifications: notificationsReducer,
 });
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
