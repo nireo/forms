@@ -5,12 +5,16 @@ import {
   deleteNotification,
 } from '../../services/notification.service';
 
-const reducer = (state: null | Notification[], action: any) => {
+const reducer = (state: Notification[] = [], action: any) => {
   switch (action.type) {
     case 'INIT_NOTIFICATIONS':
       return action.data;
     case 'CLEAR_NOTIFICATIONS':
       return null;
+    case 'DELETE_NOTIFICATION':
+      return state.filter(
+        (notification: Notification) => notification.uuid !== action.id
+      );
     default:
       return state;
   }

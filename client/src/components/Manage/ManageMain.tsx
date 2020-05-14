@@ -37,6 +37,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Tooltip from '@material-ui/core/Tooltip';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsIcon from '@material-ui/icons/Settings';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import { NotificationPreview } from '../Notifications/NotificationPreview';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -96,7 +98,7 @@ const ManageMain: React.FC<Props> = ({
   const [loaded, setLoaded] = useState<boolean>(false);
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [page, setPage] = useState<string>('Forms');
-  const [pages] = useState<string[]>(['Forms', 'Settings']);
+  const [pages] = useState<string[]>(['Forms', 'Settings', 'Notifications']);
   const classes = useStyles();
 
   useEffect(() => {
@@ -138,6 +140,8 @@ const ManageMain: React.FC<Props> = ({
     setOpen(false);
   };
 
+  const handleInitialNotificationLoad = () => {};
+
   const removeForm = (id: string): void => {
     if (window.confirm('Are you sure you want to delete the form?')) {
       deleteForm(id);
@@ -176,6 +180,7 @@ const ManageMain: React.FC<Props> = ({
                 <div>
                   {p === 'Forms' && <TextFieldsIcon />}
                   {p === 'Settings' && <SettingsIcon />}
+                  {p === 'Notifications' && <NotificationsIcon />}
                 </div>
               </ListItemIcon>
               <ListItemText primary={p} />
@@ -271,6 +276,11 @@ const ManageMain: React.FC<Props> = ({
       {page === 'Settings' && (
         <div>
           <Settings />
+        </div>
+      )}
+      {page === 'Notifications' && (
+        <div>
+          <NotificationPreview />
         </div>
       )}
       <Modal show={open} handleClose={handleClose}>
