@@ -5,6 +5,7 @@ import (
 	"github.com/nireo/forms/server/api/v1/answer"
 	"github.com/nireo/forms/server/api/v1/auth"
 	"github.com/nireo/forms/server/api/v1/form"
+	"github.com/nireo/forms/server/api/v1/notification"
 	"github.com/nireo/forms/server/api/v1/question"
 )
 
@@ -16,5 +17,6 @@ func ApplyRoutes(r *gin.Engine) {
 		form.ApplyRoutes(routes)
 		answer.ApplyRoutes(routes)
 		question.ApplyRoutes(routes)
+		notification.ApplyRoutes(routes)
 	}
 }

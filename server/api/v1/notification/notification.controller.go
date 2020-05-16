@@ -48,7 +48,7 @@ func getNotifications(c *gin.Context) {
 	user := c.MustGet("user").(User)
 
 	var notifications []Notification
-	if err := db.Model(&user).Related(&notifications).Limit(20).Error; err != nil {
+	if err := db.Model(&user).Related(&notifications).Error; err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
