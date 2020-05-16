@@ -52,6 +52,7 @@ func JWTMiddleware() gin.HandlerFunc {
 		tokenString, err := c.Cookie("token")
 		if err != nil {
 			authorization := c.Request.Header.Get("Authorization")
+			fmt.Println(authorization)
 			if authorization == "" {
 				c.Next()
 				return

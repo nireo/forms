@@ -194,6 +194,15 @@ func createAnswer(c *gin.Context) {
 		return
 	}
 
+	var user User
+	if err := db.Where("id = ?", form.UserID).First(&user).Error; err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	// create notification to user
+	models.CreateNotification("New answer", user, "Someone has answered one of your forms", db)
+
 	uuid := common.GenerateUUID()
 	// turn answers array into proper Answer type
 	answersArray := make([]Answer, len(requestBody.Answers), len(requestBody.Answers))

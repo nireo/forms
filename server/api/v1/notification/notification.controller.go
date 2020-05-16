@@ -53,12 +53,18 @@ func getNotifications(c *gin.Context) {
 		return
 	}
 
-	serializedNotifications := make([]JSON, len(notifications), len(notifications))
-	for index := range notifications {
-		serializedNotifications[index] = notifications[index].Serialize()
-	}
+	if len(notifications) == 0 {
+		c.Status(http.StatusOK)
+	} else {
 
-	c.JSON(http.StatusOK, serializedNotifications)
+		serializedNotifications := make([]JSON, len(notifications), len(notifications))
+		for index := range notifications {
+			serializedNotifications[index] = notifications[index].Serialize()
+		}
+
+		c.JSON(http.StatusOK, serializedNotifications)
+		return
+	}
 }
 
 func updateReadStatus(c *gin.Context) {

@@ -13,6 +13,7 @@ const getConfig = () => ({
 
 export const getNotifications = async () => {
   const response = await axios.get(baseUrl, getConfig());
+  console.log(token);
   return response.data;
 };
 
