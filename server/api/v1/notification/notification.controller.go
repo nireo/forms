@@ -43,6 +43,25 @@ func deleteNotification(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+func singleNotification(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
+	id := c.Param("id")
+
+	var notification Notification
+	if err := db.Where("uuid = ?", id).First(&notification).Error; err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	if user.ID != notification.UserID {
+		c.AbortWithStatus(http.StatusForbidden)
+		return
+	}
+
+	c.JSON(http.StatusOK, notification.Serialize())
+}
+
 func getNotifications(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	user := c.MustGet("user").(User)
