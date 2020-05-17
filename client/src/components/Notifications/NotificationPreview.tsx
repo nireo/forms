@@ -6,6 +6,20 @@ import { AppState } from '../../store';
 import { Notification } from '../../interfaces/Notifications';
 import { getNotificationsAction } from '../../store/notifications/index';
 import LoadingBar from '@material-ui/core/CircularProgress';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    card: {
+      minWidth: 240,
+    },
+  })
+);
 
 type Props = {
   notifications: Notification[];
@@ -17,6 +31,7 @@ const NotificationPreview: React.FC<Props> = ({
   getNotificationsAction,
 }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
+  const classes = useStyles();
 
   useEffect(() => {
     if (!loaded && notifications.length === 0) {
@@ -25,11 +40,12 @@ const NotificationPreview: React.FC<Props> = ({
     }
   }, []);
 
-  console.log(notifications);
-
   return (
     <Container maxWidth="lg">
-      <Typography style={{ marginTop: '2rem' }} variant="h3">
+      <Typography
+        style={{ marginTop: '2rem', marginBottom: '2rem' }}
+        variant="h3"
+      >
         Notifications
       </Typography>
       {notifications.length === 0 && !loaded && (
@@ -37,6 +53,31 @@ const NotificationPreview: React.FC<Props> = ({
           <LoadingBar />
         </div>
       )}
+      {notifications.map((notification: Notification) => (
+        <Card
+          key={notification.uuid}
+          className={classes.card}
+          style={{ marginBottom: '0.5rem' }}
+        >
+          <CardContent>
+            <Grid container>
+              <Grid item xs={11}>
+                <Typography variant="h6" gutterBottom>
+                  {notification.title}
+                </Typography>
+                <Typography variant="body1" color="textSecondary">
+                  {notification.content}
+                </Typography>
+              </Grid>
+              <Grid item xs={1}>
+                <IconButton style={{ color: '#ff9999' }} component="span">
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+      ))}
     </Container>
   );
 };
