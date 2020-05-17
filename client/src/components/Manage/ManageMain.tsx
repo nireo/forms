@@ -38,7 +38,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsIcon from '@material-ui/icons/Settings';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { NotificationPreview } from '../Notifications/NotificationPreview';
+import NotificationPreview from '../Notifications/NotificationPreview';
 import { getNotificationsAction } from '../../store/notifications';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -104,20 +104,12 @@ const ManageMain: React.FC<Props> = ({
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [page, setPage] = useState<string>('Forms');
   const [pages] = useState<string[]>(['Forms', 'Settings', 'Notifications']);
-  const [notificationsLoaded, setNotificationsLoaded] = useState<boolean>(
-    false
-  );
   const classes = useStyles();
 
   useEffect(() => {
     if (loaded === false && user !== null) {
       getUserForms();
       setLoaded(true);
-    }
-
-    if (!notificationsLoaded && notifications.length === 0) {
-      getNotificationsAction();
-      setNotificationsLoaded(true);
     }
   }, [getUserForms, loaded, user]);
 
