@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import {
   getNotifications,
   deleteNotification,
+  getSingleNotification,
 } from '../../services/notification.service';
 
 const reducer = (state: Notification[] = [], action: any) => {
@@ -40,6 +41,16 @@ export const deleteNotificationAction = (id: string) => {
     dispatch({
       type: 'DELETE_NOTIFICATION',
       id: id,
+    });
+  };
+};
+
+export const getSingleNotificationAction = (id: string) => {
+  return async (dispatch: Dispatch) => {
+    const notifications = await getSingleNotification(id);
+    dispatch({
+      type: 'SINGLE_NOTIFICATION',
+      data: notifications,
     });
   };
 };

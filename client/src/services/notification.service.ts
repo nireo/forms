@@ -26,3 +26,8 @@ export const updateReadStatus = async (id: string) => {
   const response = await axios.patch(`${baseUrl}/${id}`, getConfig());
   return response.data;
 };
+
+export const getSingleNotification = async (id: string) => {
+  const response = await axios.get(`${baseUrl}/${id}`, getConfig());
+  return response.data;
+};

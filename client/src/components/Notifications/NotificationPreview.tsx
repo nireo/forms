@@ -4,7 +4,10 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import { Notification } from '../../interfaces/Notifications';
-import { getNotificationsAction } from '../../store/notifications/index';
+import {
+  getNotificationsAction,
+  deleteNotificationAction,
+} from '../../store/notifications/index';
 import LoadingBar from '@material-ui/core/CircularProgress';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -24,11 +27,13 @@ const useStyles = makeStyles(() =>
 type Props = {
   notifications: Notification[];
   getNotificationsAction: () => void;
+  deleteNotificationAction: (id: string) => void;
 };
 
 const NotificationPreview: React.FC<Props> = ({
   notifications,
   getNotificationsAction,
+  deleteNotificationAction,
 }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const classes = useStyles();
@@ -39,6 +44,10 @@ const NotificationPreview: React.FC<Props> = ({
       setLoaded(false);
     }
   }, []);
+
+  const handleNotificationDeletion = (id: string) => {
+    deleteNotificationAction(id);
+  };
 
   return (
     <Container maxWidth="lg">
@@ -51,6 +60,13 @@ const NotificationPreview: React.FC<Props> = ({
       {notifications.length === 0 && !loaded && (
         <div>
           <LoadingBar />
+        </div>
+      )}
+      {notifications.length === 0 && loaded && (
+        <div>
+          <Typography variant="body1" color="textSecondary">
+            No notifications
+          </Typography>
         </div>
       )}
       {notifications.map((notification: Notification) => (
@@ -70,7 +86,11 @@ const NotificationPreview: React.FC<Props> = ({
                 </Typography>
               </Grid>
               <Grid item xs={1}>
-                <IconButton style={{ color: '#ff9999' }} component="span">
+                <IconButton
+                  style={{ color: '#ff9999' }}
+                  component="span"
+                  onClick={() => handleNotificationDeletion(notification.uuid)}
+                >
                   <DeleteIcon />
                 </IconButton>
               </Grid>
@@ -86,6 +106,7 @@ const mapStateToProps = (state: AppState) => ({
   notifications: state.notifications,
 });
 
-export default connect(mapStateToProps, { getNotificationsAction })(
-  NotificationPreview
-);
+export default connect(mapStateToProps, {
+  getNotificationsAction,
+  deleteNotificationAction,
+})(NotificationPreview);
