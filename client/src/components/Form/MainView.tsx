@@ -37,6 +37,7 @@ export const MainView: React.FC<Props> = (props) => {
           >
             <Tab color="secondary" label="Questions" />
             <Tab color="secondary" label="Answers" />
+            <Tab color="secondary" label="Settings" />
           </Tabs>
         </Paper>
       </Container>
