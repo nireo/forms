@@ -8,15 +8,16 @@ import (
 // Question data
 type Question struct {
 	gorm.Model
-	Required   bool
-	Question   string
-	AnswerType uint8
-	Answers    string
-	Step       uint
-	Min        uint
-	Max        uint
-	FormID     uint
-	UUID       string
+	Required      bool
+	Question      string
+	AnswerType    uint8
+	Answers       string
+	Step          uint
+	Min           uint
+	Max           uint
+	FormID        uint
+	UUID          string
+	CustomMessage string
 }
 
 // Serialize question data

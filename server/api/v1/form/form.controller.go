@@ -120,8 +120,9 @@ func updateForm(c *gin.Context) {
 	id := c.Param("id")
 
 	type RequestBody struct {
-		Title       string `json:"title" binding:"required"`
-		Description string `json:"description" binding:"required"`
+		Title         string `json:"title" binding:"required"`
+		Description   string `json:"description" binding:"required"`
+		CustomMessage string `json:"custom_message" binding:"required"`
 	}
 
 	var body RequestBody
