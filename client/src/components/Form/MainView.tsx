@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AnswersMain } from '../Answers/AnswersMain';
 import Container from '@material-ui/core/Container';
 import TestView from '../Create/TestView';
+import { FormSettings } from './FormSettings';
 
 const useStyles = makeStyles({
   root: {
@@ -43,6 +44,7 @@ export const MainView: React.FC<Props> = (props) => {
       </Container>
       {page === 1 && <AnswersMain id={props.id} />}
       {page === 0 && <TestView id={props.id} />}
+      {page === 2 && <FormSettings />}
     </div>
   );
 };
