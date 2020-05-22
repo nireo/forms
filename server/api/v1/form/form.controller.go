@@ -150,41 +150,40 @@ func updateForm(c *gin.Context) {
 }
 
 func updateFormSettings(c *gin.Context) {
-  db := c.MustGet("db").(*gorm.DB)
-  user := c.MustGet("user").(User)
-  id := c.Param("id")
+	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
+	id := c.Param("id")
 
-  if id == "" {
-    c.AbortWithStatus(http.StatusBadRequest)
-    return
-  }
+	if id == "" {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
 
-  type RequestBody {
-    CustomMessage   string `json:"customMessage" binding:"required"`
-    ReceiveMessages string `json:"receiveMessages" binding:"required"`
-  }
+	type RequestBody struct {
+		CustomMessage   string `json:"customMessage" binding:"required"`
+		ReceiveMessages string `json:"receiveMessages" binding:"required"`
+	}
 
-  var body RequestBody
-  if err := c.BindJSON(&body); err != nil {
-    c.AbortWithStatus(http.StatusBadRequest)
-    return
-  }
+	var body RequestBody
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
 
-  var form Form
-  if err := db.Where("unique_id = ?", id).First(&form).Error; err != nil {
-    c.AbortWithStatus(http.StatusNotFound)
-    return
-  }
+	var form Form
+	if err := db.Where("unique_id = ?", id).First(&form).Error; err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
 
-  if user.ID != form.UserID {
-    c.AbortWithStatus(http.StatusForbidden)
-    return
-  }
+	if user.ID != form.UserID {
+		c.AbortWithStatus(http.StatusForbidden)
+		return
+	}
 
-  form.CustomMessage = common.CheckStringForBoolean(body.CustomMessage)
-  form.ReceiveMessages = common.CheckStringForBoolean(body.ReceiveMessages)
+	form.CustomMessage = common.CheckStringForBoolean(body.CustomMessage)
+	form.ReceiveMessages = common.CheckStringForBoolean(body.ReceiveMessages)
 
-  db.Update(&form)
-  c.JSON(http.StatusOK, form.Serialize())
+	db.Update(&form)
+	c.JSON(http.StatusOK, form.Serialize())
 }
-
