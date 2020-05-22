@@ -41,6 +41,6 @@ export const getUserForms = async () => {
 };
 
 export const updateFormSettings = async (newSettings: FormSettingsStringFormat, id: string) => {
-  const response = await axios.patch(`${baseUrl}/${id}`, newSettings, getConfig());
+  const response = await axios.patch(`${baseUrl}` newSettings, getConfig());
   return response.data;
 }

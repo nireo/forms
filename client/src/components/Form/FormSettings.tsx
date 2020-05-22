@@ -6,13 +6,25 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { updateFormSettings } from '../../services/form.service';
+import { FormSettingsStringFormat } from '../../interfaces/Form';
 
-export const FormSettings: React.FC = () => {
+type Props = {
+  id: string;
+}
+
+export const FormSettings: React.FC<Props> = ({ id }) => {
   const [customMessage, setCustomMessage] = useState<string>(""); 
   const [receiveMessages, setReceiveMessages] = useState<boolean>(false);
 
   const handleSettingsUpdate = (event: ChangeEvent<HTMLFormElement>) =>  {
     event.preventDefault(); 
+    const newSettings: FormSettingsStringFormat = {
+      customMessage,
+      receiveMessages: receiveMessages ? "true" : "false"
+    };
+
+    updateFormSettings(newSettings, id)
   }
 
   return (
