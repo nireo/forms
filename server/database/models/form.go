@@ -8,14 +8,14 @@ import (
 // Form data model
 type Form struct {
 	gorm.Model
-  Title           string
-	Description     string
-	Questions       []Question
-	UniqueID        string
-	User            User
-	UserID          uint
-  ReceuiveMessage bool
-  CustomMessage   string
+	Title          string
+	Description    string
+	Questions      []Question
+	UniqueID       string
+	User           User
+	UserID         uint
+	ReceiveMessage bool
+	CustomMessage  string
 }
 
 // FormQuestion is used when returning an array with questions and the form
