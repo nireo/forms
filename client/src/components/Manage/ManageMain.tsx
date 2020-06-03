@@ -14,7 +14,7 @@ import {
   deleteForm,
 } from '../../store/forms/reducer';
 import { Modal } from '../Layout/Modal';
-import { TextField, Button, Divider } from '@material-ui/core';
+import { TextField, Divider } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -24,7 +24,6 @@ import Grid from '@material-ui/core/Grid';
 import { User } from '../../interfaces/User';
 import { UserMain } from '../User/UserMain';
 import { Link } from 'react-router-dom';
-import { logout } from '../../store/user/reducer';
 import formatDate from '../../utils/FormatDate';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -39,7 +38,6 @@ import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsIcon from '@material-ui/icons/Settings';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import NotificationPreview from '../Notifications/NotificationPreview';
-import { getNotificationsAction } from '../../store/notifications';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -83,9 +81,6 @@ type Props = {
   user: User | null;
   getUserForms: () => void;
   deleteForm: (id: string) => void;
-  logout: () => void;
-  notifications: Notification[];
-  getNotificationsAction: () => void;
 };
 
 const ManageMain: React.FC<Props> = ({
@@ -94,9 +89,6 @@ const ManageMain: React.FC<Props> = ({
   user,
   getUserForms,
   deleteForm,
-  logout,
-  notifications,
-  getNotificationsAction,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('Untitled form');
@@ -316,14 +308,11 @@ const ManageMain: React.FC<Props> = ({
 
 const mapStateToProps = (state: AppState) => ({
   forms: state.forms,
-  user: state.user,
-  notifications: state.notifications,
+  user: state.user
 });
 
 export default connect(mapStateToProps, {
   createForm,
   getUserForms,
-  deleteForm,
-  logout,
-  getNotificationsAction,
+  deleteForm
 })(ManageMain);

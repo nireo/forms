@@ -181,7 +181,7 @@ func updateFormSettings(c *gin.Context) {
 		return
 	}
 
-	form.CustomMessage = common.CheckStringForBoolean(body.CustomMessage)
+	form.CustomMessage = body.CustomMessage
 	form.ReceiveMessages = common.CheckStringForBoolean(body.ReceiveMessages)
 
 	db.Update(&form)
