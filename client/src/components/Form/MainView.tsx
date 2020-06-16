@@ -44,7 +44,7 @@ export const MainView: React.FC<Props> = (props) => {
       </Container>
       {page === 1 && <AnswersMain id={props.id} />}
       {page === 0 && <TestView id={props.id} />}
-      {page === 2 && <FormSettings />}
+      {page === 2 && <FormSettings id={props.id} />}
     </div>
   );
 };

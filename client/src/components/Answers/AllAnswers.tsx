@@ -53,41 +53,48 @@ export const AllAnswers: React.FC<Props> = ({ id }) => {
           {questionsWithAnswers.map((question: QuestionWithAnswers) => (
             <ContainerWrapper key={question.question}>
               <Typography variant="h5">{question.question}</Typography>
-              {question.type === 1 &&
-                question.amounts !== undefined &&
-                question.labels !== undefined && (
-                  <div>
-                    <PieChart
-                      numberData={question.amounts}
-                      label={question.question}
-                      labels={question.labels}
-                    />
-                  </div>
-                )}
-              {question.type === 2 && question.answers !== undefined && (
-                <WrittenListDisplay answers={question.answers} />
-              )}
-              {question.type === 3 &&
-                question.amounts !== undefined &&
-                question.labels !== undefined && (
-                  <BarChart
-                    numberData={question.amounts}
-                    label={question.question}
-                    labels={question.labels}
-                  />
-                )}
-              {question.type === 4 && question.answers !== undefined && (
+              {question.amounts?.length === 0 &&
+              question.labels?.length === 0 ? (
+                <div>No answers exist for this question.</div>
+              ) : (
                 <div>
-                  <WrittenListDisplay answers={question.answers} />
-                </div>
-              )}
-              {question.type === 5 && question.amounts && (
-                <div>
-                  <PieChart
-                    label={question.question}
-                    labels={['False', 'True']}
-                    numberData={question.amounts}
-                  />
+                  {question.type === 1 &&
+                    question.amounts !== undefined &&
+                    question.labels !== undefined && (
+                      <div>
+                        <PieChart
+                          numberData={question.amounts}
+                          label={question.question}
+                          labels={question.labels}
+                        />
+                      </div>
+                    )}
+                  {question.type === 2 && question.answers !== undefined && (
+                    <WrittenListDisplay answers={question.answers} />
+                  )}
+                  {question.type === 3 &&
+                    question.amounts !== undefined &&
+                    question.labels !== undefined && (
+                      <BarChart
+                        numberData={question.amounts}
+                        label={question.question}
+                        labels={question.labels}
+                      />
+                    )}
+                  {question.type === 4 && question.answers !== undefined && (
+                    <div>
+                      <WrittenListDisplay answers={question.answers} />
+                    </div>
+                  )}
+                  {question.type === 5 && question.amounts && (
+                    <div>
+                      <PieChart
+                        label={question.question}
+                        labels={['False', 'True']}
+                        numberData={question.amounts}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
             </ContainerWrapper>
