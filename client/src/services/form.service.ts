@@ -1,8 +1,8 @@
-import { Form } from "./../interfaces/Question";
+import { Form } from './../interfaces/Question';
 import { FormSettingsStringFormat } from '../interfaces/Form';
-import axios from "axios";
+import axios from 'axios';
 
-const baseUrl: string = "/api/form";
+const baseUrl: string = '/api/form';
 
 let token: string | null = null;
 
@@ -11,7 +11,7 @@ export const setToken = (newToken: string) => {
 };
 
 const getConfig = () => ({
-  headers: { Authorization: token }
+  headers: { Authorization: token },
 });
 
 export const getForm = async (id: string) => {
@@ -20,8 +20,11 @@ export const getForm = async (id: string) => {
 };
 
 export const updateForm = async (form: any, id: string) => {
-  console.log(form);
-  const response = await axios.patch(`${baseUrl}/${id}`, form, getConfig());
+  const response = await axios.patch(
+    `${baseUrl}/update/${id}`,
+    form,
+    getConfig()
+  );
   return response.data;
 };
 
@@ -40,7 +43,14 @@ export const getUserForms = async () => {
   return response.data;
 };
 
-export const updateFormSettings = async (newSettings: FormSettingsStringFormat, id: string) => {
-  const response = await axios.patch(`${baseUrl}/${id}`, newSettings, getConfig());
+export const updateFormSettings = async (
+  newSettings: FormSettingsStringFormat,
+  id: string
+) => {
+  const response = await axios.patch(
+    `${baseUrl}/settings/${id}`,
+    newSettings,
+    getConfig()
+  );
   return response.data;
-}
+};

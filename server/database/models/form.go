@@ -29,11 +29,12 @@ func (form *Form) Serialize() common.JSON {
 	// Questions do not have to be serialized, they are serialized independently
 
 	return common.JSON{
-		"title":       form.Title,
-		"description": form.Description,
-		"id":          form.ID,
-		"created_at":  form.CreatedAt,
-		"uuid":        form.UniqueID,
+		"title":         form.Title,
+		"description":   form.Description,
+		"id":            form.ID,
+		"created_at":    form.CreatedAt,
+		"uuid":          form.UniqueID,
+		"customMessage": form.CustomMessage,
 	}
 }
 

@@ -94,6 +94,7 @@ export const ViewAnswer: React.FC<Props> = (props) => {
     getQuestionData,
     getQuestions,
     loaded,
+    props.id,
   ]);
 
   const removeAnswer = async () => {

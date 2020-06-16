@@ -57,6 +57,7 @@ export const AnswerMain: React.FC<Props> = (props) => {
   const [answerItems, setAnswerItem] = useState<AnswerItem[]>([]);
   const [formName, setFormName] = useState<string>('');
   const [formDescription, setFormDescription] = useState<string>('');
+  const [customMessage, setCustomMessage] = useState<string>('');
   const [demoData] = useState([
     {
       answerType: 2,
@@ -108,6 +109,7 @@ export const AnswerMain: React.FC<Props> = (props) => {
 
     setFormName(loadData.form.title);
     setFormDescription(loadData.form.description);
+    setCustomMessage(loadData.form.customMessage);
 
     setAnswerItem(
       loadData.questions.map((q: any) => {
@@ -291,7 +293,7 @@ export const AnswerMain: React.FC<Props> = (props) => {
   return (
     <div>
       {finished ? (
-        <Ending />
+        <Ending customMessage={customMessage} />
       ) : (
         <div>
           {data === null &&
