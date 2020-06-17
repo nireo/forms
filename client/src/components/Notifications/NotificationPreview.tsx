@@ -43,7 +43,7 @@ const NotificationPreview: React.FC<Props> = ({
       getNotificationsAction();
       setLoaded(false);
     }
-  }, []);
+  }, [loaded, notifications.length, getNotificationsAction]);
 
   const handleNotificationDeletion = (id: string) => {
     deleteNotificationAction(id);

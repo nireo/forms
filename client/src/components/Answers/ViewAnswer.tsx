@@ -9,7 +9,6 @@ import { getForm } from '../../services/form.service';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
-import Slider from '@material-ui/core/Slider';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -95,6 +94,7 @@ export const ViewAnswer: React.FC<Props> = (props) => {
     getQuestions,
     loaded,
     props.id,
+    props.answer.answers,
   ]);
 
   const removeAnswer = async () => {

@@ -8,7 +8,6 @@ import Button from '@material-ui/core/Button';
 import { removeUser } from '../../store/user/reducer';
 import TextField from '@material-ui/core/TextField';
 import { updatePassword as s_updatePassword } from '../../services/user.service';
-import { ContainerWrapper } from '../Layout/ContainerWrapper';
 import Container from '@material-ui/core/Container';
 import { Divider } from '@material-ui/core';
 
