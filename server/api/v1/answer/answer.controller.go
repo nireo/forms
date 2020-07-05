@@ -27,12 +27,12 @@ type User = models.User
 type Question = models.Question
 
 func getAnswer(c *gin.Context) {
-	db := c.MustGet("db").(*gorm.DB)
+	db := common.GetDatabase()
 	id := c.Param("id")
 	user := c.MustGet("user").(User)
 
 	var form Form
-	if err := db.Set("gorm:auto_preload", true).Where("unique_id = ?", id).First(&form).Error; err != nil {
+	if err := db.Where("unique_id = ?", id).First(&form).Error; err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}

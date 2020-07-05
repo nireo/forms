@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/nireo/forms/server/lib/common"
 	"os"
 
 	"github.com/gin-gonic/contrib/static"
@@ -25,6 +26,8 @@ func main() {
 	}
 
 	db, _ := database.Initialize()
+
+	common.SetDatabase(db)
 
 	app := gin.Default()
 
