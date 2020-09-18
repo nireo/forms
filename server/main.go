@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/nireo/forms/server/lib/common"
 	"github.com/nireo/forms/server/database"
+	"github.com/nireo/forms/server/lib/common"
 	"github.com/nireo/forms/server/lib/middlewares"
 	"os"
 
@@ -26,6 +26,7 @@ func main() {
 	app := SetupRouter()
 	app.Run(":" + port)
 }
+
 func SetupRouter() *gin.Engine {
 	err := godotenv.Load()
 	if err != nil {
